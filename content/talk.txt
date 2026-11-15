@@ -1,0 +1,239 @@
+; Conversation trainer content. Sections: [islands] [tactics] [drills] [missions]
+; Japanese is written with kana and only the most basic kanji so that it can be read early; audio is available for every line.
+
+[islands]
+; = id | title | why
+; slot lines:  @slot | label | option=English | option=English ...   (an option of * means free text)
+; lines: Japanese with {slot} | English with {slot}
+= me | Who I am | The first 30 seconds of every conversation. Know it so well you never have to think.
+@name | Your name | *
+@country | Country | インド=India | アメリカ=the USA | イギリス=the UK | フィリピン=the Philippines | ベトナム=Vietnam | ネパール=Nepal | ブラジル=Brazil | ドイツ=Germany | フランス=France | ちゅうごく=China | かんこく=Korea | オーストラリア=Australia
+@city | Your city | *
+はじめまして。{name}と もうします。 | How do you do. My name is {name}.
+{country}から きました。 | I'm from {country}.
+{city}という まちに すんでいます。 | I live in a city called {city}.
+にほんごは まだ べんきょうちゅうですが、がんばります。 | I'm still learning Japanese, but I'll do my best.
+どうぞ よろしく おねがいします。 | Pleased to meet you.
+= work | What I do | The second question you always get: おしごとは？
+@job | Your work | かいしゃいん=an office worker | エンジニア=an engineer | マネージャー=a manager | がくせい=a student | きょうし=a teacher | いしゃ=a doctor | かんごし=a nurse | デザイナー=a designer | えいぎょう=in sales | フリーランス=a freelancer
+@field | Field | ほけん=insurance | アイティー=IT | ぎんこう=banking | きょういく=education | いりょう=healthcare | せいぞう=manufacturing | りょこう=travel | エネルギー=energy
+@years | How long | いちねん=one year | にねん=two years | さんねん=three years | ごねん=five years | じゅうねん=ten years
+しごとは {job}です。 | I work as {job}.
+{field}の かいしゃで はたらいています。 | I work at a company in {field}.
+いまの しごとは {years}ぐらい しています。 | I've been in my current job for about {years}.
+いそがしいですが、おもしろい しごとです。 | It's busy, but it's interesting work.
+= why | Why Japanese | People will ask どうして にほんごを？ Have a real answer ready.
+@reason | Your reason | にほんで はたらきたい=I want to work in Japan | にほんに りゅうがくしたい=I want to study in Japan | にほんの ぶんかが すき=I like Japanese culture | アニメや まんがが すき=I like anime and manga | にほんじんの ともだちと はなしたい=I want to talk with Japanese friends | りょこうで つかいたい=I want to use it when travelling
+@time | Studying for | さんかげつ=three months | はんとし=half a year | いちねん=a year | にねん=two years
+{reason}ので、にほんごを べんきょうしています。 | I'm studying Japanese because {reason}.
+べんきょうを はじめて、{time}ぐらいに なります。 | It's been about {time} since I started.
+かんじは むずかしいですが、はなすのは たのしいです。 | Kanji is hard, but speaking is fun.
+まちがえたら、おしえてください。 | If I make a mistake, please tell me.
+= free | My free time | Small talk runs on this: weekends, hobbies, food.
+@hobby | You like to | えいがを みる=watch films | ほんを よむ=read books | ジムに いく=go to the gym | りょうりを する=cook | りょこうを する=travel | おんがくを きく=listen to music | ゲームを する=play games | さんぽを する=go for walks | しゃしんを とる=take photos
+@food | Favourite food | ラーメン=ramen | すし=sushi | カレー=curry | やきにく=grilled meat | てんぷら=tempura | うどん=udon
+しゅみは {hobby}ことです。 | My hobby is to {hobby}.
+しゅうまつは よく {hobby}ことが おおいです。 | At weekends I often {hobby}.
+にほんの たべものでは、{food}が いちばん すきです。 | Of Japanese food, I like {food} best.
+こんど、いっしょに どうですか。 | How about doing it together next time?
+= plan | My plans | Talking about the future keeps a conversation moving.
+@goal | Your goal | にほんで しごとを さがす=look for work in Japan | にほんごの がっこうに はいる=enter a Japanese language school | エヌごに ごうかくする=pass the N5 | にほんを りょこうする=travel around Japan | にほんの かいしゃで はたらく=work at a Japanese company
+@when | When | らいねん=next year | ことし=this year | にねんご=in two years | しょうらい=in the future
+{when}、{goal}つもりです。 | {when}, I plan to {goal}.
+そのために、まいにち すこしずつ べんきょうしています。 | For that, I study a little every day.
+まだ じしんが ありませんが、ちょうせんしてみたいです。 | I'm not confident yet, but I want to give it a try.
+なにか アドバイスが あったら、おしえてください。 | If you have any advice, please tell me.
+
+[tactics]
+; = id | title | what it is for
+; lines: Japanese | English | when to use it
+= time | Buy time | Never go silent. A filler keeps your turn while you think.
+ええと… | Um… | The basic thinking sound.
+あのう… | Er… (to get attention softly) | Also opens a request.
+そうですねえ… | Let me see… | When asked your opinion.
+なんというか… | How should I put it… | When the word won't come.
+ちょっと まってください。 | Just a moment, please. | To ask for real thinking time.
+むずかしい しつもんですね。 | That's a hard question. | Buys several seconds politely.
+= repair | Didn't catch that | Asking again is normal. Ask precisely and you sound fluent, not lost.
+すみません、もういちど おねがいします。 | Sorry, once more please. | The all-purpose repeat request.
+もうすこし ゆっくり はなして いただけますか。 | Could you speak a little more slowly? | Polite and specific.
+「〜」は どういう いみですか。 | What does "〜" mean? | Repeat the word you missed.
+〜って、なんですか。 | What's 〜? | Casual version.
+えいごで なんと いいますか。 | How do you say it in English? | Last resort.
+すみません、ききとれませんでした。 | Sorry, I couldn't catch that. | When it was speed, not vocabulary.
+= check | Check you understood | Repeat back what you think you heard. It confirms and buys time.
+〜と いうことですか。 | Do you mean 〜? | Put your guess before it.
+つまり、〜ですね。 | In other words, 〜, right? | Summarise in simple words.
+あした、ですね。 | Tomorrow, right? | Echo the key word + ですね.
+わかりました。 | Understood. | Close the loop.
+なるほど、そういう ことですか。 | I see, so that's how it is. | Shows you followed.
+= aizuchi | Sound like a listener | Japanese listeners respond constantly. Silence reads as not listening.
+はい。／ええ。 | Yes. / Uh-huh. | Means "I'm listening", not always "I agree".
+そうですか。 | Is that so. | Falling tone: interest. Rising: doubt.
+そうですね。 | That's right. | Agreement.
+なるほど。 | I see. | Understanding something new.
+へえ、すごいですね。 | Wow, that's great. | Positive surprise.
+ほんとうですか。 | Really? | Surprise.
+たいへんですね。 | That sounds tough. | Sympathy.
+いいですね。 | That's nice. | Approval or envy.
+= around | Say it another way | You know less vocabulary than you need. Describe around the gap.
+〜みたいな ものです。 | It's something like 〜. | Compare to a word you know.
+〜の はんたいです。 | It's the opposite of 〜. | おおきい の はんたい = small.
+〜する ときに つかう ものです。 | It's a thing you use when you 〜. | Describe by function.
+〜の なかまです。 | It's in the same family as 〜. | Category.
+にほんごで なんと いうか わかりませんが… | I don't know what it's called in Japanese, but… | Then describe it.
+かんたんに いうと、〜です。 | Put simply, it's 〜. | Simplify your own sentence.
+= steer | Steer the talk | Move the conversation to ground you know, and hand the turn back.
+〜さんは どうですか。 | How about you, 〜? | The simplest way to return the ball.
+ところで、〜 | By the way, 〜 | Change of topic.
+そういえば、〜 | That reminds me, 〜 | Soft change of topic.
+さっきの はなしですが… | About what we said earlier… | Go back to safe ground.
+それは ちょっと わかりませんが、〜なら わかります。 | I'm not sure about that, but I do know about 〜. | Redirect to your island.
+もっと おしえてください。 | Please tell me more. | Makes them talk while you rest.
+= close | Open and close | Start and finish cleanly.
+すみません、ちょっと いいですか。 | Excuse me, do you have a moment? | Opening with a stranger or colleague.
+おいそがしい ところ、すみません。 | Sorry to bother you when you're busy. | Polite opening.
+きょうは ありがとうございました。 | Thank you for today. | Closing.
+また こんど ゆっくり はなしましょう。 | Let's talk properly another time. | Friendly close.
+そろそろ しつれいします。 | I should be going. | Leaving.
+おさきに しつれいします。 | Excuse me for leaving first. | Leaving work before others.
+
+[drills]
+; = frame with ＿ | English frame with _
+; substitutions: Japanese=English | ...
+= ＿を ください。 | _, please. (asking for a thing)
+これ=This | みず=Water | メニュー=The menu | コーヒー=Coffee | レシート=The receipt | あたらしい はし=New chopsticks
+= ＿は どこですか。 | Where is _?
+トイレ=the toilet | えき=the station | でぐち=the exit | コンビニ=a convenience store | バスのりば=the bus stop | うけつけ=reception
+= ＿に いきたいんですが。 | I'd like to go to _.
+くうこう=the airport | とうきょうえき=Tokyo Station | この ホテル=this hotel | びょういん=a hospital | しやくしょ=the city office
+= ＿を おねがいします。 | _, please. (ordering or requesting a service)
+チェックイン=Check-in | おかいけい=The bill | よやく=A reservation | ラーメン ひとつ=One ramen | りょうしゅうしょ=A receipt (formal)
+= ＿ても いいですか。 | May I _?
+ここに すわっ=sit here | しゃしんを とっ=take a photo | カードで はらっ=pay by card | これを つかっ=use this | まどを あけ=open the window | しつもんし=ask a question
+= ＿て いただけますか。 | Could you _ for me?
+おしえ=tell | もういちど いっ=say it once more | ここに かい=write it here | ちょっと てつだっ=help a little | みち を おしえ=show the way | しゃしんを とっ=take a photo
+= ＿たいです。 | I want to _.
+にほんで はたらき=work in Japan | にほんごを もっと はなし=speak more Japanese | おんせんに いき=go to a hot spring | やすみ=rest | これを かい=buy this
+= ＿が すきです。 | I like _.
+にほんの りょうり=Japanese food | えいが=films | あるくの=walking | しずかな ところ=quiet places | からい もの=spicy food
+= ＿は ちょっと…。 | _ is a bit… (soft refusal)
+あしたは=Tomorrow | おさけは=Alcohol | なまの さかなは=Raw fish | こんしゅうは=This week | それは=That
+= ＿ことが あります。 | I have _ before.
+にほんに いった=been to Japan | すしを たべた=eaten sushi | ふじさんを みた=seen Mt Fuji | しんかんせんに のった=ridden the shinkansen | きものを きた=worn a kimono
+= ＿と おもいます。 | I think _.
+いい=it's good | むずかしい=it's difficult | だいじょうぶだ=it'll be fine | あした あめが ふる=it'll rain tomorrow | かれは こない=he won't come
+= ＿んですが、どうしたら いいですか。 | _. What should I do?
+みちに まよった=I'm lost | さいふを なくした=I've lost my wallet | でんしゃに のりおくれた=I missed the train | カードが つかえない=My card won't work | あたまが いたい=I have a headache
+= ＿は いくらですか。 | How much is _?
+これ=this | おとな ひとり=one adult | いちばん やすいの=the cheapest one | とうきょうまで=it to Tokyo | いっぱく=one night
+= ＿まで どのぐらい かかりますか。 | How long does it take to _?
+えき=the station | くうこう=the airport | おおさか=Osaka | かいしゃ=the office | あるいて ホテル=the hotel on foot
+= ＿の ほうが いいです。 | I'd prefer _.
+こっち=this one | やすい=the cheap one | あした=tomorrow | まどがわ=the window side | あたたかい=the hot one
+= ＿ませんか。 | Won't you _? (invitation)
+いっしょに たべ=eat together | コーヒーを のみ=have a coffee | こんど あい=meet sometime | すこし やすみ=take a short break | えいがを みに いき=go to see a film
+
+[missions]
+; = id | title | setting | level (1 easy - 3 harder)
+; A: partner line | English      B: your line | English
+= konbini | At the convenience store | You are buying lunch. The clerk speaks fast and uses set phrases. | 1
+A: いらっしゃいませ。 | Welcome.
+B: これ、おねがいします。 | This, please.
+A: おべんとう、あたためますか。 | Shall I heat the lunch box?
+B: はい、おねがいします。 | Yes, please.
+A: ふくろは ごりようですか。 | Do you need a bag?
+B: いいえ、だいじょうぶです。 | No, I'm fine.
+A: ろっぴゃくごじゅうえんです。 | That's 650 yen.
+B: カードで おねがいします。 | By card, please.
+A: ありがとうございました。 | Thank you very much.
+= eki | Lost at the station | You need the right platform and you are short of time. | 1
+B: すみません、ちょっと いいですか。 | Excuse me, do you have a moment?
+A: はい、なんでしょう。 | Yes, what is it?
+B: しんじゅくに いきたいんですが、なんばんせんですか。 | I'd like to go to Shinjuku. Which platform is it?
+A: しんじゅくなら、さんばんせんですよ。 | For Shinjuku, it's platform three.
+B: さんばんせんですね。のりかえは ありますか。 | Platform three, right? Do I need to change?
+A: いいえ、まっすぐ いけます。じゅうごふんぐらいです。 | No, it goes straight there. About fifteen minutes.
+B: わかりました。ありがとうございます。 | Understood. Thank you.
+A: いいえ、きを つけて。 | Not at all. Take care.
+= resto | Ordering at a restaurant | Dinner out. You order, ask one question, and pay. | 1
+A: いらっしゃいませ。なんめいさまですか。 | Welcome. How many people?
+B: ひとりです。 | One.
+A: こちらへ どうぞ。ごちゅうもんは おきまりですか。 | This way, please. Have you decided?
+B: おすすめは なんですか。 | What do you recommend?
+A: きょうは さかなの ていしょくが おすすめです。 | Today the fish set meal is recommended.
+B: じゃあ、それを ひとつ おねがいします。 | Then one of those, please.
+A: おのみものは いかがですか。 | Would you like a drink?
+B: おみずで だいじょうぶです。 | Water is fine.
+B: すみません、おかいけい おねがいします。 | Excuse me, the bill please.
+A: はい、せんにひゃくえんに なります。 | Certainly, that comes to 1,200 yen.
+= meet | Meeting a colleague | First day. Use your "Who I am" and "What I do" islands. | 2
+A: はじめまして。たなかです。 | How do you do. I'm Tanaka.
+B: はじめまして。きょうから おせわに なります。 | How do you do. I'm joining from today.
+A: にほんごが おじょうずですね。 | Your Japanese is good.
+B: いいえ、まだまだです。べんきょうちゅうです。 | Not at all, I still have far to go. I'm still learning.
+A: どちらから いらっしゃったんですか。 | Where are you from?
+B: インドから きました。たなかさんは、ここは ながいんですか。 | I'm from India. Have you been here long, Tanaka-san?
+A: ええ、もう じゅうねんに なります。 | Yes, ten years already.
+B: そうですか。いろいろ おしえてください。 | Is that so. Please teach me all sorts of things.
+A: こちらこそ、よろしく おねがいします。 | Likewise, I look forward to working with you.
+= smalltalk | Small talk at lunch | Keep it going for five turns: answer, add one detail, throw the ball back. | 2
+A: しゅうまつは なにを しましたか。 | What did you do at the weekend?
+B: ともだちと えいがを みました。たなかさんは？ | I saw a film with a friend. How about you?
+A: わたしは うちで ゆっくり しました。どんな えいがですか。 | I took it easy at home. What kind of film?
+B: にほんの えいがです。ぜんぶは わかりませんでしたが、おもしろかったです。 | A Japanese film. I didn't understand all of it, but it was fun.
+A: へえ、すごいですね。じまくなしで？ | Wow, impressive. Without subtitles?
+B: はい。ききとれない ところも おおかったです。 | Yes. There were a lot of parts I couldn't catch.
+A: それでも すごいですよ。 | That's still impressive.
+B: ありがとうございます。なにか おすすめの えいがは ありますか。 | Thank you. Do you have any film you'd recommend?
+= invite | Turning down an invitation | Refuse softly: thanks, vague reason, counter-offer. Never a flat いいえ. | 2
+A: こんばん、のみに いきませんか。 | Shall we go for a drink tonight?
+B: ありがとうございます。でも、こんばんは ちょっと…。 | Thank you. But tonight is a bit…
+A: あ、なにか よていが あるんですか。 | Oh, do you have plans?
+B: ええ、ちょっと ようじが ありまして。 | Yes, I have a small errand.
+A: そうですか。ざんねんですね。 | I see. That's a shame.
+B: すみません。らいしゅうは どうですか。 | I'm sorry. How about next week?
+A: いいですね。じゃあ、きんようびに しましょう。 | Sounds good. Let's make it Friday then.
+B: はい、たのしみに しています。 | Yes, I'm looking forward to it.
+= clinic | At the clinic | Describe a symptom and understand the instructions. | 2
+A: きょうは どう しましたか。 | What brings you in today?
+B: きのうから あたまが いたくて、ねつも あるんです。 | I've had a headache since yesterday, and a fever too.
+A: ねつは なんどぐらいですか。 | How high is the fever?
+B: さんじゅうはちどぐらいです。 | About 38 degrees.
+A: のどは いたいですか。 | Does your throat hurt?
+B: はい、すこし いたいです。 | Yes, it hurts a little.
+A: かぜですね。くすりを だしますから、いちにち さんかい のんでください。 | It's a cold. I'll prescribe medicine; take it three times a day.
+B: いちにち さんかいですね。しょくじの あとですか。 | Three times a day, right? After meals?
+A: ええ、しょくごに のんでください。おだいじに。 | Yes, take it after meals. Take care.
+= phone | A phone call | No gestures, no lip-reading. Confirm everything by repeating it. | 3
+A: はい、さくらホテルで ございます。 | Hello, Sakura Hotel.
+B: もしもし、よやくを おねがいしたいんですが。 | Hello, I'd like to make a reservation.
+A: ありがとうございます。いつの ごよやくでしょうか。 | Thank you. For what date?
+B: らいげつの とおかから、にはくです。 | From the tenth of next month, two nights.
+A: とおかから にはくですね。なんめいさまですか。 | From the tenth for two nights. How many guests?
+B: ふたりです。きんえんの へやは ありますか。 | Two. Do you have a non-smoking room?
+A: はい、ございます。おなまえを おねがいします。 | Yes, we do. May I have your name?
+B: すみません、りょうきんは いくらに なりますか。 | Excuse me, how much will it come to?
+A: いっぱく いちまんえんで ございます。 | It is 10,000 yen per night.
+B: わかりました。それで おねがいします。 | Understood. I'll take that, please.
+= interview | A job interview | Formal speech. Your islands do most of the work here. | 3
+A: では、かんたんに じこしょうかいを おねがいします。 | Then please introduce yourself briefly.
+B: はい。インドから まいりました。いまは ほけんの かいしゃで はたらいて おります。 | Certainly. I'm from India. At present I work at an insurance company.
+A: どうして にほんで はたらきたいんですか。 | Why do you want to work in Japan?
+B: にほんの しごとの しかたを まなびたいと おもったからです。 | Because I wanted to learn the Japanese way of working.
+A: にほんごは どのぐらい べんきょうしましたか。 | How long have you studied Japanese?
+B: いちねんぐらいです。まだ じゅうぶんでは ありませんが、まいにち つづけて おります。 | About a year. It isn't enough yet, but I keep at it every day.
+A: あなたの つよみは なんですか。 | What are your strengths?
+B: さいごまで あきらめない ところだと おもいます。 | I think it's that I don't give up until the end.
+A: わかりました。ほんじつは ありがとうございました。 | I see. Thank you for today.
+B: こちらこそ、ありがとうございました。よろしく おねがいいたします。 | Thank you as well. I look forward to hearing from you.
+= trouble | Something went wrong | Lost property: explain what, where, when. Use "say it another way" when a word is missing. | 3
+B: すみません、でんしゃに かばんを わすれて しまったんですが。 | Excuse me, I've left my bag on the train.
+A: どんな かばんですか。 | What kind of bag?
+B: くろい リュックです。パソコンが はいっています。 | A black rucksack. There's a computer in it.
+A: なんじごろの でんしゃですか。 | What time was the train?
+B: はちじはんごろ、しんじゅくで おりました。 | I got off at Shinjuku at about half past eight.
+A: しょうしょう おまちください。…はい、とどいて いますよ。 | One moment, please. …Yes, it has been handed in.
+B: ほんとうですか。よかった。どこで うけとれますか。 | Really? Thank goodness. Where can I collect it?
+A: この まどぐちで だいじょうぶです。みぶんしょうを おねがいします。 | At this window is fine. Your ID, please.
+B: はい、これです。ほんとうに ありがとうございました。 | Here it is. Thank you so very much.

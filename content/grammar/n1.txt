@@ -1,0 +1,96 @@
+; N1 grammar
+== Timing | 瞬
+# 〜が早いか | V-dictionary + が早いか | no sooner ... than |
+ベルが鳴る{が早いか}、生徒たちは教室を飛び出した。 | No sooner had the bell rung than the pupils dashed out of the classroom. | とあって | ともなく | ながらに
+彼は席に着く{が早いか}、弁当を食べ始めた。 | No sooner had he sat down than he started on his lunch box. | にあって | ともなると | までもなく
+# 〜や否や | V-dictionary + や否や | as soon as; the instant |
+社長が部屋に入る{や否や}、全員が立ち上がった。 | The instant the president entered the room, everyone stood up. | とあれば | ものを | ながらも
+ニュースが伝わる{や否や}、株価が急落した。 | As soon as the news got out, share prices plunged. | とばかりに | までして | にしては
+# 〜なり | V-dictionary + なり | as soon as (then something unexpected) |
+彼は電話を切る{なり}、部屋を飛び出していった。 | The moment he hung up, he rushed out of the room. | ゆえ | ごとく | すら
+子どもは母親の顔を見る{なり}、泣き出した。 | The moment the child saw their mother's face, they burst into tears. | べく | まじき | ずくめ
+# 〜そばから | V-dictionary/た + そばから | as soon as ... (again and again) |
+聞いた{そばから}忘れてしまう。 | I forget things as soon as I hear them. | が最後 | ゆえに | ともなく
+片付ける{そばから}、子どもがおもちゃを散らかす。 | No sooner do I tidy up than the children scatter their toys again. | べからず | とあって | ごとき
+# 〜てからというもの | V-て + からというもの | ever since (a big change) |
+子どもが生まれて{からというもの}、生活がすっかり変わった。 | Ever since our child was born, life has changed completely. | までもなく | ともなく | からある
+たばこをやめて{からというもの}、体の調子がいい。 | Ever since I quit smoking, I've been feeling well. | こそすれ | までして | をもって
+# 〜かたわら | V-dictionary / N の + かたわら | while (also doing, alongside one's main work) |
+彼は会社に勤める{かたわら}、小説を書いている。 | While working at a company, he also writes novels. | が早いか | や否や | なり
+母は子育ての{かたわら}、通信教育で資格を取った。 | Alongside raising children, my mother earned a qualification by distance learning. | ごとく | ゆえに | とあって
+== Conditions and concessions | 仮
+# 〜が最後 / 〜たら最後 | V-た + が最後 | once ... (there is no going back) |
+彼は話し始めた{が最後}、だれにも止められない。 | Once he starts talking, nobody can stop him. | そばから | かたわら | ともなく
+この契約書にサインした{が最後}、取り消しはできない。 | Once you sign this contract, it cannot be cancelled. | ながらに | ごとく | ゆえに
+# 〜とあれば | plain form / N + とあれば | if it is the case that; if it's for |
+子どものため{とあれば}、どんな苦労もいとわない。 | If it's for my children, I'll put up with any hardship. | とばかりに | ときたら | ともなく
+社長の命令{とあれば}、従わないわけにはいかない。 | If it's the president's order, I can't very well disobey. | といえども | ながらに | をよそに
+# 〜ようが / 〜ようと | V-volitional + が/と | no matter what/how; even if |
+だれが何と言{おうと}、私の決心は変わらない。 | No matter what anyone says, my decision won't change. | うなり | ったが最後 | うや否や
+どんなに反対され{ようが}、彼女と結婚するつもりだ。 | However much people oppose it, I intend to marry her. | るなり | たそばから | るかたわら
+# 〜といえども | plain form / N + といえども | even; although (one might expect otherwise) |
+社長{といえども}、会社の規則は守らなければならない。 | Even the president must obey company rules. | ならでは | とあって | ときたら
+子ども{といえども}、うそをついてはいけない。 | Even a child must not tell lies. | とあれば | にあって | ならでは
+# 〜ながらも / 〜ながらに | N / V-ます stem + ながらに | while remaining; as it is |
+彼女は涙{ながらに}、事故の様子を語った。 | In tears, she described what happened in the accident. | ずくめで | まみれに | ごときに
+彼は生まれ{ながらに}、音楽の才能に恵まれていた。 | He was blessed with musical talent from birth. | がてらに | ゆえに | かたがた
+# 〜ものを | plain form + ものを | if only ... (regret or reproach) |
+一言相談してくれれば、手伝った{ものを}。 | If only you'd said a word to me, I would have helped. | ものか | ものの | ものだ
+もっと早く出発すれば間に合った{ものを}。 | If only we had left earlier, we'd have made it. | ものなら | ものでもない | ものがある
+== Situation and standpoint | 立
+# 〜とあって | plain form / N + とあって | because (of this special situation) |
+連休{とあって}、観光地はどこも混雑していた。 | Being a long weekend, the tourist spots were crowded everywhere. | とあれば | といえども | ときたら
+人気歌手が来る{とあって}、会場には大勢のファンが集まった。 | Because a popular singer was coming, crowds of fans gathered at the venue. | ともなく | ものを | が最後
+# 〜にあって | N + にあって | in (a special situation or position) |
+この非常時{にあって}、冷静な判断が求められる。 | In this emergency, calm judgement is called for. | にして | とあって | をもって
+彼は責任者という立場{にあって}、苦しい決断をした。 | Being in the position of the person in charge, he made a painful decision. | ならでは | ともなく | ずくめ
+# 〜ともなると / ともなれば | N + ともなると | when it comes to (a higher level or stage) |
+大学四年生{ともなると}、就職のことを考えなければならない。 | Once you're a fourth-year student, you have to think about finding a job. | ならでは | とあれば | ときたら
+十二月{ともなれば}、町はクリスマス一色になる。 | Come December, the town is all Christmas. | ともなく | にあって | ながらに
+# 〜ならでは | N + ならでは(の) | only possible with; unique to |
+この祭りは、この地方{ならでは}のものだ。 | This festival is unique to this region. | ずくめ | まみれ | ごとき
+手作り{ならでは}の温かみがある。 | It has a warmth that only handmade things have. | がてら | ばかり | ながら
+# 〜をよそに | N + をよそに | ignoring; in defiance of |
+親の心配{をよそに}、彼は危険な仕事を続けている。 | Ignoring his parents' worry, he carries on with his dangerous work. | をもって | をおいて | を皮切りに
+住民の反対{をよそに}、工事は進められた。 | The works went ahead in defiance of residents' opposition. | を限りに | を皮切りに | をかねて
+# 〜ときたら | N + ときたら | when it comes to (criticism, exasperation) |
+うちの息子{ときたら}、ゲームばかりして少しも勉強しない。 | That son of mine! All he does is play games; he never studies. | とあれば | といえども | ともなると
+このパソコン{ときたら}、すぐにフリーズしてしまう。 | This computer, honestly, it freezes at the drop of a hat. | にあって | ならでは | をよそに
+== Limits and extremes | 極
+# 〜極まる / 〜極まりない | な-adj stem + 極まる / 極まりない | extremely; the height of |
+人の話の途中で席を立つとは、失礼{極まりない}。 | Leaving your seat while someone is speaking is the height of rudeness. | ずくめだ | まみれだ | がてらだ
+あの運転は危険{極まる}。 | That driving is dangerous in the extreme. | めく | ぶる | びる
+# 〜の至り | N + の至り | the utmost (formal feeling) |
+このような賞をいただき、光栄{の至り}です。 | I am deeply honoured to receive such a prize. | のかたわら | ずくめ | の一途
+若気{の至り}で、ばかなことをしてしまった。 | In the folly of youth, I did something stupid. | のゆえ | まみれ | ならでは
+# 〜を限りに | N + を限りに | as of; ending with |
+今日{を限りに}、たばこをやめることにした。 | I've decided to quit smoking as of today. | をよそに | をおいて | をめぐって
+本年度{を限りに}、この制度は廃止される。 | This system will be abolished at the end of this fiscal year. | を皮切りに | をものともせず | を通じて
+# 〜をおいて | N + をおいて〜ない | other than; apart from (no one / nothing) |
+この仕事を任せられるのは、彼{をおいて}ほかにいない。 | There is no one other than him we can entrust with this job. | をよそに | を限りに | をもって
+結婚するなら、彼女{をおいて}考えられない。 | If I'm to marry, I can't imagine anyone but her. | を皮切りに | をめぐって | にあって
+# 〜すら | N + すら | even (the minimum is not met) |
+疲れて、立っていること{すら}できない。 | I'm so tired I can't even stay standing. | こそ | ゆえ | のみ
+彼は自分の名前{すら}書けなかった。 | He couldn't even write his own name. | こそ | ずつ | ごと
+# 〜たりとも | (one unit) + たりとも〜ない | not even (one) |
+試合中は一瞬{たりとも}気を抜いてはいけない。 | During the match you must not relax for even a moment. | ならでは | ともなく | ながらに
+一円{たりとも}無駄にはできない。 | We can't waste so much as a single yen. | ずくめ | がてら | かたがた
+== Formal and written style | 文
+# 〜べく | V-dictionary + べく | in order to (formal) | する → すべく.
+彼は留学す{べく}、毎日英語を勉強している。 | In order to study abroad, he studies English every day. | まじく | ごとく | なり
+期日に間に合わせる{べく}、全員で作業を急いだ。 | To meet the deadline, everyone hurried the work along. | が早いか | そばから | が最後
+# 〜まじき | V-dictionary + まじき + N | unbecoming of; must never (formal) | する → すまじき / あるまじき.
+それは教師としてある{まじき}行為だ。 | That is conduct unbecoming of a teacher. | べく | ごとき | ながらの
+人命を軽んじるなど、医者にある{まじき}態度だ。 | Making light of human life is an attitude unworthy of a doctor. | ならではの | ずくめの | すらの
+# 〜ゆえ(に) | plain form / N (の) + ゆえ(に) | because of (written style) |
+貧しさ{ゆえに}、進学をあきらめる子どももいる。 | Some children give up further schooling because of poverty. | すらに | ごとく | べく
+若さ{ゆえ}の失敗は、だれにでもある。 | Everyone makes mistakes on account of youth. | まじき | ずくめ | たりとも
+# 〜ごとく / 〜ごとき | N の / V-plain + ごとく | like; as if (literary) |
+時間は矢の{ごとく}過ぎ去った。 | Time flew by like an arrow. | べく | ゆえに | まじく
+彼は当然の{ごとく}、私の席に座った。 | He sat in my seat as if it were the natural thing to do. | すら | かたわら | たりとも
+# 〜をもって | N + をもって | by means of; as of (formal) |
+本日{をもって}、閉店いたします。 | We are closing for good as of today. | をよそに | をおいて | をめぐって
+書面{をもって}、結果をお知らせします。 | We will inform you of the result in writing. | にあって | とあって | をよそに
+# 〜ずにはおかない / 〜ないではおかない | V-ない stem + ずにはおかない | will definitely; cannot fail to |
+この映画は、見る人を感動させ{ずにはおかない}。 | This film cannot fail to move those who watch it. | るまでもない | るにたえない | るべくもない
+今度会ったら、彼に謝らせ{ずにはおかない}。 | Next time I see him, I'll make him apologise without fail. | るにはあたらない | るまでもない | るにたりない

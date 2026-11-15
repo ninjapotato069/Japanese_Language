@@ -1,0 +1,96 @@
+; N2 grammar
+== Cause, basis, standard | 拠
+# 〜あまり | V-dictionary / N の + あまり | so much ... that (excess of feeling) |
+緊張の{あまり}、何も話せなくなった。 | I was so nervous that I couldn't say anything. | わりに | かわりに | とおり
+合格を知って、うれしさの{あまり}泣いてしまった。 | On learning I'd passed, I was so happy I cried. | くせに | おかげ | ついでに
+# 〜以上(は) | plain form + 以上(は) | now that; since (obligation follows) |
+約束した{以上}、守らなければならない。 | Now that you've promised, you have to keep it. | あまり | ものの | とたん
+学生である{以上は}、勉強を第一にすべきだ。 | Since you are a student, study should come first. | くせには | わりには | あげくは
+# 〜からには | plain form + からには | now that; as long as (determination) |
+試合に出る{からには}、勝ちたい。 | Now that I'm entering the match, I want to win. | ものの | くせに | わりには
+日本に来た{からには}、日本語をしっかり身につけたい。 | Now that I've come to Japan, I want to master Japanese properly. | ばかりに | とたんに | あまりに
+# 〜ばかりに | plain form + ばかりに | simply because (bad result) |
+うそをついた{ばかりに}、友人を失ってしまった。 | Just because I told a lie, I lost a friend. | おかげで | からには | 以上は
+お金がない{ばかりに}、進学をあきらめた。 | Simply for lack of money, I gave up going on to university. | わりに | くせに | からには
+# 〜に基づいて | N + に基づいて | based on |
+この映画は事実{に基づいて}作られた。 | This film was made based on fact. | に際して | にわたって | に先立って
+調査結果{に基づいて}、計画を見直した。 | We reviewed the plan based on the survey results. | にかけて | に際して | に先立って
+# 〜に応じて | N + に応じて | in accordance with; depending on |
+収入{に応じて}、税金の額が決まる。 | The amount of tax is set according to income. | に関して | にわたって | に際して
+お客様のご予算{に応じて}、プランをご用意します。 | We prepare plans to suit the customer's budget. | に先立って | について | にかけて
+== Concession and contrast | 譲
+# 〜ものの | plain form + ものの | although (but the expected result doesn't follow) |
+車の免許は取った{ものの}、ほとんど運転していない。 | I got my driving licence, but I hardly ever drive. | からには | ばかりに | 以上
+買ってはみた{ものの}、使い方がわからない。 | I did buy it, but I don't know how to use it. | あまり | とたん | からこそ
+# 〜にもかかわらず | plain form / N + にもかかわらず | despite; in spite of |
+悪天候{にもかかわらず}、大勢の人が集まった。 | Despite the bad weather, a great many people gathered. | に応じて | に基づいて | に先立って
+努力した{にもかかわらず}、結果は出なかった。 | Despite my efforts, no results came. | からには | ばかりに | おかげで
+# 〜からといって | plain form + からといって | just because ... (it doesn't follow that) | Ends in a negative.
+日本人だ{からといって}、だれでも敬語が正しく使えるわけではない。 | Just because someone is Japanese doesn't mean they can all use honorifics correctly. | からには | からこそ | ばかりに
+安い{からといって}、たくさん買うのはよくない。 | Buying a lot just because it's cheap is not a good idea. | おかげで | 以上は | あまり
+# 〜一方(で) | plain form + 一方(で) | while; on the other hand |
+この仕事は給料がいい{一方で}、休みが少ない。 | This job pays well, but on the other hand there are few days off. | あまり | ばかりに | からには
+都市の人口が増える{一方}、地方の人口は減っている。 | While urban populations grow, rural populations are shrinking. | 以上 | あげく | とたん
+# 〜に反して | N + に反して | contrary to |
+予想{に反して}、試験はやさしかった。 | Contrary to expectations, the exam was easy. | に応じて | に基づいて | に先立って
+親の期待{に反して}、彼は大学をやめてしまった。 | Against his parents' hopes, he dropped out of university. | にわたって | に際して | にかけて
+# 〜ながら(も) | V-ます stem / adj / N + ながら(も) | although; while (contrast) |
+残念{ながら}、今回は参加できません。 | Unfortunately, I can't take part this time. | あまり | ばかり | 以上
+彼は事実を知り{ながらも}、何も言わなかった。 | Although he knew the truth, he said nothing. | からには | つつある | 次第で
+== Time, occasion, range | 際
+# 〜際(に) | V-dictionary/た / N の + 際(に) | when; on the occasion of (formal) |
+お降りの{際は}、足元にご注意ください。 | Please watch your step when getting off. | うちは | あまりは | 以上は
+申し込みの{際に}、身分証明書が必要です。 | ID is required when you apply. | 末に | あげくに | 一方に
+# 〜次第 | V-ます stem + 次第 | as soon as |
+結果がわかり{次第}、ご連絡いたします。 | We will contact you as soon as we know the result. | とたん | 以来 | 最中
+準備ができ{次第}、出発します。 | We'll leave as soon as preparations are complete. | あげく | あまり | うえ
+# 〜て以来 | V-て + 以来 | ever since |
+日本に来て{以来}、一度も国へ帰っていない。 | I haven't been home once since coming to Japan. | 次第 | 以上 | 最中
+卒業して{以来}、彼とは会っていない。 | I haven't seen him since graduation. | からには | とたん | うえで
+# 〜にわたって | N + にわたって | over; throughout (a span) |
+会議は三日間{にわたって}行われた。 | The conference was held over three days. | に応じて | に基づいて | に際して
+台風の影響で、広い地域{にわたって}停電が起きた。 | The typhoon caused power cuts across a wide area. | に反して | にこたえて | に先立って
+# 〜に先立って | V-dictionary / N + に先立って | prior to; ahead of |
+試合{に先立って}、開会式が行われた。 | An opening ceremony was held ahead of the match. | にわたって | に応じて | に反して
+工事を始める{に先立って}、近所の人に説明をした。 | Before starting the works, we explained them to the neighbours. | にしたがって | にともなって | につれて
+# 〜つつある | V-ます stem + つつある | be in the process of (changing) |
+世界の人口は増え{つつある}。 | The world's population is on the increase. | 次第だ | あげくだ | かねる
+景気は少しずつ回復し{つつある}。 | The economy is gradually recovering. | かねない | っこない | ようがない
+== Result and outcome | 果
+# 〜あげく | V-た / N の + あげく | after (a long process), in the end (bad result) |
+さんざん迷った{あげく}、何も買わなかった。 | After agonising for ages, I ended up buying nothing. | 次第 | 際 | 以上
+長い議論の{あげく}、結論は出なかった。 | After a long debate, no conclusion was reached. | あまり | かわり | とおり
+# 〜末(に) | V-た / N の + 末(に) | after; at the end of (a long effort) |
+よく考えた{末に}、留学することに決めた。 | After thinking it over carefully, I decided to study abroad. | 際に | うちに | とたんに
+三時間の話し合いの{末}、やっと意見がまとまった。 | After three hours of talks, we finally reached agreement. | 最中 | 一方 | 以上
+# 〜かねない | V-ます stem + かねない | might well; could (bad outcome) |
+そんなにスピードを出したら、事故を起こし{かねない}。 | If you drive that fast, you could well cause an accident. | かねる | がたい | つつある
+このまま雨が降らなければ、水不足になり{かねない}。 | If it keeps not raining, there could well be a water shortage. | ようがない | っこない | きれない
+# 〜かねる | V-ます stem + かねる | cannot (polite refusal) |
+申し訳ございませんが、その質問にはお答えし{かねます}。 | I'm terribly sorry, but I am unable to answer that question. | かねません | つつあります | がちです
+残念ですが、ご希望には応じ{かねます}。 | I regret that we cannot meet your request. | かねません | きれます | 得ます
+# 〜ざるを得ない | V-ない stem + ざるを得ない | have no choice but to | する → せざるを得ない.
+台風が近づいているので、旅行は中止せ{ざるを得ない}。 | With a typhoon approaching, we have no choice but to cancel the trip. | ないではない | ずにはいない | ねばならなくない
+部長に頼まれたら、引き受け{ざるを得ない}。 | If the department head asks, I can't help but accept. | かねない | ようがない | っこない
+# 〜ようがない | V-ます stem + ようがない | there is no way to |
+連絡先がわからないので、知らせ{ようがない}。 | I don't know their contact details, so there's no way to let them know. | がちだ | つつある | 次第だ
+こんなにこわれていては、直し{ようがない}。 | With it this badly broken, there's no way to fix it. | かねない | がちだ | 次第だ
+== Emphasis and judgement | 強
+# 〜に違いない | plain form + に違いない | must be; no doubt |
+部屋の電気が消えているから、彼はもう寝た{に違いない}。 | The room light is off, so he must already be asleep. | わけがない | ようがない | ことはない
+こんなに並んでいるのだから、おいしい{に違いない}。 | With a queue like this, it must be delicious. | ものではない | わけにはいかない | かねない
+# 〜にすぎない | plain form / N + にすぎない | be no more than; merely |
+これは私個人の意見{にすぎません}。 | This is no more than my personal opinion. | にかねません | に次第です | に限りません
+彼の話は言い訳{にすぎない}。 | What he says is nothing more than an excuse. | にかねない | に次第だ | につつある
+# 〜にほかならない | N + にほかならない | be nothing other than (strong assertion) |
+彼が成功したのは、努力の結果{にほかならない}。 | His success is nothing other than the result of hard work. | にかねない | に次第だ | にあたらない
+親が子をしかるのは、愛情があるから{にほかならない}。 | Parents scold their children precisely because they love them. | にかねない | に次第だ | に及ばない
+# 〜どころか | plain form / N + どころか | far from; let alone |
+休む{どころか}、食事をする時間もない。 | Far from resting, I don't even have time to eat. | ばかりに | からには | ものの
+薬を飲んだのに、よくなる{どころか}、かえって悪くなった。 | I took the medicine, but far from improving, it got worse. | あまり | とたん | 以上
+# 〜ないことには | V-ない + ことには | unless; without doing (cannot) | Ends in a negative.
+実際に会ってみ{ないことには}、どんな人かわからない。 | Unless you actually meet them, you can't tell what they're like. | ないからには | ないものの | ないあまり
+お金が{ないことには}、何も始められない。 | Without money, nothing can get started. | ないどころか | ないわりに | ないくせに
+# 〜っこない | V-ます stem + っこない | there's no chance that (casual) |
+こんな難しい本、子どもに読め{っこない}よ。 | A child hasn't a chance of reading such a difficult book. | かねない | つつある | がたい
+一日で全部覚えるなんて、でき{っこない}。 | Memorising it all in one day? Not a chance. | つつある | 次第だ | がたい

@@ -1,0 +1,34 @@
+; N4 exam bank. Sections: [kumi] [tanbun] [chubun] [sokuji] [point]
+[kumi]
+; before | piece1 | piece2 | piece3★ | piece4 | after | English   (pieces are in the correct order; ★ is the third)
+私は | 母に | 買い物を | 手伝わ | されました | 。 | I was made to help with the shopping by my mother.
+この本は | 読めば | 読む | ほど | おもしろく | なります。 | The more you read this book, the more interesting it gets.
+先生に | 教えて | いただいた | とおりに | やって | みました。 | I tried doing it the way my teacher taught me.
+あしたは | 雨が | 降る | かも | しれない | から、かさを持っていきます。 | It might rain tomorrow, so I'll take an umbrella.
+日本に | 来てから、 | 日本語が | 話せる | ように | なりました。 | Since coming to Japan, I've become able to speak Japanese.
+弟は | テレビを | 見て | ばかり | いて、 | ぜんぜん勉強しません。 | My little brother does nothing but watch TV and never studies.
+電気を | つけた | まま | 寝て | しまい | ました。 | I fell asleep with the light on.
+友だちが | 駅まで | 車で | 送って | くれた | ので、助かりました。 | My friend drove me to the station, which was a great help.
+[tanbun]
+田中さんへ／あしたの会議は、3時から4時に変わりました。場所は同じ2階の会議室です。資料は私がコピーして持っていきますので、田中さんはパソコンだけ持ってきてください。／山下 || 田中さんは、あした何を持っていきますか。 | パソコン | 資料 | パソコンと資料 | 何も持っていかない | Yamashita brings the copies; Tanaka only needs the computer.
+このプールは、午前9時から午後8時までです。月曜日は休みですが、月曜日が祝日のときは開いていて、次の日が休みになります。小学生だけで入ることはできません。かならず大人といっしょに来てください。 || このプールについて、正しいものはどれですか。 | 月曜日が祝日のときは、火曜日が休みになる。 | 月曜日はいつも休みだ。 | 小学生は入ることができない。 | 午後9時まで泳ぐことができる。 | When Monday is a holiday the pool opens and closes the next day instead.
+私は先月、自転車を買いました。それまではバスで会社に行っていましたが、今は毎日自転車で行っています。バスより10分ぐらい長くかかりますが、体の調子がよくなったし、お金もかからないので、買ってよかったと思います。 || 「私」が自転車で会社に行くようになって、どうなりましたか。 | 体の調子がよくなった。 | 会社に早く着くようになった。 | お金がかかるようになった。 | バスに乗りたくなった。 | Cycling takes longer but the writer feels healthier and saves money.
+[chubun]
+私の趣味は料理です。子どものころ、母が料理を作るのを見るのが好きでした。でも、自分で作ったことはありませんでした。／大学に入って一人で住むようになってから、料理を始めました。はじめは、本を見ながら作っても、あまりおいしくできませんでした。それで、母に電話をして、作り方を教えてもらいました。母は「何回も作れば、上手になるよ」と言いました。／今では、友だちを家に呼んで、いっしょに食べることもあります。友だちが「おいしい」と言ってくれると、とてもうれしいです。 || 「私」はいつ料理を始めましたか。 | 一人で住むようになってから | 子どものころ | 母に本をもらってから | 友だちを家に呼んでから | The writer started cooking after beginning to live alone at university. || 料理がおいしくできなかったとき、「私」はどうしましたか。 | 母に作り方を教えてもらった。 | 料理の本を買った。 | 友だちに作ってもらった。 | 料理をやめてしまった。 | The writer phoned their mother and asked how to cook.
+先週の日曜日、家族で山に行きました。朝は晴れていたので、かさを持たないで出かけました。山の上で昼ご飯を食べていると、急に空が暗くなって、雨が降り始めました。／近くに小さい店があったので、そこで雨が止むのを待つことにしました。店のおばあさんは、あたたかいお茶を出してくれました。そして、「山の天気は変わりやすいから、いつもかさを持ってきたほうがいいですよ」と教えてくれました。／一時間ぐらいで雨は止みました。帰るとき、きれいなにじが見えました。 || 家族は、どうしてかさを持っていきませんでしたか。 | 朝は天気がよかったから | かさがこわれていたから | 山の上に店があるから | 荷物が多かったから | It was sunny in the morning, so they left without umbrellas. || 店のおばあさんは、何と言いましたか。 | 山に来るときは、かさを持ってきたほうがいい。 | 雨の日は、山に来ないほうがいい。 | お茶を飲んだら、すぐ帰ったほうがいい。 | にじが見えるまで、待ったほうがいい。 | She advised always bringing an umbrella because mountain weather changes easily.
+[sokuji]
+; speaker | line | best reply | wrong | wrong | English note
+女 | すみません、この席、空いていますか。 | ええ、どうぞ。 | はい、空きました。 | いいえ、座ります。 | "Is this seat free?" "Yes, go ahead."
+男 | 荷物、重そうですね。持ちましょうか。 | すみません、お願いします。 | はい、持ちましょう。 | いいえ、重いです。 | Accepting an offer of help.
+女 | あしたの会議、何時からでしたっけ。 | 10時からですよ。 | 10時までしました。 | はい、会議でした。 | っけ checks something you half remember.
+男 | 先週貸した本、もう読みましたか。 | すみません、まだなんです。 | はい、貸しました。 | いいえ、読んでください。 | "Not yet, sorry."
+女 | 日本語がお上手ですね。 | いいえ、まだまだです。 | はい、上手にします。 | どういたしまして。 | The modest reply to a compliment.
+男 | ちょっと寒くないですか。 | じゃ、窓を閉めましょうか。 | ええ、窓を開けましょう。 | いいえ、夏です。 | Offering to close the window.
+女 | 田中さん、今日は早く帰ってもいいですか。 | ええ、かまいませんよ。 | はい、早く帰りました。 | いいえ、帰りましょう。 | Giving permission.
+男 | コーヒーと紅茶と、どちらがいいですか。 | じゃ、紅茶をお願いします。 | はい、いいです。 | どちらもあります。 | Choosing one of two.
+[point]
+; setting | question | lines (speaker:text ／ ...) | answer | wrong | wrong | wrong | English note
+男の人と女の人が話しています。 | 女の人は、どうして映画に行きませんか。 | 男:あしたの映画、いっしょに行きませんか。／女:行きたいんですが、あさって試験があるので、あしたは勉強しなければならないんです。／男:そうですか。じゃ、試験が終わってからにしましょう。 | 試験の勉強をするから | 映画が好きじゃないから | あさって映画に行くから | 仕事があるから | She has an exam the day after tomorrow and must study.
+店で、男の人と店の人が話しています。 | 男の人は、どのかばんを買いますか。 | 男:この黒いかばん、いいですね。いくらですか。／女:8,000円です。こちらの茶色いのは5,000円ですよ。／男:茶色は安いですが、小さいですね。パソコンが入らないと困るので、こちらにします。 | 黒くて大きいかばん | 茶色くて小さいかばん | 黒くて小さいかばん | 茶色くて大きいかばん | The brown one is too small for his computer, so he takes the black one.
+女の人と男の人が話しています。 | 二人は、何時に会いますか。 | 女:あした、何時に駅で会いましょうか。／男:コンサートは6時からですよね。5時半でどうですか。／女:その前に何か食べませんか。／男:じゃ、30分早くしましょう。 | 5時 | 5時半 | 6時 | 6時半 | Half an hour earlier than 5:30 so that they can eat first.
+会社で、女の人と男の人が話しています。 | 男の人は、これから何をしますか。 | 女:山田さん、この資料、10部コピーしてくれませんか。／男:はい。でも、今コピー機がこわれているんです。／女:じゃ、先に会議室のいすを並べておいてください。コピーは後でいいです。／男:わかりました。 | 会議室のいすを並べる | 資料をコピーする | コピー機を直す | 資料を作る | The copier is broken, so he sets out the chairs first.
