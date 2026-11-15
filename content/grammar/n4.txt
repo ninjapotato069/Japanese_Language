@@ -1,0 +1,115 @@
+; N4 grammar. Lines:  "== unit title | mark"   "# pattern | formation | meaning | tip"   "sentence with {answer} | English | wrong | wrong | wrong"
+== Can, want to, intend to | 可
+# 〜ことができる | V-dictionary + ことができる | can do; it is possible to do | More formal than the potential form.
+このカードで買い物をする{ことができます}。 | You can shop with this card. | ものができます | ことをします | のがあります
+ここでは写真をとる{ことが}できません。 | You cannot take photos here. | ものが | ことに | のを
+# Potential form | group 1: u→e + る (書く→書ける) · group 2: られる · する→できる | can do | The object usually takes が.
+すみません、明日は用事があって{行けない}んです。 | Sorry, I have something on tomorrow and can't go. | 行かれて | 行こう | 行ける
+この漢字は難しくて、私には{読めません}。 | This kanji is hard; I can't read it. | 読みましょう | 読まれます | 読ませます
+# 〜(よ)うと思う | V-volitional + と思う | I think I will; I intend to | 〜と思っている = have been planning for a while.
+来年、日本へ{行こう}と思っています。 | I'm thinking of going to Japan next year. | 行き | 行って | 行け
+今晩は早く{寝よう}と思います。 | I think I'll go to bed early tonight. | 寝ろ | 寝て | 寝
+# 〜つもりだ | V-dictionary / V-ない + つもりだ | intend to; plan to | A firmer plan than 〜と思う.
+夏休みは国へ{帰る}つもりです。 | I plan to go back to my country in the summer holidays. | 帰ろう | 帰って | 帰り
+もう、たばこは{吸わない}つもりです。 | I intend not to smoke any more. | 吸わなくて | 吸いません | 吸おう
+# 〜たがる | V-ます stem + たがる | (someone else) wants to | Use 〜たい for yourself, 〜たがる for other people.
+弟は新しいゲームを{買いたがって}います。 | My little brother wants to buy a new game. | 買いたくて | 買いたいで | 買ってほしく
+子どもは外で{遊びたがります}。 | Children want to play outside. | 遊びたいます | 遊んでほしいです | 遊ぼうとします
+# 〜てみる | V-て + みる | try doing (to see what it is like) |
+この服、{着てみても}いいですか。 | May I try this on? | 着ておいても | 着てしまっても | 着てあっても
+おいしいかどうか、ちょっと{食べてみます}。 | I'll taste it to see whether it's good. | 食べておきます | 食べてあります | 食べてきます
+== Giving, receiving, favours | 授
+# 〜てあげる | V-て + あげる | do something for someone | Avoid with superiors: it can sound patronising.
+友だちが病気だったので、私が料理を{作ってあげました}。 | My friend was ill, so I cooked for them. | 作ってくれました | 作ってもらいました | 作られました
+私は毎晩、妹の宿題を{見てあげます}。 | Every evening I look over my little sister's homework. | 見てくれます | 見てもらいます | 見えます
+# 〜てくれる | V-て + くれる | someone does something for me | The giver is the subject (が).
+田中さんが私を駅まで{送ってくれました}。 | Mr Tanaka kindly took me to the station. | 送ってあげました | 送ってもらいました | 送ってやりました
+母が私にセーターを{編んでくれました}。 | My mother knitted me a sweater. | 編んであげました | 編んでいただきました | 編んでさしあげました
+# 〜てもらう | (person に) V-て + もらう | have someone do something for me | The receiver is the subject; the doer takes に.
+私は先生に作文を{直してもらいました}。 | I had my teacher correct my essay. | 直してくれました | 直してあげました | 直してやりました
+友だち{に}引っこしを手伝ってもらいました。 | I got my friend to help me move. | が | を | へ
+# 〜ていただけませんか | V-て + いただけませんか | could you please (very polite request) |
+すみませんが、もう一度{説明していただけませんか}。 | Excuse me, could you explain once more? | 説明してあげませんか | 説明させませんか | 説明してやりませんか
+この書類の書き方を{教えていただけませんか}。 | Could you tell me how to fill in this form? | 教えてさしあげませんか | 教わってくださいませんか | 教えてやりませんか
+# くれる・あげる・もらう | N を あげる / くれる / もらう | give (out) / give (to me) / receive |
+たんじょう日に、父{が}時計をくれました。 | My father gave me a watch for my birthday. | に | を | で
+私は友だち{に}花をもらいました。 | I received flowers from a friend. | が | を | で
+# 〜てほしい | (person に) V-て + ほしい | I want someone to do |
+あなたにも、ぜひこの本を{読んでほしい}です。 | I really want you to read this book too. | 読みたい | 読みたがる | 読んであげたい
+うるさいので、静かに{して}ほしいです。 | It's noisy, so I want you to be quiet. | する | しよう | したい
+== Conditions | 条
+# 〜たら | V/A-た + ら | if; when (after something happens) | The most general conditional.
+駅に{着いたら}、電話してください。 | Please call me when you get to the station. | 着くと | 着けば | 着くなら
+雨が{降ったら}、試合は中止です。 | If it rains, the match is off. | 降って | 降るまで | 降りながら
+# 〜ば | V-ば · い-adj: ければ | if (condition for the result) |
+この薬を{飲めば}、すぐ治りますよ。 | If you take this medicine, you'll get better soon. | 飲んでも | 飲むのに | 飲むまで
+{安ければ}買いますが、高ければ買いません。 | If it's cheap I'll buy it; if it's expensive I won't. | 安くても | 安いのに | 安いまま
+# 〜と | V-dictionary + と | whenever; when (natural or automatic result) | Not used for requests or intentions.
+このボタンを{押すと}、おつりが出ます。 | When you press this button, the change comes out. | 押しても | 押すのに | 押すまで
+春に{なると}、桜がさきます。 | When spring comes, the cherry blossoms bloom. | なっても | なるのに | なるまで
+# 〜なら | plain form / N + なら | if it is the case that; as for | Used to give advice about what was just mentioned.
+日本料理を食べる{なら}、あの店がいいですよ。 | If you're going to eat Japanese food, that restaurant is good. | と | たら | ば
+A「温泉に行きたいんです。」B「温泉{なら}、箱根がいいですよ。」 | "I want to go to a hot spring." "For hot springs, Hakone is good." | でも | だけ | ので
+# 〜ても | V-て + も · い-adj: くても | even if; even though |
+雨が{降っても}、出かけます。 | Even if it rains, I'll go out. | 降るので | 降るから | 降るように
+いくら{考えても}、答えがわかりません。 | However much I think, I don't know the answer. | 考えたら | 考えると | 考えれば
+# 〜のに | plain form + のに | although; even though (surprise or complaint) |
+約束をした{のに}、彼は来ませんでした。 | Even though he promised, he didn't come. | ので | から | ために
+三時間も待った{のに}、会えませんでした。 | I waited three whole hours, yet I couldn't meet them. | ので | ように | し
+== Passive, causative, respect | 受
+# Passive 〜(ら)れる | group 1: a-sound + れる · group 2: られる · する→される | be done (by に) | Often expresses being troubled by something.
+電車の中で、だれかに足を{ふまれました}。 | Someone stepped on my foot on the train. | ふみました | ふませました | ふめました
+私は先生に{ほめられました}。 | I was praised by my teacher. | ほめました | ほめさせました | ほめてあげました
+# Causative 〜(さ)せる | group 1: a-sound + せる · group 2: させる · する→させる | make or let someone do |
+母は弟に「部屋をそうじしなさい」と言って、{そうじさせました}。 | Mother told my little brother to clean his room and made him do it. | そうじされていました | そうじできていました | そうじしてありました
+先生は学生に本を{読ませました}。 | The teacher had the students read a book. | 読まれました | 読めました | 読みたがりました
+# 〜(さ)せてください | V-causative て + ください | please let me do |
+すみません、今日は早く{帰らせて}ください。 | Excuse me, please let me go home early today. | 帰られて | 帰らされて | 帰れて
+その仕事は、ぜひ私に{やらせて}ください。 | Please let me do that job. | やられて | やらされて | やれて
+# Honorific お〜になる | お + V-ます stem + になる | (respected person) does |
+先生はもう{お帰りになりました}。 | The teacher has already gone home. | お帰りしました | 帰らせました | お帰りいたしました
+社長は何時に{お出かけになります}か。 | What time is the president going out? | お出かけします | 出かけさせます | お出かけいたします
+# Humble お〜する | お + V-ます stem + する | I (humbly) do for you |
+重そうですね。{お持ちします}。 | That looks heavy. Let me carry it for you. | お持ちになります | 持たれます | お持ちください
+後で、こちらから{お電話します}。 | I'll call you later. | お電話になります | 電話されます | お電話ください
+# Special honorifics | いらっしゃる (いる/行く/来る) · めしあがる (食べる) · おっしゃる (言う) · ごらんになる (見る) | respectful verbs |
+どうぞ、たくさん{めしあがって}ください。 | Please, eat plenty. | いただいて | まいって | はいけんして
+先生は今、研究室に{いらっしゃいます}。 | The professor is in the lab now. | まいります | おります | うかがいます
+== States and results | 状
+# 〜てしまう | V-て + しまう (casual: ちゃう) | finish completely; do by mistake (regret) |
+電車にかさを{忘れてしまいました}。 | I left my umbrella on the train. | 忘れておきました | 忘れてみました | 忘れてありました
+この本は、もう全部{読んでしまいました}。 | I've already finished reading this whole book. | 読んでおきました | 読んでありました | 読んでみました
+# 〜ておく | V-て + おく | do in advance; leave as is |
+友だちが来る前に、部屋を{そうじしておきます}。 | I'll clean the room before my friend comes. | そうじしてみます | そうじしていきます | そうじしてくれます
+旅行の前に、ホテルを{予約しておきました}。 | I booked the hotel ahead of the trip. | 予約してあげました | 予約していきました | 予約したがりました
+# 〜てある | (thing が) transitive V-て + ある | has been done (and remains so) | Someone did it on purpose.
+かべに地図が{はってあります}。 | A map has been put up on the wall. | はっています | はっておきます | はってしまいます
+部屋の電気が{つけてあります}。 | The room light has been left on. | ついてあります | つけています | つけておきます
+# 〜たまま | V-た + まま | with ... still (left unchanged) |
+電気を{つけたまま}、寝てしまいました。 | I fell asleep with the light on. | つけながら | つけるまま | つけてから
+くつを{はいた}まま、家に入らないでください。 | Please don't come into the house with your shoes on. | はく | はいて | はき
+# 〜ようになる | V-dictionary / potential + ようになる | come to (be able to) do; a change |
+日本語が少し{話せるように}なりました。 | I've become able to speak a little Japanese. | 話せることに | 話せるために | 話せるそうに
+最近、朝早く{起きるように}なりました。 | Recently I've started getting up early. | 起きることが | 起きるのに | 起きるままに
+# 〜ことにする / ことになる | V-dictionary + ことにする / ことになる | decide to / it has been decided that | する = my decision; なる = decided by others.
+いろいろ考えて、来月からジムに通う{ことにしました}。 | After thinking it over, I've decided to go to the gym from next month. | ことになりました | ようにしました | ものにしました
+会社の命令で、来月、大阪へ転勤する{ことになりました}。 | It has been decided that I'm transferring to Osaka next month. | ことにしました | ようになりました | ものになりました
+== Hearsay, guesses, reasons | 推
+# 〜そうだ (looks) | V-ます stem / adj stem + そうだ | looks like; seems about to | いい→よさそう.
+このケーキは{おいしそう}ですね。 | This cake looks delicious. | おいしいそう | おいしよう | おいしいらしく
+空が暗いですね。雨が{降りそう}です。 | The sky is dark. It looks like rain. | 降るそう | 降ったそう | 降ろう
+# 〜そうだ (hearsay) | plain form + そうだ | I hear that |
+天気予報によると、明日は雪が{降るそうです}。 | According to the forecast, it will snow tomorrow. | 降ったままです | 降りたいです | 降るつもりです
+田中さんは来月結婚する{そうです}。 | I hear Tanaka-san is getting married next month. | ままです | ばかりです | ほうです
+# 〜ようだ / みたいだ | plain form + ようだ / みたいだ | it seems (from what I observe) | みたいだ is casual.
+だれもいない{ようです}ね。電気が消えています。 | It seems nobody is in. The lights are off. | ためです | つもりです | ほうです
+かぜをひいた{みたい}です。のどが痛いんです。 | I seem to have caught a cold. My throat hurts. | ため | つもり | まま
+# 〜はずだ | plain form + はずだ | should be; I expect that (with good reason) |
+彼は十年も日本に住んでいたから、日本語が上手な{はず}です。 | He lived in Japan for ten years, so his Japanese should be good. | つもり | まま | ため
+荷物は昨日送ったので、今日{着くはず}です。 | I sent the parcel yesterday, so it should arrive today. | 着くつもり | 着くまま | 着きたい
+# 〜かもしれない | plain form + かもしれない | might; maybe |
+明日は雨が降る{かもしれません}。 | It might rain tomorrow. | ことにします | ことができます | つもりです
+道がこんでいるから、少し遅れる{かもしれません}。 | The roads are crowded, so I might be a little late. | ことができます | ほうがいいです | ようにします
+# 〜し、〜し | plain form + し | and what's more (listing reasons) |
+この店は安い{し}、おいしいし、いつもこんでいます。 | This place is cheap and tasty, so it's always crowded. | と | か | が
+頭も痛い{し}、熱もあるし、今日は休みます。 | I have a headache and a fever too, so I'll take today off. | で | に | のに

@@ -1,0 +1,115 @@
+; N3 grammar
+== Time and sequence | 時
+# 〜たばかり | V-た + ばかり | have just done |
+日本に{来たばかり}で、まだ何もわかりません。 | I've only just come to Japan and don't know anything yet. | 来るばかり | 来たところに | 来てばかり
+さっき{食べたばかり}なのに、もうおなかがすいた。 | I only just ate, yet I'm already hungry. | 食べるばかり | 食べたあいだ | 食べてから
+# 〜ところだ | V-dictionary / ている / た + ところだ | be about to / in the middle of / have just |
+今、ちょうど出かける{ところ}です。 | I'm just about to go out right now. | ばかり | ままで | あいだ
+今、レポートを書いている{ところ}なので、後で電話します。 | I'm in the middle of writing a report, so I'll call later. | とおり | うち | ほど
+# 〜うちに | V-dictionary/ない · adj · N の + うちに | while (before the situation changes) |
+スープが冷めない{うちに}、どうぞ。 | Please have the soup before it gets cold. | あいだは | までに | ところに
+若い{うちに}、いろいろな国へ行きたい。 | I want to visit many countries while I'm young. | あとで | ばかりに | とおりに
+# 〜間に / 〜間 | plain form / N の + 間(に) | while; during | 間に = at some point during; 間 = all the time during.
+留守の{間に}、だれか来たようだ。 | It seems someone came while I was out. | 間 | うちで | 最中
+子どもが寝ている{間に}、買い物に行ってきた。 | I went shopping while the child was asleep. | 途中に | までに | 前で
+# 〜たとたん(に) | V-た + とたん(に) | the very moment; as soon as (something unexpected) |
+ドアを{開けたとたん}、猫が飛び出してきた。 | The moment I opened the door, the cat rushed out. | 開けるとたん | 開けたうちに | 開けている間
+立ち上がった{とたんに}、目まいがした。 | The moment I stood up, I felt dizzy. | ばかりに | うちに | ところを
+# 〜最中に | V-ている / N の + 最中に | right in the middle of |
+会議の{最中に}、携帯電話が鳴った。 | My mobile rang right in the middle of the meeting. | うちに | とたんに | たびに
+食事をしている{最中に}、地震が起きた。 | An earthquake struck in the middle of the meal. | とおりに | ばかりに | かわりに
+== Reasons and purposes | 因
+# 〜おかげで | plain form / N の + おかげで | thanks to (good result) |
+先生の{おかげで}、試験に合格できました。 | Thanks to my teacher, I passed the exam. | せいで | ために | くせに
+友だちが手伝ってくれた{おかげで}、早く終わった。 | Thanks to my friend's help, it finished early. | せいで | わりに | ばかりで
+# 〜せいで | plain form / N の + せいで | because of (bad result, blame) |
+雨の{せいで}、試合が中止になった。 | Because of the rain, the match was called off. | おかげで | くせに | とおりに
+寝坊した{せいで}、電車に乗り遅れた。 | Because I overslept, I missed the train. | おかげで | ように | わりに
+# 〜ために | V-dictionary / N の + ために | in order to; for the sake of |
+家を買う{ために}、貯金しています。 | I'm saving money in order to buy a house. | ように | せいで | とおりに
+健康の{ために}、毎朝走っています。 | I run every morning for my health. | せいで | ように | くせに
+# 〜ように | V-dictionary (potential/non-volitional) / V-ない + ように | so that |
+忘れない{ように}、メモしておきます。 | I'll make a note so that I don't forget. | ことに | せいで | ところに
+後ろの人にも聞こえる{ように}、大きい声で話した。 | I spoke loudly so that the people at the back could hear too. | ために | かわりに | おかげで
+# 〜ものだから | plain form + ものだから | because (giving an excuse) |
+電車が遅れた{ものだから}、遅刻してしまいました。 | The train was late, you see, so I ended up being late. | ものなら | ものの | ものを
+あまりに安かった{ものですから}、つい買いすぎました。 | It was so cheap that I ended up buying too much. | ものでしたら | ことですから | わけですが
+# 〜によって | N + によって | by (agent/means); depending on; due to |
+この寺は八世紀に聖武天皇{によって}建てられた。 | This temple was built by Emperor Shomu in the eighth century. | にとって | について | に対して
+国{によって}、習慣が違います。 | Customs differ depending on the country. | にとって | について | として
+== Contrast and concession | 逆
+# 〜わりに(は) | plain form / N の + わりに | considering; for (unexpectedly) |
+この店は値段の{わりに}、量が多い。 | For the price, this restaurant's portions are large. | せいで | ために | とおりに
+彼は勉強しなかった{わりには}、成績がよかった。 | Considering he didn't study, his marks were good. | おかげで | ためには | ように
+# 〜くせに | plain form / N の + くせに | even though (criticism) |
+知っている{くせに}、教えてくれない。 | Even though he knows, he won't tell me. | おかげで | ために | ように
+子どもの{くせに}、生意気なことを言うな。 | Don't talk so cheekily; you're only a child. | おかげで | ために | かわりで
+# 〜としても | plain form + としても | even supposing that |
+今から走った{としても}、間に合わないだろう。 | Even if we ran now, we probably wouldn't make it. | とすれば | としたら | というと
+たとえ高い{としても}、買うつもりです。 | Even if it's expensive, I intend to buy it. | とすると | としたら | といえば
+# 〜ても / 〜たって | たとえ / いくら 〜ても | no matter how; even if | たって is the spoken form.
+いくら{呼んでも}、返事がない。 | No matter how much I call, there's no answer. | 呼んだら | 呼ぶなら | 呼べば
+たとえ雨が{降っても}、試合は行います。 | Even if it rains, the match will be held. | 降ったら | 降るなら | 降れば
+# 〜に対して | N + に対して | towards; in contrast to |
+お客様{に対して}、失礼なことを言ってはいけない。 | You must not say rude things to customers. | にとって | によって | について
+兄がおとなしいの{に対して}、弟はよくしゃべる。 | In contrast to the quiet older brother, the younger one talks a lot. | にとって | によって | について
+# 〜代わりに | V-dictionary / N の + 代わりに | instead of; in exchange for |
+部長の{代わりに}、私が会議に出席した。 | I attended the meeting in place of the department head. | おかげに | せいに | とおりに
+映画を見に行く{代わりに}、家でDVDを見た。 | Instead of going to the cinema, I watched a DVD at home. | とおりに | うちに | たびに
+== Viewpoint and topic | 題
+# 〜にとって | N + にとって | for; from the standpoint of |
+私{にとって}、家族がいちばん大切です。 | For me, family is the most important thing. | に対して | によって | について
+子ども{にとって}、遊びは大切な勉強だ。 | For children, play is an important kind of learning. | に対して | によると | に関して
+# 〜について | N + について | about; concerning |
+日本の歴史{について}調べています。 | I'm researching Japanese history. | にとって | によって | に対して
+この問題{について}、どう思いますか。 | What do you think about this problem? | にとって | によって | として
+# 〜として | N + として | as; in the role of |
+彼は留学生{として}日本に来た。 | He came to Japan as an exchange student. | にとって | について | によって
+趣味{として}、絵をかいています。 | I paint as a hobby. | にとって | に対して | によって
+# 〜によると | N + によると | according to | Usually ends with そうだ / らしい.
+天気予報{によると}、明日は晴れるそうだ。 | According to the forecast, it'll be fine tomorrow. | にとって | に対して | として
+新聞{によると}、昨日大きな事故があったらしい。 | According to the paper, there was a big accident yesterday. | によって | にとって | について
+# 〜といえば | N + といえば | speaking of |
+日本の花{といえば}、やはり桜でしょう。 | Speaking of Japanese flowers, it has to be the cherry blossom. | としても | によると | にとって
+京都{といえば}、お寺を思い出します。 | Speaking of Kyoto, I think of temples. | にしては | として | に対して
+# 〜というのは | N + というのは | what is called ... is; means | Used to define a word.
+「デジカメ」{というのは}、デジタルカメラのことです。 | "Dejikame" means a digital camera. | といえば | としては | によると
+「禁煙」{というのは}、たばこを吸ってはいけないという意味だ。 | "Kin'en" means that you must not smoke. | としても | にとっては | については
+== Degree and extent | 程
+# 〜ほど | plain form / N + ほど | to the extent that; so ... that |
+足が痛くて、歩けない{ほど}だ。 | My legs hurt so much that I can hardly walk. | ばかり | だけ | しか
+今年の冬は去年{ほど}寒くない。 | This winter isn't as cold as last year. | しか | だけ | まで
+# 〜ば〜ほど | V-ば + V-dictionary + ほど | the more ... the more |
+日本語は、勉強すれば{するほど}面白くなる。 | The more you study Japanese, the more interesting it gets. | するだけ | するまで | するばかり
+給料は、高ければ{高いほど}いい。 | The higher the salary, the better. | 高いだけ | 高いより | 高いまで
+# 〜ばかり | N / V-て + ばかり | nothing but; always doing |
+弟は遊んで{ばかり}いて、ぜんぜん勉強しない。 | My little brother does nothing but play and never studies. | だけ | しか | ほど
+甘いもの{ばかり}食べていると、太りますよ。 | If you eat nothing but sweet things, you'll put on weight. | しか | ほど | まで
+# 〜さえ〜ば | N さえ + V-ば | if only ...; as long as |
+お金{さえ}あれば、何でも買える。 | If only I had money, I could buy anything. | まで | こそ | ほど
+薬を飲み{さえ}すれば、すぐ治ります。 | As long as you take the medicine, you'll get better soon. | ほど | しか | だけに
+# 〜くらい / ぐらい | plain form / N + くらい | to the extent that; at least (something minor) |
+泣きたい{くらい}うれしかった。 | I was so happy I could have cried. | しか | さえ | こそ
+自分の部屋{ぐらい}、自分でそうじしなさい。 | At least clean your own room yourself. | ほど | ばかり | しか
+# 〜だけでなく | plain form / N + だけでなく〜も | not only ... but also |
+彼は英語{だけでなく}、中国語も話せる。 | He can speak not only English but Chinese too. | さえなく | しかなく | ほどでなく
+この店は安い{だけでなく}、味もいい。 | This restaurant is not only cheap but also tasty. | しかなく | ほどでなく | までなく
+== Judgement and feeling | 判
+# 〜わけだ | plain form + わけだ | so that's why; it follows that |
+暑い{わけだ}。エアコンが止まっている。 | No wonder it's hot. The air conditioner has stopped. | はずがない | ものか | べきだ
+彼は十年もアメリカにいたのか。英語が上手な{わけだ}。 | He was in America for ten years? No wonder his English is good. | ものか | べきだ | わけがない
+# 〜わけがない | plain form + わけがない | there's no way that |
+こんなに難しい問題が、子どもにわかる{わけがない}。 | There's no way a child could understand such a hard problem. | わけだ | ことだ | はずだ
+彼がそんなひどいことをする{わけがない}。 | There's no way he would do such an awful thing. | わけだ | べきだ | ものだ
+# 〜わけではない | plain form + わけではない | it doesn't mean that; not necessarily |
+料理ができない{わけではない}が、あまりしない。 | It's not that I can't cook; I just don't do it much. | わけがない | はずがない | ものではない
+お金があれば幸せだという{わけではない}。 | Having money doesn't necessarily mean you're happy. | わけにはいかない | はずだ | ものだ
+# 〜わけにはいかない | V-dictionary / V-ない + わけにはいかない | cannot (for social or moral reasons) |
+大事な会議があるので、休む{わけにはいかない}。 | There's an important meeting, so I can't very well take the day off. | わけではない | わけがない | ばかりではない
+約束したのだから、行かない{わけにはいかない}。 | I promised, so I can't not go. | わけがない | はずがない | ものではない
+# 〜べきだ | V-dictionary + べきだ | should; ought to | する → すべきだ / するべきだ.
+約束は守る{べきだ}。 | You should keep your promises. | わけだ | ほどだ | ばかりだ
+学生はもっと勉強す{べきだ}と思う。 | I think students ought to study more. | わけだ | そうだ | ほどだ
+# 〜ことはない | V-dictionary + ことはない | there's no need to |
+時間は十分あるから、急ぐ{ことはない}。 | There's plenty of time, so there's no need to hurry. | わけにはいかない | ものではない | はずがない
+あなたは悪くないのだから、謝る{ことはない}よ。 | It's not your fault, so you don't need to apologise. | べきだよ | わけだよ | ところだよ
