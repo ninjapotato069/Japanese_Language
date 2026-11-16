@@ -391,7 +391,7 @@ const daysLeft = () => dayNo(examInfo().date) - dayNo(today());
 const SECMIN = { 1: LVINFO[LV].min[0], 2: LVINFO[LV].min[1], 3: LVINFO[LV].min[2] };
 function taskMin(x) {
   if (x.t === 'lesson') return LMAP[x.id] ? LMAP[x.id].min : 15;
-  if (x.t === 'mock') return x.full ? 90 : SECMIN[x.s];
+  if (x.t === 'mock') return x.full ? SECMIN[1] + SECMIN[2] + SECMIN[3] : SECMIN[x.s];
   return { review: 5, listen: 8, read: 8, vault: 5, script: 5, talk: 10 }[x.t] || 5;
 }
 function mockDone(p, s) { return !!(S.mocks[p] && S.mocks[p][s]); }
@@ -498,10 +498,10 @@ function taskLabel(x) {
     case 'lesson': { const l = LMAP[x.id]; return l ? [l.title, KINDNAME[l.kind] + ' · ' + l.sub] : ['Lesson', '']; }
     case 'listen': return ['Listening drill', '4 real-format audio questions'];
     case 'read': return ['Reading drill', 'One timed passage from a mock paper'];
-    case 'mock': return x.full ? ['Full mock: paper ' + x.p, 'All three sections, timed like the real test'] : [(x.retake ? 'Retake: paper ' : 'Mock paper ') + x.p + ' · section ' + x.s, SECNAME[x.s] + ' · ' + SECMIN[x.s] + ' min'];
+    case 'mock': return x.full ? ['Full mock: paper ' + x.p, 'All three sections in one sitting'] : [(x.retake ? 'Retake: paper ' : 'Mock paper ') + x.p + ' · section ' + x.s, SECNAME[x.s]];
     case 'vault': return x.id === 'all' ? ['Vault quick pass', 'Skim every cheat sheet once'] : ['Cheat sheet: ' + (VSET[x.id] ? VSET[x.id].title : ''), 'Cover the answers and recite'];
     case 'script': return ['Exam-day script', 'What to pack, when to arrive, how to pace'];
-    case 'talk': return ['Talk workout', 'Core words, a pattern drill and a mission · 10 min'];
+    case 'talk': return ['Talk workout', 'Core words, a pattern drill and a mission'];
   }
   return ['Task', ''];
 }

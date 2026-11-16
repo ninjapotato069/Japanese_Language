@@ -113,8 +113,8 @@ const ED = {
   routeNote: () => 'Whatever the result, showing up every day is the hard part, and you’re doing it.',
   examNote: () => 'You’ve got this. Read every option, and never leave a blank.',
   loveLabel: 'Pep talks and pop-ups',
-  setup: () => [h('div', { class: 'eyebrow' }, 'Welcome'), h('h2', { class: 'gh', style: 'font-size:26px' }, 'Let’s crack N5'),
-    h('p', { style: 'margin:0' }, 'A plan for every day until your exam, bite-size lessons, games, and 40 full mock papers. Answer three quick questions and your plan is ready. がんばって！ (ganbatte: you can do it)')],
+  setup: () => [h('div', { class: 'eyebrow' }, 'Welcome'), h('h2', { class: 'gh', style: 'font-size:26px' }, 'Let’s crack the JLPT'),
+    h('p', { style: 'margin:0' }, 'Pick your level and your exam. You get a plan for every day until the exam, bite-size lessons, a speaking trainer, games and full mock papers. がんばって！ (ganbatte: you can do it)')],
   setupToast: () => 'Plan ready. Let’s go!'
 };
 const NOTIFY = {

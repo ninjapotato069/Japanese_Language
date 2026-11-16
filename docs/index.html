@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>JLPT Cheat Codes</title><meta name="theme-color" content="#B3262E"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icon-192.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DotGothic16&family=Klee+One:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap"><style>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>JLPT Cheat Codes</title><meta name="theme-color" content="#D63F6B"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="favicon.png" type="image/png"><link rel="apple-touch-icon" href="icon-192.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DotGothic16&family=Klee+One:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap"><style>
 
 html{-webkit-text-size-adjust:100%}
 /* Layout: app shell = sticky top bar + one scrolling view + bottom tab bar (left rail on wide screens).
@@ -46,19 +46,20 @@ h1, h2, h3 { text-wrap: balance; margin: 0; line-height: 1.25; }
 [hidden] { display: none !important; }
 
 /* ---------- shell ---------- */
-.shell { min-height: 100%; display: grid; grid-template-rows: auto 1fr auto; }
+.shell { min-height: 100%; display: grid; grid-template-rows: auto 1fr auto; grid-template-columns: minmax(0, 1fr); }
 .top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--card); border-bottom: 1px solid var(--line);
   padding-block: 8px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
   display: flex; align-items: center; gap: 10px; }
-.brand { display: flex; align-items: center; gap: 10px; min-width: 0; background: none; border: 0; padding: 0; }
+.brand { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1 1 auto; background: none; border: 0; padding: 0; text-align: left; }
+.brand > span { min-width: 0; display: block; }
 .seal { width: 34px; height: 34px; border-radius: 8px; border: 0; padding: 0; background: var(--sheet); color: var(--sheetink); display: grid; place-items: center;
-  font: 15px/1 var(--f-disp); transform: rotate(-4deg); flex: none; cursor: pointer; transition: transform .2s; }
+  font: 600 19px/1 var(--f-glyph); transform: rotate(-4deg); flex: none; cursor: pointer; transition: transform .2s; }
 .seal:hover { transform: rotate(4deg) scale(1.06); }
 .seal:active { transform: rotate(-10deg) scale(.92); }
-.seal.big { width: 52px; height: 52px; border-radius: 12px; font-size: 22px; box-shadow: var(--shadow); }
-.brand b { font: 17px/1.1 var(--f-disp); letter-spacing: .01em; white-space: nowrap; }
-.brand small { display: block; font-size: 11px; color: var(--mute); letter-spacing: .08em; text-transform: uppercase; }
-.chips { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+.seal.big { width: 52px; height: 52px; border-radius: 12px; font-size: 28px; box-shadow: var(--shadow); }
+.brand b { display: block; font: 17px/1.1 var(--f-disp); letter-spacing: .01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.brand small { display: block; font-size: 11px; color: var(--mute); letter-spacing: .02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chips { margin-left: auto; display: flex; gap: 6px; align-items: center; flex: none; }
 .chip { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--line); background: var(--paper); border-radius: 999px;
   padding: 3px 10px; font-size: 13px; white-space: nowrap; }
 .chip.xp { border-color: transparent; background: var(--pencil2); color: var(--ink); }
@@ -68,15 +69,17 @@ h1, h2, h3 { text-wrap: balance; margin: 0; line-height: 1.25; }
 main#view { padding-block: 16px calc(96px + env(safe-area-inset-bottom, 0px)); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
   width: 100%; max-width: 1040px; margin: 0 auto; min-width: 0; }
 .tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--card); border-top: 1px solid var(--line);
-  display: grid; grid-template-columns: repeat(5, 1fr);
+  display: grid; grid-template-columns: repeat(6, 1fr);
   padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.tabs button { border: 0; background: none; padding: 6px 2px 8px; display: grid; justify-items: center; gap: 0; color: var(--mute); }
-.tabs .k { font: 22px/1.15 var(--f-glyph); font-weight: 600; }
-.tabs .l { font-size: 11px; letter-spacing: .04em; }
-.tabs button[aria-current="page"] { color: var(--sheet); }
-.tabs button[aria-current="page"] .k { transform: scale(1.06); }
+.tabs button { border: 0; background: none; padding: 6px 0 7px; display: grid; justify-items: center; gap: 1px; color: var(--mute); min-width: 0; -webkit-tap-highlight-color: transparent; }
+.tabs .k { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font: 600 20px/1 var(--f-glyph); border: 1.5px solid transparent; transition: background .15s, color .15s; }
+.tabs .l { font-size: 11px; letter-spacing: .02em; }
+.tabs button:hover .k { border-color: var(--line); }
+.tabs button[aria-current="page"] { color: var(--ink); }
+.tabs button[aria-current="page"] .l { font-weight: 700; }
+.tabs button[aria-current="page"] .k { background: var(--sheet); color: var(--sheetink); border-color: var(--sheet); }
 @media (min-width: 900px) {
-  .shell { grid-template-columns: 92px 1fr; grid-template-rows: auto 1fr; }
+  .shell { grid-template-columns: 92px minmax(0, 1fr); grid-template-rows: auto 1fr; }
   .top { grid-column: 1 / -1; }
   .tabs { position: sticky; top: 60px; align-self: start; height: calc(100vh - 60px); grid-template-columns: 1fr; grid-auto-rows: 78px;
     border-top: 0; border-right: 1px solid var(--line); padding: 12px 0 0; grid-column: 1; grid-row: 2; }
@@ -381,6 +384,9 @@ label.fl { display: grid; gap: 4px; font-size: 13px; color: var(--ink2); }
 .chip .ico { width: 14px; height: 14px; color: var(--sheet); }
 .btn .ico { width: 16px; height: 16px; }
 .hide-sm { }
+@media (max-width: 430px) { .hide-xs { display: none; } .chip { padding: 3px 8px; }
+  .brand b { white-space: normal; font-size: 15px; line-height: 1.02; overflow: visible; }
+  .brand small { display: none; } }
 @media (max-width: 520px) { .hide-sm { display: none !important; } .brand small { display: none; } .chip { padding: 3px 8px; } }
 .lvl { font-size: 12px; color: var(--ink2); }
 .taskbtn { margin-left: auto; }
@@ -453,6 +459,72 @@ pre.diag { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font: 12px
 /* rescue screen (shown only if the app cannot start) */
 .rescue pre { white-space: pre-wrap; word-break: break-word; margin: 0; font-size: 12px; }
 .rescue textarea { min-height: 120px; font-size: 11px; }
+
+/* ---------- level: the five JLPT levels as answer bubbles ---------- */
+.lvbadge { display: inline-flex; align-items: center; gap: 6px; border: 1.5px solid var(--sheet); color: var(--sheet); background: var(--card); border-radius: 999px;
+  padding: 3px 10px 3px 4px; font: 13px/1 var(--f-disp); flex: none; }
+.lvbadge i { width: 16px; height: 16px; border-radius: 50%; background: var(--sheet); box-shadow: inset 0 0 0 3px var(--card), inset 0 0 0 4.5px var(--sheet); }
+.lvpick { display: flex; gap: 10px; flex-wrap: wrap; }
+.lvpick button { width: 54px; height: 54px; border-radius: 50%; border: 2px solid var(--line); background: var(--card); font: 15px/1 var(--f-disp); color: var(--ink2); }
+.lvpick button[aria-pressed="true"] { background: var(--sheet); border-color: var(--sheet); color: var(--sheetink); }
+.lvpick button:disabled { opacity: .4; }
+.lvrow .mark { border-radius: 50%; font: 14px/1 var(--f-disp); }
+.lvrow.on { border-color: var(--sheet); }
+.lvrow.on .mark { background: var(--sheet); color: var(--sheetink); }
+.lvrow:disabled { opacity: .5; }
+
+/* ---------- Talk ---------- */
+.talk-hero { gap: 14px; }
+.cov { display: grid; gap: 8px; }
+.cov-bar { position: relative; height: 14px; border-radius: 7px; background: var(--line2); overflow: hidden; }
+.cov-bar i { position: absolute; inset: 0 auto 0 0; background: var(--sheet); border-radius: 7px; transition: width .4s; }
+.cov-bar b { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--card); }
+.cov-key { display: flex; flex-wrap: wrap; gap: 2px 14px; color: var(--ink2); }
+.cov-key b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.method summary { font-weight: 700; cursor: pointer; }
+.method dl { margin: 6px 0 0; display: grid; }
+.method dt { font-weight: 700; margin-top: 12px; }
+.method dd { margin: 2px 0 0; color: var(--ink2); font-size: 14px; max-width: 64ch; }
+.line { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: start; padding: 8px 0; border-bottom: 1px solid var(--line2); }
+.line:last-child { border-bottom: 0; }
+.line .jp { font-size: 17px; line-height: 1.5; }
+.linkish { border: 0; background: none; color: var(--sheet); padding: 0; text-align: left; font-size: 13px; text-decoration: underline; justify-self: start; }
+.antic { display: grid; gap: 14px; max-width: 560px; width: 100%; margin: 0 auto; }
+.stage { display: grid; gap: 12px; text-align: center; padding: 26px 18px 22px; border-width: 1.5px; }
+.stage .mode { font-size: 12px; color: var(--mute); font-weight: 700; }
+.stage .cue { font: 700 22px/1.35 var(--f-ui); overflow-wrap: anywhere; }
+.stage .note-in { font-size: 13px; color: var(--mute); margin-top: -6px; }
+.stage .meter { height: 6px; border-radius: 3px; background: var(--line2); overflow: hidden; }
+.stage .meter i { display: block; height: 100%; background: var(--pencil); transform-origin: left center; animation-name: drain; animation-timing-function: linear; animation-fill-mode: forwards; }
+@keyframes drain { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+.stage .ans { display: grid; gap: 4px; justify-items: center; }
+.stage .ans .jp { font: 600 32px/1.35 var(--f-glyph); color: var(--ink); overflow-wrap: anywhere; }
+.stage .ans .kana { color: var(--ink2); font-size: 16px; }
+.stage.shown { border-color: var(--sheet); }
+.stage.fresh { background: var(--pencil2); border-color: transparent; }
+.antic .grade { justify-content: center; }
+@media (prefers-reduced-motion: reduce) { .stage .meter i { animation-name: none; } }
+.chat { display: grid; gap: 10px; }
+.msg { max-width: min(86%, 520px); padding: 10px 14px; border-radius: 16px; border: 1px solid var(--line); background: var(--card); display: grid; gap: 3px; min-width: 0; }
+.msg .who { font-size: 11px; color: var(--mute); font-weight: 700; }
+.msg .jp { font-size: 18px; line-height: 1.45; overflow-wrap: anywhere; }
+.msg .en { font-size: 13px; color: var(--ink2); }
+.msg.them { justify-self: start; border-bottom-left-radius: 4px; }
+.msg.me { justify-self: end; border-bottom-right-radius: 4px; background: var(--sheet2); border-color: transparent; }
+.msg.me.pending { background: var(--card); border: 2px dashed var(--sheet); }
+.msg.me .row { margin-top: 6px; }
+.msg.me.ok .who::after { content: " · said it"; color: var(--good); }
+.msg.me.miss .who::after { content: " · missed"; color: var(--bad); }
+.shadow-list { margin: 0; padding-left: 24px; display: grid; gap: 4px; }
+.shadow-list li { padding: 4px 8px; border-radius: 8px; }
+.shadow-list li.on { background: var(--pencil2); }
+.shadow-list .jp { display: block; font-size: 16px; }
+.shadow-list .en { display: block; font-size: 12px; color: var(--mute); }
+.rounds { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; counter-reset: r; }
+.rounds li { counter-increment: r; font-size: 12px; color: var(--mute); border-top: 4px solid var(--line); padding-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rounds li::before { content: counter(r) ". "; font-weight: 700; }
+.rounds li.on { color: var(--ink); border-color: var(--sheet); font-weight: 700; }
+.rounds li.ok { border-color: var(--good); }
 
 </style></head>
 <body>
@@ -2208,7 +2280,11 @@ function mergeStates(a, b) {
   m.streak = ((sx.last || '') > (sy.last || '') || ((sx.last || '') === (sy.last || '') && (sx.n || 0) >= (sy.n || 0))) ? Object.assign({}, sx) : Object.assign({}, sy);
   m.streak.best = Math.max(sx.best || 0, sy.best || 0, m.streak.n || 0);
   const lx = nw.lv || {}, ly = od.lv || {};
-  m.lv = { hello: (lx.hello || '') > (ly.hello || '') ? lx.hello : (ly.hello || lx.hello || ''), st: Math.max(lx.st || 0, ly.st || 0), pp: Object.assign({}, ly.pp || {}, lx.pp || {}) };
+  // pop-up bookkeeping: keep every key either copy has (when the notes prompt was shown, which version's news was seen, …)
+  const lastOf = (a, b) => ((a || '') >= (b || '') ? a : b) || a || b || '';
+  m.lv = Object.assign({}, ly, lx, { hello: lastOf(lx.hello, ly.hello), st: Math.max(lx.st || 0, ly.st || 0), pp: Object.assign({}, ly.pp || {}, lx.pp || {}) });
+  if (lx.nAsk || ly.nAsk) m.lv.nAsk = lastOf(lx.nAsk, ly.nAsk);
+  if (lx.ver || ly.ver) m.lv.ver = [lx.ver, ly.ver].filter(Boolean).sort((a, b) => { const x = a.split('.').map(Number), y = b.split('.').map(Number); for (let i = 0; i < 3; i++) if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) - (y[i] || 0); return 0; }).pop();
   if (od.today && (!nw.today || od.today.date > nw.today.date)) m.today = JSON.parse(JSON.stringify(od.today));
   m.L = {};
   keys(nw.L, od.L).forEach(k => { const x = (nw.L || {})[k], y = (od.L || {})[k]; m.L[k] = x && y ? mergeLevelData(x, y) : JSON.parse(JSON.stringify(x || y)); });
@@ -2614,24 +2690,51 @@ function makePapers(words) {
   const form = w => w.kanji || w.kana;
   // the sentence a word appears in, with the word swapped for something else
   const inSent = (w, i, fn) => { const x = w.x[i % w.x.length], s = sent[x[0]][0], f = form(w); return esc(s.slice(0, x[1])) + fn(f) + esc(s.slice(x[1] + f.length)); };
-  const withX = words.filter(w => w.x);
+  // keep only examples where the word stands on its own: not inside a verb (通りました, 流れて) or a longer word (研究者)
+  const NEXT = { noun: /^(?:[をがはにのでとへやかもだじ、。！？]|し|す|さ[れせ]|まで|より|など|なら|くらい|ぐらい|ばかり|だけ)/, naadj: /^[なにだでじのをがはもと、。さ]/ };
+  // usage-question distractors only use slots that pick their word (～を見る, ～に慣れる). Slots that take almost any word are left out:
+  // ～の, ～です, ～について, ～をする, and a する-verb with no object (［昇進］したのですか)
+  const TIGHT = { noun: /^(?!を[しすさ])(?:[をがは]|に(?!つい|対し|関し|よ[っり]|とっ|は|も)|で(?!す|しょ)|し|す|さ[れせ])/ };
+  const SURU = /^(?:し|す|さ[れせ])/;      // する-nouns: 開催する, 採用される
+  const KAN = /[一-鿿々]/;
+  // mode: undefined = any slot where the word stands alone, 'tight' = distractor slots, 'suru' = the word used with する,
+  // 'object' = with する and an object before it (警察は彼女を［参照］した), so the object shows the word does not fit
+  const plain = (w, mode) => {
+    if (!w.x) return null;
+    const rule = mode === 'suru' || mode === 'object' ? SURU : (mode === 'tight' ? TIGHT : NEXT)[w.c];
+    const x = w.x.filter(e => { const s = sent[e[0]][0], f = form(w), nx = s.slice(e[1] + f.length);
+      if (KAN.test(s[e[1] - 1] || '')) return false;      // the end of a longer word: 立候補, 大学生
+      if ((mode === 'object' || (mode === 'tight' && SURU.test(nx))) && (s.slice(0, e[1]).indexOf('を') < 0 || /(?:これ|それ|あれ|何)を$/.test(s.slice(0, e[1])))) return false;
+      return w.c === 'adv' ? !/^[ったてまるれらりろ]/.test(nx) : rule ? rule.test(nx) : true; });
+    return x.length ? Object.assign({}, w, { x }) : null;
+  };
+  const suru = w => w.c === 'noun' && w.kanji.length >= 2 ? plain(w, 'suru') : null;
+  const SURUOBJ = words.map(w => w.c === 'noun' && w.kanji.length >= 2 ? plain(w, 'object') : null).filter(Boolean);
+  const rank = (w, e) => { const nx = sent[e[0]][0].slice(e[1] + form(w).length); return /^を/.test(nx) ? 0 : /^[にで]/.test(nx) ? 1 : 2; };
+  // words too close in meaning to serve as each other's wrong answers: a shared kanji (都市, 都会) or a shared English word
+  const STOPW = new Set(['thing', 'things', 'something', 'someone', 'person', 'people', 'with', 'from', 'that', 'this', 'into', 'oneself', 'used', 'also', 'very', 'make', 'have', 'take', 'being']);
+  const gl = w => (w.en || '').toLowerCase().split(/[^a-z]+/).filter(t => t.length > 3 && !STOPW.has(t));
+  const related = (a, b) => { const fb = form(b); if ([...form(a)].some(ch => KAN.test(ch) && fb.indexOf(ch) >= 0)) return true; const ga = new Set(gl(a)); return gl(b).some(t => ga.has(t)); };
+  const withX = words.map(w => plain(w)).filter(Boolean);
   const pools = {
     kanji: base.shuffle(words.filter(w => w.kanji && w.kana.length >= 2)),
     hyoki: base.shuffle(words.filter(w => w.hy && w.hy.length >= 3)),
     bun: base.shuffle(withX),
-    iikae: base.shuffle(words.filter(w => w.sy)),
-    yoho: base.shuffle(withX.filter(w => w.c === 'noun' || w.c === 'naadj' || w.c === 'adv')),
+    iikae: base.shuffle(words.filter(w => w.sy).map(w => plain(w) || Object.assign({}, w, { x: null }))),
+    // する-nouns, whose use depends on the sentence (not names of things). Adverbs and な-adjectives are left out: they too often
+    // read naturally in another word's sentence (更に明日雨が降る, 危険な機械), which would make a wrong answer right
+    yoho: base.shuffle(withX.filter(w => suru(w))),
     bunpo: base.shuffle((PACK.grammar || []).reduce((a, u) => a.concat(u.points.reduce((b, p) => b.concat(p.q.map(q => ({ q, p }))), [])), []))
   };
   const byClass = {};
   words.forEach(w => (byClass[w.c] = byClass[w.c] || []).push(w));
-  const COUNT = { n4: [7, 5, 8, 4, 4, 13, 4], n3: [8, 6, 11, 5, 5, 13, 5], n2: [6, 5, 8, 5, 5, 12, 5], n1: [6, 0, 8, 6, 6, 10, 5] }[LV];
+  const COUNT = { n4: [7, 5, 9, 4, 3, 13, 4], n3: [8, 6, 11, 5, 5, 13, 5], n2: [6, 5, 9, 5, 4, 12, 5], n1: [6, 0, 8, 6, 6, 10, 5] }[LV];
   const take = (pool, P, n) => { const out = []; if (!pool.length) return out; for (let i = 0; i < n; i++) out.push(pool[((P - 1) * n + i) % pool.length]); return out; };
   const rot = (arr, P, n) => { const out = []; for (let i = 0; i < Math.min(n, (arr || []).length); i++) out.push(arr[(P - 1 + i) % arr.length]); return out; };
   // four options in a seeded order; returns { o, a } with a counted from 1
   const opts = (r, right, wrong) => { const o = r.shuffle([right].concat(wrong.slice(0, 3))); return { o, a: o.indexOf(right) + 1 }; };
   const others = (r, w, n, show) => { const seen = new Set([show(w)]), out = []; const pool = r.shuffle(byClass[w.c].length > 8 ? byClass[w.c] : words);
-    for (const x of pool) { const t = show(x); if (!seen.has(t) && x.en !== w.en) { seen.add(t); out.push(x); if (out.length >= n) break; } } return out; };
+    for (const x of pool) { const t = show(x); if (!seen.has(t) && x.en !== w.en && !related(w, x)) { seen.add(t); out.push(x); if (out.length >= n) break; } } return out; };
   function readingWrong(r, w) {
     const out = [], seen = new Set([w.kana]);
     const add = t => { if (t && !seen.has(t) && out.length < 3) { seen.add(t); out.push(t); } };
@@ -2655,16 +2758,26 @@ function makePapers(words) {
       s1.push({ t: 'bunmyaku', s: inSent(w, i, () => BLANK), o: o.o, a: o.a, w: form(w) + (w.kanji ? '（' + w.kana + '）' : '') + ' = ' + w.en + '. ' + sent[w.x[i % w.x.length][0]][1] });
     });
     take(pools.iikae, P, COUNT[3]).forEach((w, i) => {
-      const o = opts(r, w.sy, others(r, w, 4, form).map(form).filter(t => t !== w.sy));
+      const sy = { kanji: w.sy, kana: w.sy, en: '' };
+      const o = opts(r, w.sy, others(r, w, 6, form).filter(x => !related(sy, x)).map(form).filter(t => t !== w.sy));
       s1.push({ t: 'iikae', s: w.x ? inSent(w, i, ul) : ul(form(w)), o: o.o, a: o.a, w: form(w) + ' ≈ ' + w.sy + ' (' + w.en + ')' });
     });
-    take(pools.yoho, P, COUNT[4]).forEach((w, i) => {
+    // a word that cannot get three good wrong sentences is skipped, and the next word in the pool takes its place
+    for (let k = 0, i = 0; i < COUNT[4] && k < pools.yoho.length; k++) {
+      const w = pools.yoho[((P - 1) * COUNT[4] + k) % pools.yoho.length];
       const f = form(w), right = inSent(w, i, ul);
-      const wrong = others(r, w, 12, form).filter(x => x.x && x.c === w.c).slice(0, 3).map(x => inSent(x, i, () => ul(f)));
-      if (wrong.length < 3) return;
+      // two wrong sentences from other する-nouns with an object (警察は彼女を［参照］した), the way the real distractors are built,
+      // and one from a noun slot, preferring ～を over ～に/～で over ～が/～は (the last two accept more words)
+      const sx = r.shuffle(SURUOBJ).filter(x => x.id !== w.id && x.en !== w.en && !related(w, x)).slice(0, 2);
+      const tight = others(r, w, 24, form).map(x => plain(x, 'tight')).filter(x => x && x.c === w.c && !sx.some(y => y.id === x.id))
+        .map(x => { const e = x.x.slice().sort((a, b) => rank(x, a) - rank(x, b))[0]; return Object.assign({}, x, { x: [e], rk: rank(x, e) }); })
+        .sort((a, b) => a.rk - b.rk);
+      const wrong = sx.concat(tight).slice(0, 3).map(x => inSent(x, i, () => ul(f)));
+      if (wrong.length < 3) continue;
       const o = opts(r, right, wrong);
       s1.push({ t: 'yoho', s: '<b>' + esc(f) + '</b>', o: o.o, a: o.a, w: f + (w.kanji ? '（' + w.kana + '）' : '') + ' = ' + w.en + '. Only one sentence uses it naturally.' });
-    });
+      i++;
+    }
     const s2 = { bunpo: [], kumitate: [], tanbun: [], chubun: null };
     take(pools.bunpo, P, COUNT[5]).forEach(x => {
       const o = opts(r, x.q[1][0], x.q[1].slice(1));
@@ -3151,7 +3264,7 @@ const daysLeft = () => dayNo(examInfo().date) - dayNo(today());
 const SECMIN = { 1: LVINFO[LV].min[0], 2: LVINFO[LV].min[1], 3: LVINFO[LV].min[2] };
 function taskMin(x) {
   if (x.t === 'lesson') return LMAP[x.id] ? LMAP[x.id].min : 15;
-  if (x.t === 'mock') return x.full ? 90 : SECMIN[x.s];
+  if (x.t === 'mock') return x.full ? SECMIN[1] + SECMIN[2] + SECMIN[3] : SECMIN[x.s];
   return { review: 5, listen: 8, read: 8, vault: 5, script: 5, talk: 10 }[x.t] || 5;
 }
 function mockDone(p, s) { return !!(S.mocks[p] && S.mocks[p][s]); }
@@ -3258,10 +3371,10 @@ function taskLabel(x) {
     case 'lesson': { const l = LMAP[x.id]; return l ? [l.title, KINDNAME[l.kind] + ' · ' + l.sub] : ['Lesson', '']; }
     case 'listen': return ['Listening drill', '4 real-format audio questions'];
     case 'read': return ['Reading drill', 'One timed passage from a mock paper'];
-    case 'mock': return x.full ? ['Full mock: paper ' + x.p, 'All three sections, timed like the real test'] : [(x.retake ? 'Retake: paper ' : 'Mock paper ') + x.p + ' · section ' + x.s, SECNAME[x.s] + ' · ' + SECMIN[x.s] + ' min'];
+    case 'mock': return x.full ? ['Full mock: paper ' + x.p, 'All three sections in one sitting'] : [(x.retake ? 'Retake: paper ' : 'Mock paper ') + x.p + ' · section ' + x.s, SECNAME[x.s]];
     case 'vault': return x.id === 'all' ? ['Vault quick pass', 'Skim every cheat sheet once'] : ['Cheat sheet: ' + (VSET[x.id] ? VSET[x.id].title : ''), 'Cover the answers and recite'];
     case 'script': return ['Exam-day script', 'What to pack, when to arrive, how to pace'];
-    case 'talk': return ['Talk workout', 'Core words, a pattern drill and a mission · 10 min'];
+    case 'talk': return ['Talk workout', 'Core words, a pattern drill and a mission'];
   }
   return ['Task', ''];
 }
@@ -3610,8 +3723,8 @@ const ED = {
   routeNote: () => 'Whatever the result, showing up every day is the hard part, and you’re doing it.',
   examNote: () => 'You’ve got this. Read every option, and never leave a blank.',
   loveLabel: 'Pep talks and pop-ups',
-  setup: () => [h('div', { class: 'eyebrow' }, 'Welcome'), h('h2', { class: 'gh', style: 'font-size:26px' }, 'Let’s crack N5'),
-    h('p', { style: 'margin:0' }, 'A plan for every day until your exam, bite-size lessons, games, and 40 full mock papers. Answer three quick questions and your plan is ready. がんばって！ (ganbatte: you can do it)')],
+  setup: () => [h('div', { class: 'eyebrow' }, 'Welcome'), h('h2', { class: 'gh', style: 'font-size:26px' }, 'Let’s crack the JLPT'),
+    h('p', { style: 'margin:0' }, 'Pick your level and your exam. You get a plan for every day until the exam, bite-size lessons, a speaking trainer, games and full mock papers. がんばって！ (ganbatte: you can do it)')],
   setupToast: () => 'Plan ready. Let’s go!'
 };
 const NOTIFY = {
@@ -4158,7 +4271,7 @@ function underVocab(L) {
   let shown = 0;
   shuffle(ws).forEach(w => { if (shown >= 6) return; const c = contextFor(w); if (c) { ctx.append(h('div', { class: 'ctx', html: c + ' <span class="mute small">· ' + esc(w.kana) + ' = ' + esc(w.en) + '</span>' })); shown++; } });
   return [DECK_NOTES[L.deck] ? h('div', { class: 'note' }, DECK_NOTES[L.deck]) : null, h('div', { class: 'card stack' }, h('h3', {}, 'The words'), list),
-    shown ? h('div', { class: 'card stack' }, h('h3', {}, 'Seen in your mock papers'), h('p', { class: 'small mute', style: 'margin:0' }, 'Real sentences from the 40 papers that use these words.'), ctx) : null];
+    shown ? h('div', { class: 'card stack' }, h('h3', {}, PACK ? 'In real sentences' : 'Seen in your mock papers'), h('p', { class: 'small mute', style: 'margin:0' }, PACK ? 'Example sentences that use these words.' : 'Real sentences from the 40 papers that use these words.'), ctx) : null];
 }
 function kanjiBlock(k) {
   return h('div', { class: 'card kjcard' }, h('div', { class: 'gl' }, k.k),
@@ -4445,7 +4558,7 @@ function applySettings(draft) {
 /* quick switch from the top bar */
 function levelSheet() {
   sheet(close => [h('h2', {}, 'Switch level'), h('p', { class: 'small mute', style: 'margin:0' }, 'Each level keeps its own lessons, reviews and mock scores. Switching never erases anything.'),
-    h('div', { class: 'list' }, LVS.map(lv => h('button', { class: 'li lvrow', type: 'button', 'data-lv': lv, disabled: lv !== 'n5' && !PACKS[lv], onclick: () => { close(); if (lv !== LV) setLevel(lv); } },
+    h('div', { class: 'list' }, LVS.map(lv => h('button', { class: 'li lvrow' + (lv === LV ? ' on' : ''), type: 'button', 'data-lv': lv, disabled: lv !== 'n5' && !PACKS[lv], onclick: () => { close(); if (lv !== LV) setLevel(lv); } },
       h('span', { class: 'mark' }, LVINFO[lv].name), h('span', { class: 'body' }, h('b', {}, 'JLPT ' + LVINFO[lv].name + (lv === LV ? ' · studying now' : '')), h('span', {}, LVINFO[lv].blurb)), lv === LV ? h('span', { class: 'end' }, ico('check')) : null))),
     h('button', { class: 'btn', type: 'button', onclick: close }, 'Close')]);
 }
@@ -5145,7 +5258,7 @@ function Mission(M, o) {
     const [who, jp, en] = M.lines[k];
     if (who === 'A') {
       const jpEl = h('div', { class: 'jp', hidden: !showJp }, jp), enEl = h('div', { class: 'en', hidden: !showJp }, en);
-      const b = h('div', { class: 'bub them' }, h('div', { class: 'who' }, 'Them'), jpEl, enEl,
+      const b = h('div', { class: 'msg them' }, h('div', { class: 'who' }, 'Them'), jpEl, enEl,
         showJp ? null : h('button', { class: 'linkish', type: 'button', onclick: e => { jpEl.hidden = false; enEl.hidden = false; e.currentTarget.remove(); } }, 'Show what they said'));
       chat.append(b); b.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
       await say(jp, true);
@@ -5155,7 +5268,7 @@ function Mission(M, o) {
       mine++;
       const ans = h('div', { class: 'jp', hidden: true }, jp);
       const ctl = h('div', { class: 'row' });
-      const b = h('div', { class: 'bub me pending' }, h('div', { class: 'who' }, 'You · line ' + mine + ' of ' + total), h('div', { class: 'en' }, en), ans, ctl);
+      const b = h('div', { class: 'msg me pending' }, h('div', { class: 'who' }, 'You · line ' + mine + ' of ' + total), h('div', { class: 'en' }, en), ans, ctl);
       const done = good => { if (good) said++; ctl.remove(); b.classList.remove('pending'); b.classList.add(good ? 'ok' : 'miss'); k++; step(); };
       const show = () => { ans.hidden = false; ctl.innerHTML = ''; say(jp);
         ctl.append(h('button', { class: 'btn small', type: 'button', onclick: () => done(false) }, 'Missed it'), h('button', { class: 'btn small primary', type: 'button', onclick: () => done(true) }, ico('check'), 'I said it')); };
@@ -5302,17 +5415,18 @@ view('tactic', 'talk', p => {
   root.append(ShadowPlayer(t.lines.map(l => ({ jp: l[0], en: l[1] }))));
   return root;
 });
-const drillLines = d => d.subs.map(s => ({ jp: d.f.replace('＿', s[0]), en: d.en.replace('_', s[1]) }));
+const drillLines = d => d.subs.map(s => ({ jp: d.f.replace('＿', s[0]), en: d.en.replace(/\s*\([^)]*\)\s*$/, '').replace('_', s[1]).replace(/^./, c => c.toUpperCase()) }));
+const frameJp = d => d.f.replace('＿', '〇〇'), frameEn = d => d.en.replace('_', '…');
 view('tdrills', 'talk', () => {
   const root = h('div', { class: 'stack' });
   root.append(head('Pattern drills', 'One frame, five fillers. Say the whole sentence each time, fast, until the frame comes out by itself.', '型 Drills'));
   root.append(h('div', { class: 'list' }, TALK.drills.map((d, i) => h('button', { class: 'li', type: 'button', onclick: () => go('tdrill', { i }) }, markEl('型'),
-    h('span', { class: 'body' }, h('b', { class: 'jp' }, d.f), h('span', {}, d.en)), h('span', { class: 'end' }, tkPart('drl')[i] ? h('span', { class: 'pill good' }, ico('check')) : h('span', { class: 'pill' }, d.subs.length))))));
+    h('span', { class: 'body' }, h('b', { class: 'jp' }, frameJp(d)), h('span', {}, frameEn(d))), h('span', { class: 'end' }, tkPart('drl')[i] ? h('span', { class: 'pill good' }, ico('check')) : h('span', { class: 'pill' }, d.subs.length))))));
   return root;
 });
 view('tdrill', 'talk', p => {
   const i = clamp(+p.i || 0, 0, TALK.drills.length - 1), d = TALK.drills[i], root = h('div', { class: 'stack' });
-  root.append(head(d.f, d.en, '型 Drill ' + (i + 1) + ' of ' + TALK.drills.length));
+  root.append(head(frameJp(d), frameEn(d), '型 Drill ' + (i + 1) + ' of ' + TALK.drills.length));
   root.append(Anticipate(shuffle(drillLines(d)).map(l => ({ cue: l.en, jp: l.jp })), { onDone: () => { tkPart('drl')[i] = 1; save(); return [i + 1 < TALK.drills.length ? h('button', { class: 'btn pink', type: 'button', onclick: () => swap('tdrill', { i: i + 1 }) }, 'Next drill', ico('next')) : null, h('button', { class: 'btn', type: 'button', onclick: () => back() }, 'All drills')]; } }));
   root.append(h('details', { class: 'card' }, h('summary', {}, 'All five sentences, hands-free'), ShadowPlayer(drillLines(d))));
   return root;
@@ -5351,7 +5465,7 @@ view('talkdaily', 'talk', p => {
   root.append(box);
   const rounds = [
     ['Core words', () => Anticipate(workoutWords().map(x => { const it = ITEMS[x.k]; return { key: x.k, cue: it.m, jp: it.w, kana: it.r, say: it.r, fresh: x.fresh }; }), { onDone: () => nextBtn(1) })],
-    ['Pattern drill: ' + drill.f, () => Anticipate(shuffle(drillLines(drill)).map(l => ({ cue: l.en, jp: l.jp })), { onDone: () => nextBtn(2) })],
+    ['Pattern drill: ' + frameJp(drill), () => Anticipate(shuffle(drillLines(drill)).map(l => ({ cue: l.en, jp: l.jp })), { onDone: () => nextBtn(2) })],
     ['Mission: ' + mis.title, () => Mission(mis, { onDone: () => { finish(); return [h('button', { class: 'btn pink', type: 'button', onclick: () => tab('talk') }, 'Done')]; } })]
   ];
   const dots = h('ol', { class: 'rounds' }, rounds.map((r, i) => h('li', { 'data-i': i }, r[0])));

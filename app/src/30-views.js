@@ -342,7 +342,7 @@ function underVocab(L) {
   let shown = 0;
   shuffle(ws).forEach(w => { if (shown >= 6) return; const c = contextFor(w); if (c) { ctx.append(h('div', { class: 'ctx', html: c + ' <span class="mute small">· ' + esc(w.kana) + ' = ' + esc(w.en) + '</span>' })); shown++; } });
   return [DECK_NOTES[L.deck] ? h('div', { class: 'note' }, DECK_NOTES[L.deck]) : null, h('div', { class: 'card stack' }, h('h3', {}, 'The words'), list),
-    shown ? h('div', { class: 'card stack' }, h('h3', {}, 'Seen in your mock papers'), h('p', { class: 'small mute', style: 'margin:0' }, 'Real sentences from the 40 papers that use these words.'), ctx) : null];
+    shown ? h('div', { class: 'card stack' }, h('h3', {}, PACK ? 'In real sentences' : 'Seen in your mock papers'), h('p', { class: 'small mute', style: 'margin:0' }, PACK ? 'Example sentences that use these words.' : 'Real sentences from the 40 papers that use these words.'), ctx) : null];
 }
 function kanjiBlock(k) {
   return h('div', { class: 'card kjcard' }, h('div', { class: 'gl' }, k.k),
@@ -629,7 +629,7 @@ function applySettings(draft) {
 /* quick switch from the top bar */
 function levelSheet() {
   sheet(close => [h('h2', {}, 'Switch level'), h('p', { class: 'small mute', style: 'margin:0' }, 'Each level keeps its own lessons, reviews and mock scores. Switching never erases anything.'),
-    h('div', { class: 'list' }, LVS.map(lv => h('button', { class: 'li lvrow', type: 'button', 'data-lv': lv, disabled: lv !== 'n5' && !PACKS[lv], onclick: () => { close(); if (lv !== LV) setLevel(lv); } },
+    h('div', { class: 'list' }, LVS.map(lv => h('button', { class: 'li lvrow' + (lv === LV ? ' on' : ''), type: 'button', 'data-lv': lv, disabled: lv !== 'n5' && !PACKS[lv], onclick: () => { close(); if (lv !== LV) setLevel(lv); } },
       h('span', { class: 'mark' }, LVINFO[lv].name), h('span', { class: 'body' }, h('b', {}, 'JLPT ' + LVINFO[lv].name + (lv === LV ? ' · studying now' : '')), h('span', {}, LVINFO[lv].blurb)), lv === LV ? h('span', { class: 'end' }, ico('check')) : null))),
     h('button', { class: 'btn', type: 'button', onclick: close }, 'Close')]);
 }

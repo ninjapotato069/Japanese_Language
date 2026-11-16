@@ -1,5 +1,5 @@
 !!brut.androlib.meta.MetaInfo
-apkFileName: n5-neutral.apk
+apkFileName: jlpt-cheat-codes.apk
 compressionType: false
 doNotCompress:
 - resources.arsc
@@ -19,5 +19,5 @@ usesFramework:
   tag: null
 version: 2.10.0
 versionInfo:
-  versionCode: 8
-  versionName: 1.7
+  versionCode: 20
+  versionName: 2.0.0

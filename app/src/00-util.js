@@ -185,7 +185,11 @@ function mergeStates(a, b) {
   m.streak = ((sx.last || '') > (sy.last || '') || ((sx.last || '') === (sy.last || '') && (sx.n || 0) >= (sy.n || 0))) ? Object.assign({}, sx) : Object.assign({}, sy);
   m.streak.best = Math.max(sx.best || 0, sy.best || 0, m.streak.n || 0);
   const lx = nw.lv || {}, ly = od.lv || {};
-  m.lv = { hello: (lx.hello || '') > (ly.hello || '') ? lx.hello : (ly.hello || lx.hello || ''), st: Math.max(lx.st || 0, ly.st || 0), pp: Object.assign({}, ly.pp || {}, lx.pp || {}) };
+  // pop-up bookkeeping: keep every key either copy has (when the notes prompt was shown, which version's news was seen, …)
+  const lastOf = (a, b) => ((a || '') >= (b || '') ? a : b) || a || b || '';
+  m.lv = Object.assign({}, ly, lx, { hello: lastOf(lx.hello, ly.hello), st: Math.max(lx.st || 0, ly.st || 0), pp: Object.assign({}, ly.pp || {}, lx.pp || {}) });
+  if (lx.nAsk || ly.nAsk) m.lv.nAsk = lastOf(lx.nAsk, ly.nAsk);
+  if (lx.ver || ly.ver) m.lv.ver = [lx.ver, ly.ver].filter(Boolean).sort((a, b) => { const x = a.split('.').map(Number), y = b.split('.').map(Number); for (let i = 0; i < 3; i++) if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) - (y[i] || 0); return 0; }).pop();
   if (od.today && (!nw.today || od.today.date > nw.today.date)) m.today = JSON.parse(JSON.stringify(od.today));
   m.L = {};
   keys(nw.L, od.L).forEach(k => { const x = (nw.L || {})[k], y = (od.L || {})[k]; m.L[k] = x && y ? mergeLevelData(x, y) : JSON.parse(JSON.stringify(x || y)); });

@@ -65,6 +65,8 @@ const ok = (c, m) => { if (!c) { fails++; console.log('  FAIL ' + m); } else if 
       const res = await page.evaluate(([v, p]) => { try { __T.go(v, p); return document.querySelector('#view').innerText.length; } catch (e) { return 'throw ' + e.message; } }, [v, p]);
       await page.waitForTimeout(60);
       const txt = await page.evaluate(() => document.querySelector('#view').innerText.slice(0, 200));
+      const wide = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+      ok(wide <= 1, lv + ' view ' + v + ' fits the phone width (' + wide + 'px too wide)');
       ok(typeof res === 'number' && res > 20 && errs.length === before && !/Something went wrong|couldn’t open this screen/i.test(txt), lv + ' view ' + v + ' ' + JSON.stringify(p) + ' → ' + res + ' ' + (errs.slice(before).join(' | ') || '') + (typeof res === 'number' && res <= 20 ? ' [' + txt + ']' : ''));
       await page.evaluate(() => { document.querySelectorAll('.sheet-wrap,.scrim').forEach(x => x.remove()); });
     }

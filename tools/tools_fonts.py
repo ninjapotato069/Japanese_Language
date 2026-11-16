@@ -12,9 +12,12 @@ html = (ROOT / 'dist' / 'artifact.html').read_text(encoding='utf-8')
 used = set(ord(c) for c in html)
 for a, b in [(0x20, 0x7E), (0xA0, 0xFF), (0x2000, 0x206F), (0x2190, 0x21FF), (0x3000, 0x30FF), (0xFF01, 0xFF5E)]:
     used.update(range(a, b + 1))
-used.update(ord(c) for c in '★☆♥♡✓×・→➡〜ー')
-FACES = [('Zen Kaku Gothic New', 'zen-kaku-gothic-new', 400), ('Zen Kaku Gothic New', 'zen-kaku-gothic-new', 700),
-         ('Klee One', 'klee-one', 600), ('Dela Gothic One', 'dela-gothic-one', 400), ('DotGothic16', 'dotgothic16', 400)]
+used.update(ord(c) for c in '★☆♥♡✓×・→➡〜ー〇')
+# headings and pixel labels only ever show interface text, so those two faces get just the characters of the app's own code
+ui_text = ''.join(f.read_text(encoding='utf-8') for f in list((ROOT / 'app' / 'src').rglob('*.js')) + [ROOT / 'content' / 'talk.txt', ROOT / 'tools' / 'build.py'])
+ui = set(ord(c) for c in ui_text) | {c for c in used if c < 0x3100 or 0xFF00 <= c <= 0xFFEF}
+FACES = [('Zen Kaku Gothic New', 'zen-kaku-gothic-new', 400, used), ('Zen Kaku Gothic New', 'zen-kaku-gothic-new', 700, used),
+         ('Klee One', 'klee-one', 600, used), ('Dela Gothic One', 'dela-gothic-one', 400, ui), ('DotGothic16', 'dotgothic16', 400, ui)]
 
 def ranges(cps):
     cps = sorted(cps); out = []; s = p = cps[0]
@@ -36,10 +39,10 @@ def sub(path, chars):
 
 css = []
 total = 0
-for fam, pkg, w in FACES:
+for fam, pkg, w, chars in FACES:
     latin = FS / pkg / 'files' / f'{pkg}-latin-{w}-normal.woff2'
     jap = FS / pkg / 'files' / f'{pkg}-japanese-{w}-normal.woff2'
-    remaining = set(used)
+    remaining = set(chars)
     for part, path in [('latin', latin), ('ja', jap)]:
         if not path.exists(): continue
         data, keep = sub(path, remaining)

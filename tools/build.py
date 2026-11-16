@@ -81,8 +81,8 @@ def build():
     www = ROOT / 'android' / 'apkdir' / 'assets' / 'www'
     www.mkdir(parents=True, exist_ok=True)
     (www / 'index.html').write_text(full('', fontcss))
-    pwa_head = ('<meta name="theme-color" content="#B3262E"><link rel="manifest" href="manifest.webmanifest">'
-                '<link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icon-192.png">' + FONTS)
+    pwa_head = ('<meta name="theme-color" content="#D63F6B"><link rel="manifest" href="manifest.webmanifest">'
+                '<link rel="icon" href="favicon.png" type="image/png"><link rel="apple-touch-icon" href="icon-192.png">' + FONTS)
     pwa_tail = "<script>if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(function(){});</script>\n"
     docs = ROOT / 'docs'
     docs.mkdir(exist_ok=True)

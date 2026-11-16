@@ -3,3 +3,5 @@ dist/
 android/out/
 android/classes/
 __pycache__/
+android/apkdir/classes.dex
+android/apkdir/assets/www/index.html

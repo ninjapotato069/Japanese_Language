@@ -153,7 +153,7 @@ function Mission(M, o) {
     const [who, jp, en] = M.lines[k];
     if (who === 'A') {
       const jpEl = h('div', { class: 'jp', hidden: !showJp }, jp), enEl = h('div', { class: 'en', hidden: !showJp }, en);
-      const b = h('div', { class: 'bub them' }, h('div', { class: 'who' }, 'Them'), jpEl, enEl,
+      const b = h('div', { class: 'msg them' }, h('div', { class: 'who' }, 'Them'), jpEl, enEl,
         showJp ? null : h('button', { class: 'linkish', type: 'button', onclick: e => { jpEl.hidden = false; enEl.hidden = false; e.currentTarget.remove(); } }, 'Show what they said'));
       chat.append(b); b.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
       await say(jp, true);
@@ -163,7 +163,7 @@ function Mission(M, o) {
       mine++;
       const ans = h('div', { class: 'jp', hidden: true }, jp);
       const ctl = h('div', { class: 'row' });
-      const b = h('div', { class: 'bub me pending' }, h('div', { class: 'who' }, 'You · line ' + mine + ' of ' + total), h('div', { class: 'en' }, en), ans, ctl);
+      const b = h('div', { class: 'msg me pending' }, h('div', { class: 'who' }, 'You · line ' + mine + ' of ' + total), h('div', { class: 'en' }, en), ans, ctl);
       const done = good => { if (good) said++; ctl.remove(); b.classList.remove('pending'); b.classList.add(good ? 'ok' : 'miss'); k++; step(); };
       const show = () => { ans.hidden = false; ctl.innerHTML = ''; say(jp);
         ctl.append(h('button', { class: 'btn small', type: 'button', onclick: () => done(false) }, 'Missed it'), h('button', { class: 'btn small primary', type: 'button', onclick: () => done(true) }, ico('check'), 'I said it')); };
@@ -310,17 +310,18 @@ view('tactic', 'talk', p => {
   root.append(ShadowPlayer(t.lines.map(l => ({ jp: l[0], en: l[1] }))));
   return root;
 });
-const drillLines = d => d.subs.map(s => ({ jp: d.f.replace('＿', s[0]), en: d.en.replace('_', s[1]) }));
+const drillLines = d => d.subs.map(s => ({ jp: d.f.replace('＿', s[0]), en: d.en.replace(/\s*\([^)]*\)\s*$/, '').replace('_', s[1]).replace(/^./, c => c.toUpperCase()) }));
+const frameJp = d => d.f.replace('＿', '〇〇'), frameEn = d => d.en.replace('_', '…');
 view('tdrills', 'talk', () => {
   const root = h('div', { class: 'stack' });
   root.append(head('Pattern drills', 'One frame, five fillers. Say the whole sentence each time, fast, until the frame comes out by itself.', '型 Drills'));
   root.append(h('div', { class: 'list' }, TALK.drills.map((d, i) => h('button', { class: 'li', type: 'button', onclick: () => go('tdrill', { i }) }, markEl('型'),
-    h('span', { class: 'body' }, h('b', { class: 'jp' }, d.f), h('span', {}, d.en)), h('span', { class: 'end' }, tkPart('drl')[i] ? h('span', { class: 'pill good' }, ico('check')) : h('span', { class: 'pill' }, d.subs.length))))));
+    h('span', { class: 'body' }, h('b', { class: 'jp' }, frameJp(d)), h('span', {}, frameEn(d))), h('span', { class: 'end' }, tkPart('drl')[i] ? h('span', { class: 'pill good' }, ico('check')) : h('span', { class: 'pill' }, d.subs.length))))));
   return root;
 });
 view('tdrill', 'talk', p => {
   const i = clamp(+p.i || 0, 0, TALK.drills.length - 1), d = TALK.drills[i], root = h('div', { class: 'stack' });
-  root.append(head(d.f, d.en, '型 Drill ' + (i + 1) + ' of ' + TALK.drills.length));
+  root.append(head(frameJp(d), frameEn(d), '型 Drill ' + (i + 1) + ' of ' + TALK.drills.length));
   root.append(Anticipate(shuffle(drillLines(d)).map(l => ({ cue: l.en, jp: l.jp })), { onDone: () => { tkPart('drl')[i] = 1; save(); return [i + 1 < TALK.drills.length ? h('button', { class: 'btn pink', type: 'button', onclick: () => swap('tdrill', { i: i + 1 }) }, 'Next drill', ico('next')) : null, h('button', { class: 'btn', type: 'button', onclick: () => back() }, 'All drills')]; } }));
   root.append(h('details', { class: 'card' }, h('summary', {}, 'All five sentences, hands-free'), ShadowPlayer(drillLines(d))));
   return root;
@@ -359,7 +360,7 @@ view('talkdaily', 'talk', p => {
   root.append(box);
   const rounds = [
     ['Core words', () => Anticipate(workoutWords().map(x => { const it = ITEMS[x.k]; return { key: x.k, cue: it.m, jp: it.w, kana: it.r, say: it.r, fresh: x.fresh }; }), { onDone: () => nextBtn(1) })],
-    ['Pattern drill: ' + drill.f, () => Anticipate(shuffle(drillLines(drill)).map(l => ({ cue: l.en, jp: l.jp })), { onDone: () => nextBtn(2) })],
+    ['Pattern drill: ' + frameJp(drill), () => Anticipate(shuffle(drillLines(drill)).map(l => ({ cue: l.en, jp: l.jp })), { onDone: () => nextBtn(2) })],
     ['Mission: ' + mis.title, () => Mission(mis, { onDone: () => { finish(); return [h('button', { class: 'btn pink', type: 'button', onclick: () => tab('talk') }, 'Done')]; } })]
   ];
   const dots = h('ol', { class: 'rounds' }, rounds.map((r, i) => h('li', { 'data-i': i }, r[0])));

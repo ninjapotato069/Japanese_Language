@@ -70,24 +70,51 @@ function makePapers(words) {
   const form = w => w.kanji || w.kana;
   // the sentence a word appears in, with the word swapped for something else
   const inSent = (w, i, fn) => { const x = w.x[i % w.x.length], s = sent[x[0]][0], f = form(w); return esc(s.slice(0, x[1])) + fn(f) + esc(s.slice(x[1] + f.length)); };
-  const withX = words.filter(w => w.x);
+  // keep only examples where the word stands on its own: not inside a verb (通りました, 流れて) or a longer word (研究者)
+  const NEXT = { noun: /^(?:[をがはにのでとへやかもだじ、。！？]|し|す|さ[れせ]|まで|より|など|なら|くらい|ぐらい|ばかり|だけ)/, naadj: /^[なにだでじのをがはもと、。さ]/ };
+  // usage-question distractors only use slots that pick their word (～を見る, ～に慣れる). Slots that take almost any word are left out:
+  // ～の, ～です, ～について, ～をする, and a する-verb with no object (［昇進］したのですか)
+  const TIGHT = { noun: /^(?!を[しすさ])(?:[をがは]|に(?!つい|対し|関し|よ[っり]|とっ|は|も)|で(?!す|しょ)|し|す|さ[れせ])/ };
+  const SURU = /^(?:し|す|さ[れせ])/;      // する-nouns: 開催する, 採用される
+  const KAN = /[一-鿿々]/;
+  // mode: undefined = any slot where the word stands alone, 'tight' = distractor slots, 'suru' = the word used with する,
+  // 'object' = with する and an object before it (警察は彼女を［参照］した), so the object shows the word does not fit
+  const plain = (w, mode) => {
+    if (!w.x) return null;
+    const rule = mode === 'suru' || mode === 'object' ? SURU : (mode === 'tight' ? TIGHT : NEXT)[w.c];
+    const x = w.x.filter(e => { const s = sent[e[0]][0], f = form(w), nx = s.slice(e[1] + f.length);
+      if (KAN.test(s[e[1] - 1] || '')) return false;      // the end of a longer word: 立候補, 大学生
+      if ((mode === 'object' || (mode === 'tight' && SURU.test(nx))) && (s.slice(0, e[1]).indexOf('を') < 0 || /(?:これ|それ|あれ|何)を$/.test(s.slice(0, e[1])))) return false;
+      return w.c === 'adv' ? !/^[ったてまるれらりろ]/.test(nx) : rule ? rule.test(nx) : true; });
+    return x.length ? Object.assign({}, w, { x }) : null;
+  };
+  const suru = w => w.c === 'noun' && w.kanji.length >= 2 ? plain(w, 'suru') : null;
+  const SURUOBJ = words.map(w => w.c === 'noun' && w.kanji.length >= 2 ? plain(w, 'object') : null).filter(Boolean);
+  const rank = (w, e) => { const nx = sent[e[0]][0].slice(e[1] + form(w).length); return /^を/.test(nx) ? 0 : /^[にで]/.test(nx) ? 1 : 2; };
+  // words too close in meaning to serve as each other's wrong answers: a shared kanji (都市, 都会) or a shared English word
+  const STOPW = new Set(['thing', 'things', 'something', 'someone', 'person', 'people', 'with', 'from', 'that', 'this', 'into', 'oneself', 'used', 'also', 'very', 'make', 'have', 'take', 'being']);
+  const gl = w => (w.en || '').toLowerCase().split(/[^a-z]+/).filter(t => t.length > 3 && !STOPW.has(t));
+  const related = (a, b) => { const fb = form(b); if ([...form(a)].some(ch => KAN.test(ch) && fb.indexOf(ch) >= 0)) return true; const ga = new Set(gl(a)); return gl(b).some(t => ga.has(t)); };
+  const withX = words.map(w => plain(w)).filter(Boolean);
   const pools = {
     kanji: base.shuffle(words.filter(w => w.kanji && w.kana.length >= 2)),
     hyoki: base.shuffle(words.filter(w => w.hy && w.hy.length >= 3)),
     bun: base.shuffle(withX),
-    iikae: base.shuffle(words.filter(w => w.sy)),
-    yoho: base.shuffle(withX.filter(w => w.c === 'noun' || w.c === 'naadj' || w.c === 'adv')),
+    iikae: base.shuffle(words.filter(w => w.sy).map(w => plain(w) || Object.assign({}, w, { x: null }))),
+    // する-nouns, whose use depends on the sentence (not names of things). Adverbs and な-adjectives are left out: they too often
+    // read naturally in another word's sentence (更に明日雨が降る, 危険な機械), which would make a wrong answer right
+    yoho: base.shuffle(withX.filter(w => suru(w))),
     bunpo: base.shuffle((PACK.grammar || []).reduce((a, u) => a.concat(u.points.reduce((b, p) => b.concat(p.q.map(q => ({ q, p }))), [])), []))
   };
   const byClass = {};
   words.forEach(w => (byClass[w.c] = byClass[w.c] || []).push(w));
-  const COUNT = { n4: [7, 5, 8, 4, 4, 13, 4], n3: [8, 6, 11, 5, 5, 13, 5], n2: [6, 5, 8, 5, 5, 12, 5], n1: [6, 0, 8, 6, 6, 10, 5] }[LV];
+  const COUNT = { n4: [7, 5, 9, 4, 3, 13, 4], n3: [8, 6, 11, 5, 5, 13, 5], n2: [6, 5, 9, 5, 4, 12, 5], n1: [6, 0, 8, 6, 6, 10, 5] }[LV];
   const take = (pool, P, n) => { const out = []; if (!pool.length) return out; for (let i = 0; i < n; i++) out.push(pool[((P - 1) * n + i) % pool.length]); return out; };
   const rot = (arr, P, n) => { const out = []; for (let i = 0; i < Math.min(n, (arr || []).length); i++) out.push(arr[(P - 1 + i) % arr.length]); return out; };
   // four options in a seeded order; returns { o, a } with a counted from 1
   const opts = (r, right, wrong) => { const o = r.shuffle([right].concat(wrong.slice(0, 3))); return { o, a: o.indexOf(right) + 1 }; };
   const others = (r, w, n, show) => { const seen = new Set([show(w)]), out = []; const pool = r.shuffle(byClass[w.c].length > 8 ? byClass[w.c] : words);
-    for (const x of pool) { const t = show(x); if (!seen.has(t) && x.en !== w.en) { seen.add(t); out.push(x); if (out.length >= n) break; } } return out; };
+    for (const x of pool) { const t = show(x); if (!seen.has(t) && x.en !== w.en && !related(w, x)) { seen.add(t); out.push(x); if (out.length >= n) break; } } return out; };
   function readingWrong(r, w) {
     const out = [], seen = new Set([w.kana]);
     const add = t => { if (t && !seen.has(t) && out.length < 3) { seen.add(t); out.push(t); } };
@@ -111,16 +138,26 @@ function makePapers(words) {
       s1.push({ t: 'bunmyaku', s: inSent(w, i, () => BLANK), o: o.o, a: o.a, w: form(w) + (w.kanji ? '（' + w.kana + '）' : '') + ' = ' + w.en + '. ' + sent[w.x[i % w.x.length][0]][1] });
     });
     take(pools.iikae, P, COUNT[3]).forEach((w, i) => {
-      const o = opts(r, w.sy, others(r, w, 4, form).map(form).filter(t => t !== w.sy));
+      const sy = { kanji: w.sy, kana: w.sy, en: '' };
+      const o = opts(r, w.sy, others(r, w, 6, form).filter(x => !related(sy, x)).map(form).filter(t => t !== w.sy));
       s1.push({ t: 'iikae', s: w.x ? inSent(w, i, ul) : ul(form(w)), o: o.o, a: o.a, w: form(w) + ' ≈ ' + w.sy + ' (' + w.en + ')' });
     });
-    take(pools.yoho, P, COUNT[4]).forEach((w, i) => {
+    // a word that cannot get three good wrong sentences is skipped, and the next word in the pool takes its place
+    for (let k = 0, i = 0; i < COUNT[4] && k < pools.yoho.length; k++) {
+      const w = pools.yoho[((P - 1) * COUNT[4] + k) % pools.yoho.length];
       const f = form(w), right = inSent(w, i, ul);
-      const wrong = others(r, w, 12, form).filter(x => x.x && x.c === w.c).slice(0, 3).map(x => inSent(x, i, () => ul(f)));
-      if (wrong.length < 3) return;
+      // two wrong sentences from other する-nouns with an object (警察は彼女を［参照］した), the way the real distractors are built,
+      // and one from a noun slot, preferring ～を over ～に/～で over ～が/～は (the last two accept more words)
+      const sx = r.shuffle(SURUOBJ).filter(x => x.id !== w.id && x.en !== w.en && !related(w, x)).slice(0, 2);
+      const tight = others(r, w, 24, form).map(x => plain(x, 'tight')).filter(x => x && x.c === w.c && !sx.some(y => y.id === x.id))
+        .map(x => { const e = x.x.slice().sort((a, b) => rank(x, a) - rank(x, b))[0]; return Object.assign({}, x, { x: [e], rk: rank(x, e) }); })
+        .sort((a, b) => a.rk - b.rk);
+      const wrong = sx.concat(tight).slice(0, 3).map(x => inSent(x, i, () => ul(f)));
+      if (wrong.length < 3) continue;
       const o = opts(r, right, wrong);
       s1.push({ t: 'yoho', s: '<b>' + esc(f) + '</b>', o: o.o, a: o.a, w: f + (w.kanji ? '（' + w.kana + '）' : '') + ' = ' + w.en + '. Only one sentence uses it naturally.' });
-    });
+      i++;
+    }
     const s2 = { bunpo: [], kumitate: [], tanbun: [], chubun: null };
     take(pools.bunpo, P, COUNT[5]).forEach(x => {
       const o = opts(r, x.q[1][0], x.q[1].slice(1));
