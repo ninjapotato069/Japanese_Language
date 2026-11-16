@@ -81,14 +81,14 @@ const ico = name => h('span', { class: 'ico', html: ICON[name], 'aria-hidden': '
 
 /* ---------- storage: this browser first, Claude account sync when the viewer allows it ---------- */
 const KEY = 'n5cc.v1';
-const APP_VERSION = '1.7';
+const APP_VERSION = '2.0.0';
 // games where a lower score wins (times). Kept here, not read from GAMES: saved copies are merged while the app is still loading, before the games file has run
 const LOWER_BETTER = { match: 1 };
 const BOOT_NOTES = [];   // problems met while opening saved progress; written to the error log once logging is ready
 function blankState() {
   return { v: 1, updated: 0, created: today(), setup: false,
-    set: { exam: 'jlpt26', date: '2026-12-06', mins: 30, kana: 'none', rate: 0.9, theme: 'auto', sfx: true, voice: '', once: true, showOpts: false, love: true },
-    xp: 0, days: {}, streak: { n: 0, best: 0, last: '' }, srs: {}, les: {}, mocks: {}, drafts: {}, hist: [], ts: {}, games: {}, seen: {}, today: null, lv: { hello: '', st: 0, pp: {} } };
+    set: { exam: 'jlpt27', date: '2027-07-04', mins: 30, kana: 'none', rate: 0.9, theme: 'auto', sfx: true, voice: '', once: true, showOpts: false, love: true, lv: 'n5' },
+    xp: 0, days: {}, streak: { n: 0, best: 0, last: '' }, srs: {}, les: {}, mocks: {}, drafts: {}, hist: [], ts: {}, games: {}, seen: {}, today: null, lv: { hello: '', st: 0, pp: {} }, L: {}, talk: {} };
 }
 function normalize(s) {
   const b = blankState();
@@ -97,13 +97,58 @@ function normalize(s) {
   s.set = Object.assign(b.set, s.set || {});
   return s;
 }
+/* Progress that belongs to one JLPT level (mock scores, drafts, today's plan). The active level's copy sits in the usual
+   slots; the other levels wait in s.L. This moves a state from its current level to another one. */
+const LVKEYS = ['mocks', 'drafts', 'hist', 'ts', 'seen'];
+const levelOf = s => (s && s.set && s.set.lv) || 'n5';
+function switchLevelState(s, to) {
+  const from = levelOf(s);
+  if (from === to) return s;
+  s.L = s.L || {};
+  const keep = { pp: (s.lv && s.lv.pp) || {} };
+  LVKEYS.forEach(k => { keep[k] = s[k]; });
+  s.L[from] = keep;
+  const b = s.L[to] || {};
+  delete s.L[to];
+  s.mocks = b.mocks || {}; s.drafts = b.drafts || {}; s.hist = b.hist || []; s.ts = b.ts || {}; s.seen = b.seen || {};
+  s.today = null;
+  s.lv = s.lv || {}; s.lv.pp = b.pp || {};
+  s.set = s.set || {}; s.set.lv = to;
+  return s;
+}
+/* merge the level-specific parts of two copies; x is the newer one */
+function mergeLevelData(x, y) {
+  x = x || {}; y = y || {};
+  const keys = (a, b) => Array.from(new Set(Object.keys(a || {}).concat(Object.keys(b || {})))), r = {};
+  r.mocks = {};
+  keys(x.mocks, y.mocks).forEach(p => {
+    const u0 = (x.mocks || {})[p] || {}, v0 = (y.mocks || {})[p] || {}, o = {};
+    keys(u0, v0).forEach(s => { const u = u0[s], v = v0[s]; o[s] = !u ? v : !v ? u : ((u.n || 0) > (v.n || 0) || ((u.n || 0) === (v.n || 0) && (u.d || '') >= (v.d || '')) ? u : v); });
+    r.mocks[p] = o;
+  });
+  const seenH = new Set();
+  r.hist = (y.hist || []).concat(x.hist || []).filter(e => { const k = [e.p, e.s, e.sc, e.d, e.m].join('|'); if (seenH.has(k)) return false; seenH.add(k); return true; }).slice(-300);
+  r.ts = {};
+  keys(x.ts, y.ts).forEach(t => { const u = (x.ts || {})[t], v = (y.ts || {})[t]; r.ts[t] = (!v || (u && u[1] >= v[1]) ? u : v).slice(); });
+  r.seen = {};
+  keys(x.seen, y.seen).forEach(t => {
+    const u0 = (x.seen || {})[t] || {}, v0 = (y.seen || {})[t] || {}, o = {};
+    keys(u0, v0).forEach(p => { const u = u0[p] || '', v = v0[p] || '', L = Math.max(u.length, v.length); let str = ''; for (let i = 0; i < L; i++) str += (u[i] === '1' || v[i] === '1') ? '1' : '0'; o[p] = str; });
+    r.seen[t] = o;
+  });
+  r.drafts = Object.assign({}, y.drafts || {}, x.drafts || {});
+  r.pp = Object.assign({}, y.pp || {}, x.pp || {});
+  return r;
+}
 /* merge two copies of progress so that nothing done on either copy is lost */
 function mergeStates(a, b) {
   if (!a || a.v !== 1) return b;
   if (!b || b.v !== 1) return a;
   if ((b.resetAt || 0) > (a.updated || 0)) return b;   // a reset or restore on one copy wins over older work
   if ((a.resetAt || 0) > (b.updated || 0)) return a;
-  const nw = (a.updated || 0) >= (b.updated || 0) ? a : b, od = nw === a ? b : a;
+  const nw = (a.updated || 0) >= (b.updated || 0) ? a : b;
+  let od = nw === a ? b : a;
+  if (levelOf(od) !== levelOf(nw)) od = switchLevelState(JSON.parse(JSON.stringify(od)), levelOf(nw));   // compare like with like
   const m = JSON.parse(JSON.stringify(nw));
   const keys = (x, y) => Array.from(new Set(Object.keys(x || {}).concat(Object.keys(y || {}))));
   m.les = {};
@@ -127,34 +172,26 @@ function mergeStates(a, b) {
     keys(x, y).forEach(f => { r[f] = Math.max(+x[f] || 0, +y[f] || 0); });
     m.days[d] = r;
   });
-  m.mocks = {};
-  keys(nw.mocks, od.mocks).forEach(p => {
-    const x = (nw.mocks || {})[p] || {}, y = (od.mocks || {})[p] || {}, r = {};
-    keys(x, y).forEach(s => { const u = x[s], v = y[s]; r[s] = !u ? v : !v ? u : ((u.n || 0) > (v.n || 0) || ((u.n || 0) === (v.n || 0) && (u.d || '') >= (v.d || '')) ? u : v); });
-    m.mocks[p] = r;
-  });
-  const seenH = new Set();
-  m.hist = (od.hist || []).concat(nw.hist || []).filter(x => { const k = [x.p, x.s, x.sc, x.d, x.m].join('|'); if (seenH.has(k)) return false; seenH.add(k); return true; }).slice(-300);
-  m.ts = {};
-  keys(nw.ts, od.ts).forEach(t => { const x = (nw.ts || {})[t], y = (od.ts || {})[t]; m.ts[t] = (!y || (x && x[1] >= y[1]) ? x : y).slice(); });
+  const lvd = mergeLevelData(nw, od);
+  m.mocks = lvd.mocks; m.hist = lvd.hist; m.ts = lvd.ts;
   m.games = Object.assign({}, od.games || {}, nw.games || {});
   keys(nw.games, od.games).forEach(k => {
     const x = (nw.games || {})[k], y = (od.games || {})[k];
     if (typeof x !== 'number' || typeof y !== 'number') return;
     m.games[k] = LOWER_BETTER[k.split(':')[0]] ? Math.min(x, y) : Math.max(x, y);
   });
-  m.seen = {};
-  keys(nw.seen, od.seen).forEach(t => {
-    const x = (nw.seen || {})[t] || {}, y = (od.seen || {})[t] || {}, r = {};
-    keys(x, y).forEach(p => { const u = x[p] || '', v = y[p] || '', L = Math.max(u.length, v.length); let s = ''; for (let i = 0; i < L; i++) s += (u[i] === '1' || v[i] === '1') ? '1' : '0'; r[p] = s; });
-    m.seen[t] = r;
-  });
+  m.seen = lvd.seen;
   const sx = nw.streak || {}, sy = od.streak || {};
   m.streak = ((sx.last || '') > (sy.last || '') || ((sx.last || '') === (sy.last || '') && (sx.n || 0) >= (sy.n || 0))) ? Object.assign({}, sx) : Object.assign({}, sy);
   m.streak.best = Math.max(sx.best || 0, sy.best || 0, m.streak.n || 0);
   const lx = nw.lv || {}, ly = od.lv || {};
   m.lv = { hello: (lx.hello || '') > (ly.hello || '') ? lx.hello : (ly.hello || lx.hello || ''), st: Math.max(lx.st || 0, ly.st || 0), pp: Object.assign({}, ly.pp || {}, lx.pp || {}) };
   if (od.today && (!nw.today || od.today.date > nw.today.date)) m.today = JSON.parse(JSON.stringify(od.today));
+  m.L = {};
+  keys(nw.L, od.L).forEach(k => { const x = (nw.L || {})[k], y = (od.L || {})[k]; m.L[k] = x && y ? mergeLevelData(x, y) : JSON.parse(JSON.stringify(x || y)); });
+  delete m.L[levelOf(m)];
+  m.talk = {};
+  keys(nw.talk, od.talk).forEach(k => { const x = (nw.talk || {})[k], y = (od.talk || {})[k]; m.talk[k] = (x && typeof x === 'object') ? Object.assign({}, y || {}, x) : (x != null ? x : y); });
   m.xp = Math.max(nw.xp || 0, od.xp || 0);
   m.setup = !!(nw.setup || od.setup);
   m.mig = Math.max(nw.mig || 0, od.mig || 0);
@@ -234,6 +271,7 @@ const Cloud = {
         S = normalize(pristine() ? remote : mergeStates(S, remote));
         migrate();
         persist();
+        if (levelMismatch()) { location.reload(); return; }   // the synced copy is on another level: reopen at that level
         this.base = remote.updated || 0;
         if (JSON.stringify(S) !== before) { SHEETS.slice().forEach(cl => cl()); applyTheme(); TTS.pickVoice(); render(true); }
         if ((S.updated || 0) > this.base) this.queue(true);
@@ -270,6 +308,8 @@ const Cloud = {
     updateSync();
   }
 };
+// true when saved progress says one level but this page was loaded for another (only possible right after a sync)
+function levelMismatch() { const want = levelOf(S); return want !== LV && (want === 'n5' || !!PACKS[want]); }
 function flushAll() { if (S.updated) persist(); if (Cloud.dirty) { clearTimeout(Cloud.timer); Cloud.flush(); } }
 window.__flush = flushAll;
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushAll(); });

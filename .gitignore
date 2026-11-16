@@ -1,0 +1,5 @@
+dist/
+*.jks
+android/out/
+android/classes/
+__pycache__/

@@ -111,14 +111,14 @@
 チェックイン=Check-in | おかいけい=The bill | よやく=A reservation | ラーメン ひとつ=One ramen | りょうしゅうしょ=A receipt (formal)
 = ＿ても いいですか。 | May I _?
 ここに すわっ=sit here | しゃしんを とっ=take a photo | カードで はらっ=pay by card | これを つかっ=use this | まどを あけ=open the window | しつもんし=ask a question
-= ＿て いただけますか。 | Could you _ for me?
-おしえ=tell | もういちど いっ=say it once more | ここに かい=write it here | ちょっと てつだっ=help a little | みち を おしえ=show the way | しゃしんを とっ=take a photo
+= ＿て いただけますか。 | Could you _?
+おしえ=tell me | もういちど いっ=say it once more | ここに かい=write it here | ちょっと てつだっ=help me a little | みちを おしえ=show me the way | しゃしんを とっ=take a photo for me
 = ＿たいです。 | I want to _.
 にほんで はたらき=work in Japan | にほんごを もっと はなし=speak more Japanese | おんせんに いき=go to a hot spring | やすみ=rest | これを かい=buy this
 = ＿が すきです。 | I like _.
 にほんの りょうり=Japanese food | えいが=films | あるくの=walking | しずかな ところ=quiet places | からい もの=spicy food
 = ＿は ちょっと…。 | _ is a bit… (soft refusal)
-あしたは=Tomorrow | おさけは=Alcohol | なまの さかなは=Raw fish | こんしゅうは=This week | それは=That
+あした=Tomorrow | おさけ=Alcohol | なまの さかな=Raw fish | こんしゅう=This week | それ=That
 = ＿ことが あります。 | I have _ before.
 にほんに いった=been to Japan | すしを たべた=eaten sushi | ふじさんを みた=seen Mt Fuji | しんかんせんに のった=ridden the shinkansen | きものを きた=worn a kimono
 = ＿と おもいます。 | I think _.
@@ -130,7 +130,7 @@
 = ＿まで どのぐらい かかりますか。 | How long does it take to _?
 えき=the station | くうこう=the airport | おおさか=Osaka | かいしゃ=the office | あるいて ホテル=the hotel on foot
 = ＿の ほうが いいです。 | I'd prefer _.
-こっち=this one | やすい=the cheap one | あした=tomorrow | まどがわ=the window side | あたたかい=the hot one
+こっち=this one | あした=tomorrow | まどがわ=the window side | ちいさい サイズ=the small size | あたたかい おちゃ=hot tea
 = ＿ませんか。 | Won't you _? (invitation)
 いっしょに たべ=eat together | コーヒーを のみ=have a coffee | こんど あい=meet sometime | すこし やすみ=take a short break | えいがを みに いき=go to see a film
 

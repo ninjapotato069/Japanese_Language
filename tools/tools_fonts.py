@@ -6,9 +6,9 @@ from fontTools import subset
 from fontTools.ttLib import TTFont
 
 FS = pathlib.Path(sys.argv[1])            # node_modules/@fontsource
-ROOT = pathlib.Path(__file__).resolve().parent
-OUT = ROOT / 'fonts'
-html = ''.join((ROOT / 'dist' / n).read_text(encoding='utf-8') for n in ['n5-cheat-codes.html', 'n5-neutral.html'] if (ROOT / 'dist' / n).exists())
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+OUT = ROOT / 'app' / 'fonts'
+html = (ROOT / 'dist' / 'artifact.html').read_text(encoding='utf-8')
 used = set(ord(c) for c in html)
 for a, b in [(0x20, 0x7E), (0xA0, 0xFF), (0x2000, 0x206F), (0x2190, 0x21FF), (0x3000, 0x30FF), (0xFF01, 0xFF5E)]:
     used.update(range(a, b + 1))

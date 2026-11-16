@@ -17,7 +17,8 @@ function openTask(x) {
     case 'review': return go('review');
     case 'lesson': return go('lesson', { id: x.id });
     case 'listen': return go('listenset', { type: 'mix', task: 1 });
-    case 'read': return go('readset', { type: pick(['tanbun', 'chubun', 'joho']), task: 1 });
+    case 'read': return go('readset', { type: pick(READ_TYPES()), task: 1 });
+    case 'talk': return go('talkdaily', { task: 1 });
     case 'mock': return go('exam', x.full ? { p: x.p, s: 1, mode: 'exam', full: 1 } : { p: x.p, s: x.s, mode: 'exam' });
     case 'vault': return x.id === 'all' ? go('vault', { task: 1 }) : go('vaultset', { id: x.id, task: 1 });
     case 'script': return go('route', { anchor: 'script' });
@@ -64,7 +65,7 @@ function predict() {
   if (!known.length) return null;
   const fb = sum(known) / known.length, partial = known.length < 3;
   const s12 = Math.round((a1 != null ? a1 : fb) * 42 + (a2 != null ? a2 : fb) * 78), s3 = Math.round((a3 != null ? a3 : fb) * 60), tot = s12 + s3;
-  const pass = s12 >= 38 && s3 >= 19 && tot >= 80, safe = s12 >= 60 && s3 >= 30 && tot >= 100;
+  const pass = s12 >= 38 && s3 >= 19 && tot >= PASSMARK, safe = s12 >= 60 && s3 >= 30 && tot >= 100;
   return { s12, s3, tot, pass, safe, partial, src };
 }
 function mbar(label, v, max, min, safe) {
@@ -77,11 +78,11 @@ function predictorCard() {
   const card = h('div', { class: 'card stack' }, h('div', { class: 'eyebrow' }, 'Pass predictor'));
   if (!P) {
     card.append(h('p', { class: 'mute', style: 'margin:0' }, 'Do any mock section or a few drills and this turns into your live pass forecast: section by section, against the real pass lines.'),
-      h('button', { class: 'btn small', type: 'button', onclick: () => tab('mocks') }, 'Open the 40 mocks'));
+      h('button', { class: 'btn small', type: 'button', onclick: () => tab('mocks') }, 'Open the ' + PAPERS.length + ' mocks'));
     return card;
   }
   card.append(h('div', { class: 'verdict ' + (P.safe ? 'good' : P.pass ? 'warn' : 'bad') }, P.safe ? 'On track to pass' : P.pass ? 'Borderline pass' : 'At risk right now'),
-    h('div', { class: 'math' }, mbar('Vocab + grammar', P.s12, 120, 38, 72), mbar('Listening', P.s3, 60, 19, 36), mbar('Total', P.tot, 180, 80, 108)),
+    h('div', { class: 'math' }, mbar('Vocab + grammar', P.s12, 120, 38, 72), mbar('Listening', P.s3, 60, 19, 36), mbar('Total', P.tot, 180, PASSMARK, 108)),
     h('div', { class: 'small mute' }, 'Red line = pass minimum. ' + (P.partial ? 'Partial estimate: take all three sections for a full forecast.' : 'Based on your last mock attempts.')));
   return card;
 }
@@ -121,7 +122,7 @@ view('home', 'home', () => {
   root.append(greetCard(), h('div', { class: 'hero' }, hero, missionCard(ts)));
   const tile = (label, v, max, to, sub) => h('button', { class: 'tile', type: 'button', onclick: to }, h('span', { class: 'eyebrow' }, label), h('span', { class: 'v' }, String(v), max ? h('small', {}, ' / ' + max) : null), max ? bar(v / max) : h('span', { class: 'small mute' }, sub || ''));
   root.append(h('div', { class: 'tiles' },
-    tile('Kana', S.set.kana === 'both' ? KANA_TOTAL : c.kana, KANA_TOTAL, () => go('kana')),
+    LV === 'n5' ? tile('Kana', S.set.kana === 'both' ? KANA_TOTAL : c.kana, KANA_TOTAL, () => go('kana')) : tile('Speaking', talkScore().done, talkScore().total, () => tab('talk')),
     tile('Kanji', c.kj, KANJI.length, () => go('kanji')),
     tile('Words', c.vo, VOCAB.all.length, () => go('vocab')),
     tile('Grammar', c.gr, GPTS.length, () => go('grammar')),
@@ -130,48 +131,80 @@ view('home', 'home', () => {
   root.append(h('div', { class: 'grid two' }, predictorCard(), weakCard()));
   root.append(h('div', { class: 'quick' },
     h('button', { type: 'button', onclick: () => go('review') }, h('b', {}, '復 Review'), h('span', {}, c.due ? plural(c.due, 'card') + ' due' : 'Nothing due')),
-    h('button', { type: 'button', onclick: () => go('game', { id: 'kana' }) }, h('b', {}, '仮 Kana Rush'), h('span', {}, '60-second warm-up')),
+    LV === 'n5' ? h('button', { type: 'button', onclick: () => go('game', { id: 'kana' }) }, h('b', {}, '仮 Kana Rush'), h('span', {}, '60-second warm-up')) : null,
+    h('button', { type: 'button', onclick: () => go('talkdaily') }, h('b', {}, '話 Talk workout'), h('span', {}, 'Ten minutes of speaking')),
     h('button', { type: 'button', onclick: () => go('listenset', { type: 'mix' }) }, h('b', {}, '聞 Listening'), h('span', {}, '4 audio questions')),
     h('button', { type: 'button', onclick: () => { const q = mockQueue().next(); go('exam', { p: q.p, s: q.s, mode: 'practice' }); } }, h('b', {}, '試 Random section'), h('span', {}, 'Practice mode, instant marking')),
     h('button', { type: 'button', onclick: () => go('vault') }, h('b', {}, '暗 Cheat sheets'), h('span', {}, VAULT_ALL.length + ' by-heart tables'))));
   root.append(sparkCard());
-  cloudReady.then(() => { if (!root.isConnected) return; if (!S.setup) setupSheet(); else { helloSheet(); streakPop(); notifyAsk(); } });
+  cloudReady.then(() => { if (!root.isConnected) return; if (!S.setup) setupSheet(); else { if (!whatsNewOnce()) helloSheet(); streakPop(); notifyAsk(); } });
   return root;
 });
 
 /* ---------- route: pass maths, plan, cheat codes, exam day ---------- */
-const SCRIPT = [
-  ['7 days before', ['Mocks only: one section a day in Exam mode, plus your review deck.', 'One full mock (all three sections, 90 minutes) on the weekend.', 'Get your test voucher (受験票) as soon as it is issued and check the venue and route.']],
-  ['The day before', ['Vault quick pass: dates, counters, て-form, こそあど, question words.', 'Pack: test voucher, photo ID, HB pencils, eraser, an analogue watch, water.', 'No new material. Sleep early.']],
-  ['Exam morning', ['Light breakfast. Five minutes of Kana Rush and one listening drill to wake your ears up.', 'Arrive 30 minutes early. Phone off and away.']],
-  ['Vocabulary · 20 min', ['About 50 seconds per question. Never leave a bubble empty: wrong answers cost nothing.', 'Kanji reading: check small っ, long vowels and the special dates.']],
-  ['Grammar & reading · 40 min', ['Grammar in about 12 minutes, then reading.', 'For ★ questions, write the four pieces in order in the margin first.', 'Reading: read the question first, then find the line that answers it.']],
-  ['Listening · 30 min', ['Read the printed options before each audio starts.', 'Mark your answer straight away; each audio plays once.', 'Parts 3 and 4 are spoken only: decide in the pause, then let it go.']],
-  ['Mark sheet', ['Fill each bubble completely with an HB pencil.', 'Every five questions, check the question number matches the row you are marking.']]
-];
 const DATES = [
-  ['JLPT N5 · Sun 6 Dec 2026', 'Registration in India ran from about mid-August to early October 2026, so it has most likely closed. Check with your local test centre.'],
-  ['NAT-TEST 5Q · Sun 13 Dec 2026', 'Same level and question types as N5. India registration deadline: 13 Nov 2026 (through Team Languages). The test runs several times a year.'],
-  ['JLPT N5 · Sun 4 Jul 2027', 'The next JLPT session. Registration usually opens in the spring; watch jlpt.jp and your local centre.']
+  ['JLPT ' + LVNAME + ' · Sun 6 Dec 2026', 'Registration in India ran from about mid-August to early October 2026 and has closed.'],
+  ['NAT-TEST ' + LVINFO[LV].nat + ' · Sun 13 Dec 2026', 'Same level and question types as JLPT ' + LVNAME + '. India registration (through Team Languages) closed on 13 Nov 2026. The test runs several times a year.'],
+  ['JLPT ' + LVNAME + ' · Sun 4 Jul 2027', 'The next JLPT session. Registration usually opens in the spring; watch jlpt.jp and your local centre.'],
+  ['JLPT ' + LVNAME + ' · Sun 5 Dec 2027', 'The JLPT is held on the first Sunday of July and of December. Registration for December usually opens in August.']
 ];
 const SOURCES = [
   ['JLPT official site', 'https://www.jlpt.jp/e/', 'Levels, dates and the scoring and pass rules'],
-  ['NAT-TEST official site', 'https://www.nat-test.com/', 'Dates and the 5Q (N5-level) format'],
+  ['NAT-TEST official site', 'https://www.nat-test.com/', 'Dates and the ' + LVINFO[LV].nat + ' (' + LVNAME + '-level) format'],
   ['Team Languages', 'https://teamlanguages.com/', 'NAT-TEST registration and venues in India'],
   ['Wikipedia: Japanese-Language Proficiency Test', 'https://en.wikipedia.org/wiki/Japanese-Language_Proficiency_Test', 'Background on levels and scoring'],
   ['Tofugu: Learn Hiragana', 'https://www.tofugu.com/japanese/learn-hiragana/', 'The picture-hook method behind the kana memory hooks'],
   ["Tae Kim's Guide to Japanese", 'https://guidetojapanese.org/learn/', 'Plain explanations of the grammar patterns'],
-  ['JLPT Sensei: N5 grammar list', 'https://jlptsensei.com/jlpt-n5-grammar-list/', 'Cross-check for the 75 patterns'],
-  ['Tanos: JLPT N5 lists', 'http://www.tanos.co.uk/jlpt/jlpt5/', 'The classic N5 vocabulary and kanji lists'],
+  ['JLPT Sensei: ' + LVNAME + ' grammar list', 'https://jlptsensei.com/jlpt-' + LV + '-grammar-list/', 'Cross-check for the grammar patterns'],
+  ['Tanos: JLPT ' + LVNAME + ' lists', 'http://www.tanos.co.uk/jlpt/jlpt' + LVN + '/', 'The classic ' + LVNAME + ' vocabulary and kanji lists'],
+  ['JMdict and KANJIDIC (EDRDG)', 'https://www.edrdg.org/', 'Dictionary data behind the N4 to N1 word and kanji packs (CC BY-SA 4.0)'],
+  ['Tatoeba / Tanaka Corpus', 'https://tatoeba.org/', 'Example sentences for N4 to N1 words (CC BY)'],
   ['NHK News Web Easy', 'https://www3.nhk.or.jp/news/easy/', 'Simple-Japanese news for extra reading once you finish']
 ];
 function extLink(url, label) {
   return h('a', { href: url, target: '_blank', rel: 'noopener' }, label);
 }
+/* ---------- versions ---------- */
+const UPDATE_URL = 'https://raw.githubusercontent.com/ninjapotato069/Japanese_Language/main/docs/version.json';
+const RELEASES_URL = 'https://github.com/ninjapotato069/Japanese_Language/tree/main/releases';
+const newer = (a, b) => { const x = String(a).split('.').map(Number), y = String(b).split('.').map(Number); for (let i = 0; i < 3; i++) { if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0); } return false; };
+function whatsNew(close) {
+  return [h('h2', {}, 'What’s new in ' + APP_VERSION), h('div', { class: 'stack', style: 'gap:10px' }, CHANGES.slice(0, 3).map((c, i) => h('div', { class: 'stack', style: 'gap:2px' },
+    h('b', {}, 'Version ' + c[0] + (i ? '' : ' · now')), h('ul', { style: 'margin:0;padding-left:20px' }, c[1].map(t => h('li', { class: 'small' }, t)))))),
+    h('button', { class: 'btn pink block', type: 'button', onclick: close }, 'Got it')];
+}
+function whatsNewOnce() {
+  if (S.lv.ver === APP_VERSION) return false;
+  const fresh = !S.lv.ver && !S.xp;
+  S.lv.ver = APP_VERSION; save(true);
+  if (fresh || SHEETS.length) return false;
+  whenCalm(() => sheet(whatsNew));
+  return true;
+}
+function updateRow() {
+  const box = h('div', { class: 'stack', style: 'gap:8px' }, h('div', { class: 'row', style: 'justify-content:space-between' },
+    h('span', {}, h('b', {}, 'Version ' + APP_VERSION), ' · ', h('span', { class: 'mute' }, window.AndroidApp ? 'Android app' : 'web')),
+    h('button', { class: 'btn small', type: 'button', onclick: () => sheet(whatsNew) }, 'What’s new')));
+  if (!window.AndroidApp) { box.append(h('p', { class: 'small mute', style: 'margin:0' }, 'The web version updates itself whenever a new version is published.')); return box; }
+  const out = h('div', { class: 'small' });
+  const check = h('button', { class: 'btn small', type: 'button', onclick: async () => {
+    out.textContent = 'Checking…';
+    try {
+      const r = await fetch(UPDATE_URL, { cache: 'no-store' }), v = await r.json();
+      if (v && v.version && newer(v.version, APP_VERSION)) {
+        out.innerHTML = '';
+        out.append(h('b', {}, 'Version ' + v.version + ' is out. '), v.notes ? v.notes + ' ' : '', h('a', { href: 'https://github.com/ninjapotato069/Japanese_Language/raw/main/' + v.apk }, 'Download the new app'),
+          h('div', { class: 'mute' }, 'Install it over this one. Your progress stays.'));
+      } else out.textContent = 'You have the latest version.';
+    } catch (e) { out.innerHTML = ''; out.append('Could not check right now. ', h('a', { href: RELEASES_URL }, 'Open the releases page')); }
+  } }, 'Check for updates');
+  box.append(h('div', { class: 'row' }, check), out);
+  return box;
+}
 function sourcesList() { return h('div', { class: 'list' }, SOURCES.map(s => h('div', { class: 'li' }, h('span', { class: 'body' }, h('b', {}, extLink(s[1], s[0])), h('span', {}, s[2]))))); }
 function sessionRow(se, isToday) {
   const done = isToday && se.tasks.filter(x => !x.extra).every(taskDone);
-  const tags = se.tasks.map(x => { const tg = x.t === 'lesson' ? (LMAP[x.id] ? KINDNAME[LMAP[x.id].kind] : 'Lesson') : x.t === 'mock' ? (x.full ? 'Full mock' : 'Mock S' + x.s) : { review: 'Review', listen: 'Listening', read: 'Reading', vault: 'Cheat sheet', script: 'Exam script' }[x.t]; return h('span', { class: 'pill ' + (x.t === 'mock' ? 'pink' : x.t === 'lesson' ? 'gold' : '') }, tg); });
+  const tags = se.tasks.map(x => { const tg = x.t === 'lesson' ? (LMAP[x.id] ? KINDNAME[LMAP[x.id].kind] : 'Lesson') : x.t === 'mock' ? (x.full ? 'Full mock' : 'Mock S' + x.s) : { review: 'Review', listen: 'Listening', read: 'Reading', vault: 'Cheat sheet', script: 'Exam script', talk: 'Talk' }[x.t]; return h('span', { class: 'pill ' + (x.t === 'mock' ? 'pink' : x.t === 'lesson' ? 'gold' : '') }, tg); });
   return h('button', { class: 'sess' + (isToday ? ' today' : '') + (done ? ' done' : ''), type: 'button', onclick: () => sessionSheet(se, isToday) },
     h('span', { class: 'd' }, h('b', {}, String(parseYmd(se.date).getDate())), h('span', {}, fmtDate(se.date, { weekday: 'short' }))),
     h('span', { class: 'tags' }, tags), h('span', { class: 'small mute num' }, isToday ? 'today' : sum(se.tasks, taskMin) + 'm'));
@@ -186,9 +219,9 @@ view('route', 'route', p => {
   const root = h('div', { class: 'stack' }), ex = examInfo(), dl = daysLeft(), ts = todaySession(), fp = futurePlan(), whole = genPlan(today(), remainingLessons(), dl, S.set.mins);
   root.append(head('Your route to 合格', 'The shortest path that still passes: learn only what the test asks, review it on a schedule, then train on real-format mocks.', 'Route'));
   root.append(h('div', { class: 'card stack' }, h('h2', {}, 'Pass maths'),
-    h('p', { class: 'mute', style: 'margin:0' }, 'JLPT N5 pass rules (NAT-TEST 5Q uses a similar 180-point scale). You need all three lines, not just the total.'),
-    h('div', { class: 'math' }, mbar('Vocab + grammar', 38, 120, 38, 72), mbar('Listening', 19, 60, 19, 36), mbar('Total', 80, 180, 80, 108)),
-    h('div', { class: 'note small' }, 'Minimum to pass: 80/180 overall, 38/120 in vocabulary plus grammar & reading, 19/60 in listening. A safe target is 60% in every section (green tick on each bar).')));
+    h('p', { class: 'mute', style: 'margin:0' }, 'JLPT ' + LVNAME + ' pass rules (NAT-TEST ' + LVINFO[LV].nat + ' uses a similar 180-point scale). You need every line, not just the total.'),
+    h('div', { class: 'math' }, mbar('Vocab + grammar', 38, 120, 38, 72), mbar('Listening', 19, 60, 19, 36), mbar('Total', PASSMARK, 180, PASSMARK, 108)),
+    h('div', { class: 'note small' }, PASS_TEXT + ' A safe target is 60% in every section (green tick on each bar).')));
   const phases = h('div', { class: 'phasebar', role: 'img', 'aria-label': 'Plan phases' });
   const totalD = Math.max(1, whole.sessions.length);
   [['p2', 'Learn', whole.learnDays], ['p3', 'Mocks', whole.mockDays], ['p4', 'Final', whole.tail]].forEach(x => { if (x[2] > 0) phases.append(h('span', { class: x[0], style: 'flex:' + x[2] }, x[1] + ' ' + x[2] + 'd')); });
@@ -196,8 +229,8 @@ view('route', 'route', p => {
     h('div', { class: 'kv small' }, h('span', { class: 'mute' }, 'Exam'), h('b', {}, ex.name + ' · ' + fmtLong(ex.date)), h('span', { class: 'mute' }, 'Days left'), h('b', {}, String(Math.max(0, dl))),
       h('span', { class: 'mute' }, 'Lessons left'), h('b', {}, whole.lessons + ' (about ' + Math.round(whole.total / 60) + ' h)'), h('span', { class: 'mute' }, 'Daily time'), h('b', {}, (whole.need || S.set.mins) + ' min needed · you set ' + S.set.mins)),
     totalD > 1 ? phases : null,
-    whole.compressed ? h('div', { class: 'note pink small' }, 'Packed plan: more than your daily time. Raise minutes per day or choose NAT-TEST 13 Dec / JLPT 4 Jul 2027 in settings for a lighter load.') : null,
-    h('button', { class: 'btn small', type: 'button', onclick: () => go('settings') }, 'Change exam, time or kana level'));
+    whole.compressed ? h('div', { class: 'note pink small' }, 'Packed plan: more than your daily time. Raise minutes per day or pick a later exam in settings for a lighter load.') : null,
+    h('button', { class: 'btn small', type: 'button', onclick: () => go('settings') }, 'Change level, exam or daily time'));
   const list = h('div', { class: 'week' });
   const all = [{ date: ts.date, tasks: ts.tasks }].concat(fp.sessions);
   let lastWeek = '', shown = 0;
@@ -212,15 +245,15 @@ view('route', 'route', p => {
   if (all.length > limit) plan.append(h('button', { class: 'btn small', type: 'button', onclick: () => swap('route', { all: 1 }) }, 'Show all ' + all.length + ' sessions'));
   if (dl <= 0) plan.append(h('div', { class: 'empty' }, 'No sessions: the exam date has passed. Pick a new date in settings.'));
   root.append(plan);
-  root.append(h('div', { class: 'card stack' }, h('h2', {}, '10 cheat codes'), h('div', { class: 'codes' }, CORE.CODES.map((c, i) => h('div', { class: 'code' }, h('span', { class: 'cn' }, 'CODE ' + String(i + 1).padStart(2, '0')), h('b', {}, c[0]), h('p', {}, c[1]))))));
-  root.append(h('div', { class: 'card stack' }, h('h2', {}, 'Section tactics'), CORE.SECTIONS.map(s => h('div', { class: 'stack', style: 'gap:6px' }, h('h3', {}, s[0]), h('ul', { style: 'margin:0;padding-left:20px' }, s[1].map(t => h('li', {}, t)))))));
+  root.append(h('div', { class: 'card stack' }, h('h2', {}, '10 cheat codes'), h('div', { class: 'codes' }, levelCodes().map((c, i) => h('div', { class: 'code' }, h('span', { class: 'cn' }, 'CODE ' + String(i + 1).padStart(2, '0')), h('b', {}, c[0]), h('p', {}, c[1]))))));
+  root.append(h('div', { class: 'card stack' }, h('h2', {}, 'Section tactics'), levelSections().map(s => h('div', { class: 'stack', style: 'gap:6px' }, h('h3', {}, s[0]), h('ul', { style: 'margin:0;padding-left:20px' }, s[1].map(t => h('li', {}, t)))))));
   const scr = h('div', { class: 'card stack', id: 'script' }, h('h2', {}, 'Exam-day script'),
-    SCRIPT.map(s => h('div', { class: 'stack', style: 'gap:4px' }, h('h3', {}, s[0]), h('ul', { style: 'margin:0;padding-left:20px' }, s[1].map(t => h('li', {}, t))))),
+    examScript().map(s => h('div', { class: 'stack', style: 'gap:4px' }, h('h3', {}, s[0]), h('ul', { style: 'margin:0;padding-left:20px' }, s[1].map(t => h('li', {}, t))))),
     loveOn() ? h('div', { class: 'note pink' }, ED.routeNote()) : null,
     h('button', { class: 'btn small', type: 'button', onclick: () => { dayRec().scr = 1; save(); checkSession(); toast('Script marked as read'); } }, ico('check'), 'Mark as read'));
   root.append(scr);
   root.append(h('div', { class: 'card stack' }, h('h2', {}, 'Dates and registration'), DATES.map(d => h('div', {}, h('b', {}, d[0]), h('div', { class: 'small mute' }, d[1]))),
-    h('div', { class: 'small mute' }, 'Dates checked in October 2026. Confirm on the official sites before you pay.')));
+    h('div', { class: 'small mute' }, 'Dates checked in November 2026. Confirm on the official sites before you pay.')));
   root.append(h('div', { class: 'card stack' }, h('h2', {}, 'Sources'), h('p', { class: 'small mute', style: 'margin:0' }, 'Lessons, hooks and lists were written for this app and cross-checked against these.'), sourcesList()));
   if (p.anchor) later(120, () => { const el = document.getElementById(p.anchor); if (el) { el.scrollIntoView({ block: 'start' }); if (p.anchor === 'script') { dayRec().scr = 1; save(); checkSession(); } } }, root);
   return root;
@@ -233,21 +266,23 @@ view('learn', 'learn', () => {
   root.append(head('Learn', 'Every lesson runs in three steps: 覚える memorise by heart, わかる understand, テスト test. Pass the test at 80% and the cards join your review deck.', 'Learn'));
   const nl = nextLesson();
   if (nl) root.append(h('button', { class: 'li', type: 'button', style: 'border-color:var(--sheet);border-width:2px', onclick: () => go('lesson', { id: nl.id }) }, markEl(nl.mark), h('span', { class: 'body' }, h('b', {}, 'Next in your plan: ' + nl.title), h('span', {}, KINDNAME[nl.kind] + ' · ' + nl.sub)), h('span', { class: 'end' }, ico('next'))));
-  const coreIds = ids => { const ls = ids.map(i => LMAP[i]); return [ls.filter(l => lessonDone(l.id)).length, ls.length]; };
+  const coreIds = ids => { const ls = ids.map(i => LMAP[i]).filter(Boolean); return ls.length ? [ls.filter(l => lessonDone(l.id)).length, ls.length] : null; };
+  const n5 = LV === 'n5', basics = n5 ? '' : ' (N5 basics, for reference)';
   const mods = [
-    ['仮', 'Kana', 'Hiragana and katakana with picture hooks', 'kana', modProgress('kana')],
-    ['漢', 'Kanji', '103 N5 kanji inside real words', 'kanji', modProgress('kanji')],
-    ['語', 'Vocabulary', VOCAB.decks.length + ' themed decks · ' + VOCAB.all.length + ' words', 'vocab', modProgress('vocab')],
+    n5 ? ['仮', 'Kana', 'Hiragana and katakana with picture hooks', 'kana', modProgress('kana')] : null,
+    ['漢', 'Kanji', KANJI.length.toLocaleString('en') + ' ' + LVNAME + ' kanji inside real words', 'kanji', modProgress('kanji')],
+    ['語', 'Vocabulary', VOCAB.decks.length + (n5 ? ' themed decks · ' : ' decks · ') + VOCAB.all.length.toLocaleString('en') + ' words', 'vocab', modProgress('vocab')],
     ['文', 'Grammar', GRAMMAR.length + ' units · ' + GPTS.length + ' patterns', 'grammar', modProgress('grammar')],
-    ['数', 'Numbers, time and dates', 'Prices, clock times, dates, counters', 'numbers', coreIds(['c-num', 'c-time', 'c-dates', 'c-count'])],
-    ['動', 'Verb and adjective lab', 'Every form of every N5 verb', 'verbs', coreIds(['c-verbs1', 'c-verbs2', 'c-adj'])],
-    ['助', 'Particles', 'は が を に で: half the grammar marks', 'particles', coreIds(['c-part'])],
-    ['聞', 'Listening lab', '960 real-format audio questions', 'listen', null],
-    ['読', 'Reading lab', '160 timed passages and notices', 'read', null],
-    ['暗', 'By-heart vault', VAULT_ALL.length + ' cheat sheets to recite', 'vault', null],
+    ['話', 'Conversation', 'Core words, islands, drills and role-play missions', 'talk', null],
+    ['聞', 'Listening lab', 'Exam-format audio questions from the ' + PAPERS.length + ' papers', 'listen', null],
+    ['読', 'Reading lab', 'Timed passages from the ' + PAPERS.length + ' papers', 'read', null],
+    ['動', 'Verb and adjective lab', 'Every form of every ' + LVNAME + ' verb', 'verbs', coreIds(['c-verbs1', 'c-verbs2', 'c-adj'])],
+    ['数', 'Numbers, time and dates', 'Prices, clock times, dates, counters' + basics, 'numbers', coreIds(['c-num', 'c-time', 'c-dates', 'c-count'])],
+    ['助', 'Particles', n5 ? 'は が を に で: half the grammar marks' : 'The 16 basic particles' + basics, 'particles', coreIds(['c-part'])],
+    ['暗', 'By-heart vault', VAULT_ALL.length + ' cheat sheets to recite' + basics, 'vault', null],
     ['復', 'Review deck', c.due ? plural(c.due, 'card') + ' due now' : 'Nothing due', 'review', null]
-  ];
-  root.append(h('div', { class: 'grid' }, mods.map(m => h('button', { class: 'li', type: 'button', style: 'align-items:flex-start', onclick: () => go(m[3]) }, markEl(m[0]),
+  ].filter(Boolean);
+  root.append(h('div', { class: 'grid' }, mods.map(m => h('button', { class: 'li', type: 'button', style: 'align-items:flex-start', onclick: () => (m[3] === 'talk' ? tab('talk') : go(m[3])) }, markEl(m[0]),
     h('span', { class: 'body' }, h('b', {}, m[1]), h('span', {}, m[2]), m[4] ? h('span', { style: 'margin-top:6px' }, bar(m[4][0] / Math.max(1, m[4][1]))) : null),
     m[4] ? h('span', { class: 'end small mute num' }, m[4][0] + '/' + m[4][1]) : null))));
   root.append(h('div', { class: 'card stack' }, h('h2', {}, 'All lessons in plan order'), h('div', { class: 'list' }, planOrder().map(lessonRow))));
@@ -358,7 +393,7 @@ function verbExplorer() {
   const upd = () => { const v = VERBS[+sel.value]; tbl.innerHTML = ''; tbl.append(h('tr', {}, h('td', {}, 'group'), h('td', {}, String(v.g))));
     CORE.FORMS.forEach(f => { const s = CORE.conj(v.kana, v.g, f[0]); tbl.append(h('tr', {}, h('td', {}, f[1]), h('td', {}, s, ' ', sayBtn(s)))); }); };
   sel.onchange = upd; upd();
-  return h('div', { class: 'card explore' }, h('h3', {}, 'Verb lab: pick any N5 verb'), sel, h('div', { class: 'table-wrap' }, tbl));
+  return h('div', { class: 'card explore' }, h('h3', {}, 'Verb lab: pick any ' + LVNAME + ' verb'), sel, h('div', { class: 'table-wrap' }, tbl));
 }
 function adjExplorer() {
   const all = IADJ.map(a => [a, 'i']).concat(NADJ.map(a => [a, 'na']));
@@ -404,6 +439,7 @@ function cardFor(k) {
     case 'grammar': return { key: k, front: [h('div', { class: 'eyebrow' }, 'Pattern'), h('div', { style: 'font-size:22px;font-weight:700;color:var(--sheet)' }, it.p), sub(it.ex[0][0], 'font-size:17px;margin-top:10px')], back: [h('div', { style: 'font-size:18px;font-weight:700' }, firstSentence(it.m)), sub(it.ex[0][1]), it.n ? sub(it.n, 'font-size:13px') : null], say: it.ex[0][0] };
     case 'vault': return { key: k, front: mid(it.f, 'font-size:' + (it.f.length > 12 ? 20 : 30) + 'px'), back: [mid(it.b, 'font-size:' + (it.b.length > 14 ? 18 : 24) + 'px'), sub(it.set.title, 'font-size:12px')], say: jpPart(it.b) || jpPart(it.f) };
     case 'part': return { key: k, front: big(it.p), back: [mid(it.use, 'font:700 18px/1.4 var(--f-ui)'), sub(it.ex)], say: it.ex.split('/')[0] };
+    case 'freq': return freqCard(k);
     case 'count': return { key: k, front: [big(it.c.length > 1 ? '' : it.c), it.c.length > 1 ? mid(it.c) : null, sub(it.use)], back: h('div', { class: 'small', style: 'line-height:2' }, it.r.map((r, i) => h('div', {}, (i + 1) + '  ', h('span', { class: r.indexOf('*') >= 0 ? 'irr' : '' }, r.replace('*', ''))))), say: it.r.slice(0, 5).map(r => r.replace('*', '')).join('、') };
   }
   return null;
@@ -456,25 +492,25 @@ view('kana', 'learn', p => {
 });
 view('kanji', 'learn', () => {
   const root = h('div', { class: 'stack' });
-  root.append(head('Kanji', 'The 103 N5 kanji, each learned inside two or three real words. Recognition only: the test never asks you to write.', '漢 Kanji'));
+  root.append(head('Kanji', 'The ' + KANJI.length.toLocaleString('en') + ' ' + LVNAME + ' kanji, each learned inside two or three real words. Recognition only: the test never asks you to write.', '漢 Kanji'));
   root.append(h('div', { class: 'card stack' }, h('h3', {}, 'Lessons'), h('div', { class: 'list' }, LESSONS.filter(l => l.kind === 'kanji').map(lessonRow))));
   const grid = h('div', { class: 'kjgrid' });
   KANJI.forEach(k => { const s = S.srs['kj:' + k.id]; grid.append(h('button', { class: 'kj' + (s ? (s[0] >= 3 ? ' ok' : ' seen') : ''), type: 'button', title: k.m, onclick: () => sheet(close => [kanjiBlock(k), h('button', { class: 'btn', type: 'button', onclick: close }, 'Close')]) }, k.k)); });
-  root.append(h('div', { class: 'card stack' }, h('h3', {}, 'All 103 · tap for details'), grid, h('div', { class: 'small mute' }, 'Yellow edge = in your deck · green = well learned')));
+  root.append(h('div', { class: 'card stack' }, h('h3', {}, 'All ' + KANJI.length.toLocaleString('en') + ' · tap for details'), grid, h('div', { class: 'small mute' }, 'Yellow edge = in your deck · green = well learned')));
   root.append(h('button', { class: 'btn pink', type: 'button', onclick: () => go('game', { id: 'match' }) }, 'Play Kanji Match'));
   return root;
 });
 function wordRow(w) { return h('div', { class: 'li' }, sayBtn(w.kana), h('span', { class: 'body' }, h('b', {}, w.kana + (w.kanji ? '　' + w.kanji : '')), h('span', {}, w.en + (w.g ? ' · group ' + w.g : '')))); }
 view('vocab', 'learn', p => {
   const root = h('div', { class: 'stack' });
-  root.append(head('Vocabulary', VOCAB.all.length + ' N5 words in ' + VOCAB.decks.length + ' themed decks. Words decide more marks than anything else on the test.', '語 Vocabulary'));
+  root.append(head('Vocabulary', VOCAB.all.length.toLocaleString('en') + ' ' + LVNAME + ' words in ' + VOCAB.decks.length + (PACK ? ' decks, most-used words first.' : ' themed decks.') + ' Words decide more marks than anything else on the test.', '語 Vocabulary'));
   const q = h('input', { class: 'search', id: 'vocab-search', type: 'search', placeholder: 'Search kana, kanji or English', value: p.q || '', 'aria-label': 'Search words' });
   const res = h('div', { class: 'list' });
   const decks = h('div', { class: 'list' }, VOCAB.decks.map(d => { const ls = LESSONS.filter(l => l.kind === 'vocab' && l.deck === d.id), dn = ls.filter(l => lessonDone(l.id)).length;
     return h('button', { class: 'li', type: 'button', onclick: () => go('deck', { id: d.id }) }, markEl(d.mark), h('span', { class: 'body' }, h('b', {}, d.title), h('span', {}, plural(d.words.length, 'word') + ' · ' + plural(ls.length, 'lesson'))), h('span', { class: 'end' }, dn === ls.length ? h('span', { class: 'pill good' }, ico('check')) : h('span', { class: 'small mute num' }, dn + '/' + ls.length))); }));
   const upd = () => { const t = q.value.trim().toLowerCase(); res.innerHTML = ''; decks.hidden = !!t; if (!t) return;
     const hits = VOCAB.all.filter(w => w.kana.indexOf(t) >= 0 || (w.kanji && w.kanji.indexOf(t) >= 0) || w.en.toLowerCase().indexOf(t) >= 0 || KANA.toKata(w.kana).indexOf(t) >= 0).slice(0, 40);
-    if (!hits.length) res.append(h('div', { class: 'empty' }, 'No N5 word matches “' + q.value + '”.')); hits.forEach(w => res.append(wordRow(w))); };
+    if (!hits.length) res.append(h('div', { class: 'empty' }, 'No ' + LVNAME + ' word matches “' + q.value + '”.')); hits.forEach(w => res.append(wordRow(w))); };
   q.addEventListener('input', upd);
   root.append(q, res, decks);
   upd();
@@ -499,15 +535,15 @@ view('grammar', 'learn', () => {
 view('numbers', 'learn', () => {
   const root = h('div', { class: 'stack' });
   root.append(head('Numbers, time and dates', 'Listening is full of prices, times and dates. These are pure by-heart material with a few sound changes.', '数 Numbers'));
-  root.append(h('div', { class: 'card stack' }, h('h3', {}, 'Lessons'), h('div', { class: 'list' }, ['c-num', 'c-time', 'c-dates', 'c-count'].map(id => lessonRow(LMAP[id])))));
+  if (LMAP['c-num']) root.append(h('div', { class: 'card stack' }, h('h3', {}, 'Lessons'), h('div', { class: 'list' }, ['c-num', 'c-time', 'c-dates', 'c-count'].map(id => lessonRow(LMAP[id])))));
   root.append(numExplorer(), timeExplorer(), h('div', { class: 'card stack' }, h('h3', {}, 'Dates · tap to hear'), dateGrid()), h('h2', {}, 'Counters'), counterCards());
   root.append(h('button', { class: 'btn pink', type: 'button', onclick: () => go('game', { id: 'num' }) }, 'Play Number Ninja'));
   return root;
 });
 view('verbs', 'learn', () => {
   const root = h('div', { class: 'stack' });
-  root.append(head('Verb and adjective lab', 'Every N5 verb in every form the test uses, generated on the fly so you can check any verb.', '動 Lab'));
-  root.append(h('div', { class: 'card stack' }, h('h3', {}, 'Lessons'), h('div', { class: 'list' }, ['c-verbs1', 'c-verbs2', 'c-adj'].map(id => lessonRow(LMAP[id])))));
+  root.append(head('Verb and adjective lab', 'Every ' + LVNAME + ' verb in every form the test uses, generated on the fly so you can check any verb.', '動 Lab'));
+  if (LMAP['c-verbs1']) root.append(h('div', { class: 'card stack' }, h('h3', {}, 'Lessons'), h('div', { class: 'list' }, ['c-verbs1', 'c-verbs2', 'c-adj'].map(id => lessonRow(LMAP[id])))));
   root.append(verbExplorer(), h('div', { class: 'card stack' }, h('h3', {}, VSET.te.title), vaultTable(VSET.te)), adjExplorer());
   root.append(h('button', { class: 'btn pink', type: 'button', onclick: () => go('game', { id: 'verb' }) }, 'Play Verb Forge'));
   return root;
@@ -515,7 +551,7 @@ view('verbs', 'learn', () => {
 view('particles', 'learn', () => {
   const root = h('div', { class: 'stack' });
   root.append(head('Particles', 'Small words, big marks. Most grammar blanks are a particle choice.', '助 Particles'));
-  root.append(lessonRow(LMAP['c-part']), particleTable());
+  root.append(LMAP['c-part'] ? lessonRow(LMAP['c-part']) : null, particleTable());
   root.append(h('button', { class: 'btn pink', type: 'button', onclick: () => go('game', { id: 'part' }) }, 'Play Particle Sniper'));
   return root;
 });
@@ -565,26 +601,43 @@ view('review', 'learn', p => {
 });
 
 /* ---------- setup and settings ---------- */
-function examChoices() { return [['jlpt26', 'JLPT · 6 Dec 2026'], ['nat26', 'NAT-TEST 5Q · 13 Dec 2026'], ['jlpt27', 'JLPT · 4 Jul 2027'], ['custom', 'Another date']]; }
+function examChoices() { return [['jlpt26', 'JLPT · 6 Dec 2026'], ['nat26', 'NAT-TEST · 13 Dec 2026'], ['jlpt27', 'JLPT · 4 Jul 2027'], ['jlpt27d', 'JLPT · 5 Dec 2027'], ['custom', 'Another date']].filter(x => x[0] === 'custom' || EXAMS[x[0]][1] >= today() || x[0] === S.set.exam); }
 function settingsControls(draft) {
   const dateIn = h('input', { class: 'field', id: 'exam-date', type: 'date', value: draft.date || '2026-12-06', min: today(), 'aria-label': 'Exam date', onchange: e => { draft.date = e.target.value; } });
   const dateWrap = h('div', { hidden: draft.exam !== 'custom' }, dateIn);
+  const kanaWrap = h('div', { class: 'stack', style: 'gap:6px', hidden: draft.lv !== 'n5' }, h('label', { class: 'fl' }, 'Kana'), chipset([['none', 'Starting from zero'], ['hira', 'I read hiragana'], ['both', 'I read both']], draft.kana, v => { draft.kana = v; }));
+  const blurb = h('div', { class: 'small mute' }, LVINFO[draft.lv].blurb);
   return [
+    h('label', { class: 'fl' }, 'Which level?'), levelPicker(draft.lv, v => { draft.lv = v; kanaWrap.hidden = v !== 'n5'; blurb.textContent = LVINFO[v].blurb; }), blurb,
     h('label', { class: 'fl' }, 'Which exam?'), chipset(examChoices(), draft.exam, v => { draft.exam = v; dateWrap.hidden = v !== 'custom'; }), dateWrap,
     h('label', { class: 'fl' }, 'Minutes a day you can really give'), chipset([[20, '20'], [30, '30'], [45, '45'], [60, '60'], [90, '90']].map(x => [String(x[0]), x[1] + ' min']), String(draft.mins), v => { draft.mins = +v; }),
-    h('label', { class: 'fl' }, 'Kana'), chipset([['none', 'Starting from zero'], ['hira', 'I read hiragana'], ['both', 'I read both']], draft.kana, v => { draft.kana = v; })
+    kanaWrap
   ];
+}
+function levelPicker(cur, on) {
+  const row = h('div', { class: 'lvpick', role: 'group', 'aria-label': 'JLPT level' });
+  LVS.forEach(lv => row.append(h('button', { type: 'button', 'data-lv': lv, 'aria-pressed': String(lv === cur), disabled: lv !== 'n5' && !PACKS[lv], onclick: e => { row.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b === e.currentTarget))); on(lv); } }, LVINFO[lv].name)));
+  return row;
 }
 function applySettings(draft) {
   S.set.exam = draft.exam; S.set.mins = draft.mins; S.set.kana = draft.kana;
   if (draft.exam === 'custom' && draft.date) S.set.date = draft.date;
   S.today = null; save();
+  if (draft.lv && draft.lv !== LV) { setLevel(draft.lv); return true; }   // saves and reloads the page at the new level
+  return false;
+}
+/* quick switch from the top bar */
+function levelSheet() {
+  sheet(close => [h('h2', {}, 'Switch level'), h('p', { class: 'small mute', style: 'margin:0' }, 'Each level keeps its own lessons, reviews and mock scores. Switching never erases anything.'),
+    h('div', { class: 'list' }, LVS.map(lv => h('button', { class: 'li lvrow', type: 'button', 'data-lv': lv, disabled: lv !== 'n5' && !PACKS[lv], onclick: () => { close(); if (lv !== LV) setLevel(lv); } },
+      h('span', { class: 'mark' }, LVINFO[lv].name), h('span', { class: 'body' }, h('b', {}, 'JLPT ' + LVINFO[lv].name + (lv === LV ? ' · studying now' : '')), h('span', {}, LVINFO[lv].blurb)), lv === LV ? h('span', { class: 'end' }, ico('check')) : null))),
+    h('button', { class: 'btn', type: 'button', onclick: close }, 'Close')]);
 }
 function setupSheet() {
   if (SHEETS.length) return;
-  const draft = { exam: S.set.exam, mins: S.set.mins, kana: S.set.kana, date: S.set.date };
+  const draft = { exam: S.set.exam, mins: S.set.mins, kana: S.set.kana, date: S.set.date, lv: LV };
   sheet(close => ED.setup().concat([settingsControls(draft),
-    h('button', { class: 'btn pink block', type: 'button', onclick: () => { S.setup = true; S.lv.hello = today(); applySettings(draft); close(); render(); toast(ED.setupToast()); Notify.sync(); } }, 'Build my plan')]));
+    h('button', { class: 'btn pink block', type: 'button', onclick: () => { S.setup = true; S.lv.hello = today(); if (applySettings(draft)) return; close(); render(); toast(ED.setupToast()); Notify.sync(); } }, 'Build my plan')]));
 }
 function taskWhy(x) {
   const d = dayRec();
@@ -593,6 +646,7 @@ function taskWhy(x) {
   if (x.t === 'listen') return (d.lis || 0) + ' listening sets today';
   if (x.t === 'read') return (d.rd || 0) + ' reading sets today';
   if (x.t === 'mock') return taskDone(x) ? 'submitted' : 'not submitted yet';
+  if (x.t === 'talk') return dayRec().tk ? 'workout done' : 'bonus · not done yet';
   return taskDone(x) ? 'done' : 'not done';
 }
 function storageCheck() {
@@ -614,7 +668,7 @@ function saveTest() {
 }
 function diagReport() {
   const ts = todaySession(), L = [];
-  L.push('N5 Cheat Codes v' + APP_VERSION + ' (' + EDITION + ')' + (window.AndroidApp ? ' · Android app' : ' · web') + ' · ' + (navigator.userAgent.match(/Android [\d.]+|iPhone OS [\d_]+|Windows NT [\d.]+|Mac OS X [\d_]+/) || [''])[0]);
+  L.push('JLPT Cheat Codes v' + APP_VERSION + ' · level ' + LVNAME + (window.AndroidApp ? ' · Android app' : ' · web') + ' · ' + (navigator.userAgent.match(/Android [\d.]+|iPhone OS [\d_]+|Windows NT [\d.]+|Mac OS X [\d_]+/) || [''])[0]);
   L.push('Study day ' + today() + ' · now ' + new Date().toLocaleString('en-GB'));
   L.push('Last saved ' + (S.updated ? new Date(S.updated).toLocaleString('en-GB') : 'never') + ' · ' + storageCheck());
   if (Notify.ok()) L.push('Notifications ' + Notify.state() + ' · ' + NOTIFY.slots.map(s => { const p = Notify.pref(s.id); return s.id + ' ' + p.t + (p.on ? ' ✓' : ' off'); }).join(' · '));
@@ -627,10 +681,10 @@ function diagReport() {
   return L.join('\n');
 }
 view('settings', 'home', () => {
-  const root = h('div', { class: 'stack' }), draft = { exam: S.set.exam, mins: S.set.mins, kana: S.set.kana, date: S.set.date };
+  const root = h('div', { class: 'stack' }), draft = { exam: S.set.exam, mins: S.set.mins, kana: S.set.kana, date: S.set.date, lv: LV };
   root.append(head('Settings', '', 'Settings'));
   root.append(h('div', { class: 'card stack' }, h('h2', {}, 'Your plan'), settingsControls(draft),
-    h('button', { class: 'btn pink', type: 'button', onclick: () => { S.setup = true; applySettings(draft); toast('Plan rebuilt'); back(); } }, 'Save and rebuild plan')));
+    h('button', { class: 'btn pink', type: 'button', onclick: () => { S.setup = true; if (applySettings(draft)) return; toast('Plan rebuilt'); back(); } }, 'Save and rebuild plan')));
   const rate = h('input', { type: 'range', id: 'tts-rate', min: '0.6', max: '1.2', step: '0.05', value: String(S.set.rate), 'aria-label': 'Speech speed', oninput: e => { S.set.rate = +e.target.value; rl.textContent = S.set.rate.toFixed(2) + '×'; save(); } });
   const rl = h('span', { class: 'small num' }, S.set.rate.toFixed(2) + '×');
   const voice = TTS.android ? null : h('select', { class: 'sel', id: 'tts-voice', 'aria-label': 'Voice', onchange: e => { S.set.voice = e.target.value; save(); TTS.pickVoice(); } },
@@ -648,7 +702,7 @@ view('settings', 'home', () => {
     h('p', { class: 'small', style: 'margin:0' }, 'Move progress between the Android app and the web version: copy the code on one, paste it on the other.'),
     box, h('div', { class: 'row' },
       h('button', { class: 'btn small', type: 'button', onclick: () => { box.value = JSON.stringify(S); box.select(); try { navigator.clipboard.writeText(box.value).then(() => toast('Copied'), () => toast('Code shown: select and copy it')); } catch (e) { toast('Code shown: select and copy it'); } } }, 'Copy progress code'),
-      h('button', { class: 'btn small', type: 'button', onclick: () => { let s = null; try { s = JSON.parse(box.value); } catch (e) {} if (!s || s.v !== 1) { toast('That code is not valid'); return; } confirmSheet('Replace progress?', 'This overwrites everything on this device with the pasted code.', 'Replace', () => { S = normalize(s); S.resetAt = Date.now(); save(); applyTheme(); Notify.sync(); tab('home'); toast('Progress restored'); }); } }, 'Restore from code'),
+      h('button', { class: 'btn small', type: 'button', onclick: () => { let s = null; try { s = JSON.parse(box.value); } catch (e) {} if (!s || s.v !== 1) { toast('That code is not valid'); return; } confirmSheet('Replace progress?', 'This overwrites everything on this device with the pasted code.', 'Replace', () => { S = normalize(s); S.resetAt = Date.now(); save(); if (levelOf(S) !== LV) { location.reload(); return; } applyTheme(); Notify.sync(); tab('home'); toast('Progress restored'); }); } }, 'Restore from code'),
       h('button', { class: 'btn small ghost', type: 'button', style: 'color:var(--bad)', onclick: () => confirmSheet('Reset everything?', 'XP, streak, lessons, reviews and mock scores will be erased.', 'Erase', () => { const keep = S.set; S = blankState(); S.set = keep; S.setup = true; S.mig = 3; S.resetAt = Date.now(); save(); tab('home'); toast('Progress reset'); }) }, 'Reset progress'))));
   const rep = h('pre', { class: 'diag' }, diagReport()), res = h('div', { class: 'small' });
   root.append(h('div', { class: 'card stack' }, h('h2', {}, 'Diagnostics'), h('p', { class: 'small mute', style: 'margin:0' }, 'If something does not save, copy this report and send it over.'), rep, res,
@@ -656,7 +710,7 @@ view('settings', 'home', () => {
       h('button', { class: 'btn small', type: 'button', onclick: () => { const ok = saveTest(); res.textContent = ok; res.style.color = ok.indexOf('✗') >= 0 ? 'var(--bad)' : 'var(--good)'; rep.textContent = diagReport(); } }, 'Run save test'),
       h('button', { class: 'btn small', type: 'button', onclick: () => { const t = diagReport(); try { navigator.clipboard.writeText(t).then(() => toast('Report copied'), () => toast('Select the report text to copy it')); } catch (e) { toast('Select the report text to copy it'); } } }, 'Copy report'),
       h('button', { class: 'btn small ghost', type: 'button', onclick: () => { S.diag = []; save(true); rep.textContent = diagReport(); } }, 'Clear error log'))));
-  root.append(h('div', { class: 'card stack' }, h('h2', {}, 'About · v' + APP_VERSION), h('p', { class: 'small mute', style: 'margin:0' }, 'N5 Cheat Codes · lessons, 40 mock papers, games and a spaced-repetition deck. Audio uses your device’s Japanese text-to-speech voice.'), sourcesList()));
+  root.append(h('div', { class: 'card stack' }, h('h2', {}, 'About · v' + APP_VERSION), h('p', { class: 'small mute', style: 'margin:0' }, 'JLPT Cheat Codes · N5 to N1 lessons, mock papers, a conversation trainer, games and a spaced-repetition deck. Audio uses your device’s Japanese text-to-speech voice.'), updateRow(), sourcesList()));
   later(10, updateSync, root);
   return root;
 });

@@ -1,7 +1,7 @@
 /* ===== 20 · shell, router, shared components ===== */
 const VIEWS = {};
 function view(name, tabName, fn) { fn.tab = tabName; VIEWS[name] = fn; }
-const TABS = [['home', '今', 'Today'], ['route', '道', 'Route'], ['learn', '学', 'Learn'], ['arcade', '遊', 'Arcade'], ['mocks', '試', 'Mocks']];
+const TABS = [['home', '今', 'Today'], ['route', '道', 'Route'], ['learn', '学', 'Learn'], ['talk', '話', 'Talk'], ['arcade', '遊', 'Arcade'], ['mocks', '試', 'Mocks']];
 const NAV = { stack: [{ name: 'home', p: {} }] };
 const cur = () => NAV.stack[NAV.stack.length - 1];
 const tabOf = n => (VIEWS[n] && VIEWS[n].tab) || n;
@@ -132,11 +132,11 @@ function promptEl(Q) {
   if (Q.meta) box.append(h('div', { class: 'meta' }, Q.meta));
   return box;
 }
-function regen(Q) { if (Q.k && Q.k.slice(0, 3) !== 'mq:') { const n = qFor(Q.k); if (n) return n; } return Object.assign({}, Q); }
+function regen(Q) { if (Q.k && Q.k.slice(0, 3) !== MQ) { const n = qFor(Q.k); if (n) return n; } return Object.assign({}, Q); }
 function reshuffle(Q) { const right = Q.o[Q.a], o = shuffle(Q.o); return Object.assign({}, Q, { o, a: o.indexOf(right) }); }
 function retryOf(Q) {
   let n = null;
-  if (Q.k && Q.k.slice(0, 3) !== 'mq:') { try { n = qFor(Q.k); } catch (e) { n = null; } }
+  if (Q.k && Q.k.slice(0, 3) !== MQ) { try { n = qFor(Q.k); } catch (e) { n = null; } }
   n = n || (Q.fixed ? Object.assign({}, Q) : reshuffle(Q));
   n._retry = (Q._retry || 0) + 1;
   return n;

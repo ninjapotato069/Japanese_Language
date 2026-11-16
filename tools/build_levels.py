@@ -33,14 +33,15 @@ print('loading JMdict…', file=sys.stderr)
 ent_kanji, ent_kana = collections.defaultdict(list), collections.defaultdict(list)
 by_kanji, by_kana = collections.defaultdict(list), collections.defaultdict(list)
 kpri = collections.defaultdict(set)
+fpri = collections.defaultdict(set)      # (entry, written form) -> priority tags of that form only
 for kid, idseq, text in db.execute('select ID, idseq, text from Kanji'):
     ent_kanji[idseq].append(text); by_kanji[text].append(idseq)
-for kid, pri in db.execute('select k.idseq, p.text from KJP p join Kanji k on k.ID = p.kid'):
-    kpri[kid].add(pri)
+for kid, txt, pri in db.execute('select k.idseq, k.text, p.text from KJP p join Kanji k on k.ID = p.kid'):
+    kpri[kid].add(pri); fpri[(kid, txt)].add(pri)
 for kid, idseq, text in db.execute('select ID, idseq, text from Kana'):
     ent_kana[idseq].append(text); by_kana[text].append(idseq)
-for kid, pri in db.execute('select k.idseq, p.text from KNP p join Kana k on k.ID = p.kid'):
-    kpri[kid].add(pri)
+for kid, txt, pri in db.execute('select k.idseq, k.text, p.text from KNP p join Kana k on k.ID = p.kid'):
+    kpri[kid].add(pri); fpri[(kid, txt)].add(pri)
 sense_of = collections.defaultdict(list)
 for sid, idseq in db.execute('select ID, idseq from Sense order by ID'):
     sense_of[idseq].append(sid)
@@ -53,8 +54,8 @@ for sid, t in db.execute('select sid, text from misc'):
     misc_of[sid].append(t)
 
 
-def pri_score(idseq):
-    p = kpri[idseq]
+def pri_score(idseq, form=None):
+    p = fpri[(idseq, form)] if form is not None else kpri[idseq]
     s = 0
     for t in p:
         if t in ('ichi1', 'news1', 'spec1'):
@@ -71,11 +72,17 @@ def find_entry(expr, reading):
     if cands and reading:
         hit = [i for i in cands if reading in ent_kana[i]]
         cands = hit or cands
-    if not cands:
-        cands = [i for i in by_kana.get(expr, []) + by_kana.get(reading, [])]
+    if cands:
+        return max(cands, key=lambda i: (pri_score(i, expr), pri_score(i)))
+    cands = [(i, expr) for i in by_kana.get(expr, [])] + [(i, reading) for i in by_kana.get(reading, [])]
     if not cands:
         return None
-    return max(cands, key=pri_score)
+    # a kana word: prefer the entry where this very spelling is the common one, and entries usually written in kana
+    def kana_rank(c):
+        i, form = c
+        uk = any('usually written using kana alone' in m for sid in sense_of[i][:1] for m in misc_of[sid])
+        return (pri_score(i, form) + (4 if uk or not ent_kanji[i] else 0), ent_kana[i][0] == form, pri_score(i))
+    return max(cands, key=kana_rank)[0]
 
 
 def pos_class(idseq):
@@ -112,13 +119,22 @@ def first_gloss(idseq):
     return g[0] if g else ''
 
 
+def strip_parens(g):
+    prev = None
+    while prev != g:
+        prev = g
+        g = re.sub(r'\s*\([^()]*\)', '', g)
+    return g.strip(' ;,')
+
+
 def short_gloss(idseq, n=2):
+    """the first sense only, without the dictionary's bracketed notes"""
     out = []
-    for sid in sense_of[idseq][:2]:
-        for g in gloss_of[sid][:2]:
-            if g not in out and len(out) < n:
-                out.append(g)
-    return '; '.join(out)
+    for g in gloss_of[sense_of[idseq][0]][:3] if sense_of[idseq] else []:
+        g = strip_parens(g)
+        if g and g not in out and len(out) < n and len(g) <= 28:
+            out.append(g)
+    return '; '.join(out) or strip_parens(first_gloss(idseq))
 
 
 # ---------------------------------------------------------------- kanji
@@ -137,7 +153,7 @@ def klevel_ok(text, lv):
 
 
 # ---------------------------------------------------------------- sentences (Tanaka corpus, pre-tokenised)
-FIX_EN = [(r" n't", "n't"), (r" '(s|m|re|ve|ll|d)\b", r"'\1"), (r' ([.,?!;:])', r'\1'), (r'\bi\b', 'I'), (r'\$ ', '$'), (r" o'clock", " o'clock"), (r'`` ', '"'), (r" ''", '"')]
+FIX_EN = [(r" n't", "n't"), (r" '(t|s|m|re|ve|ll|d)\b", r"'\1"), (r' ([.,?!;:])', r'\1'), (r'\bi\b', 'I'), (r'\$ ', '$'), (r" o'clock", " o'clock"), (r'`` ', '"'), (r" ''", '"')]
 PROPER = ('japan japanese english england america american tokyo kyoto osaka china chinese france french german germany london paris tom mary john bob ken jim jane kate bill mike nancy '
           'sunday monday tuesday wednesday thursday friday saturday january february march april june july august september october november december '
           'europe asia africa canada australia india italy spain korea christmas mr. mrs. ms. dr. new york mt. fuji tv').split()
@@ -339,10 +355,37 @@ OVERRIDE.update(dict(x.split(':') for x in ('本:ほん 子:こ 男:おとこ �
     '服:ふく 靴:くつ 鍵:かぎ 窓:まど 席:せき 紙:かみ 箱:はこ 石:いし 星:ほし 島:しま 森:もり 橋:はし 庭:にわ 壁:かべ 床:ゆか 嘘:うそ 夢:ゆめ 愛:あい 恋:こい 命:いのち 死:し 血:ち 涙:なみだ 汗:あせ 熱:ねつ 傷:きず 罪:つみ 敵:てき 味方:みかた '
     '神:かみ 鬼:おに 王:おう 馬:うま 鳥:とり 虫:むし 牛:うし 豚:ぶた 卵:たまご 塩:しお 油:あぶら 皿:さら 机:つくえ 棚:たな 袋:ふくろ 糸:いと 針:はり 刀:かたな 剣:けん 銃:じゅう 船:ふね 港:みなと 空港:くうこう 線:せん 点:てん 丸:まる 角:かど '
     '横:よこ 隣:となり 奥:おく 裏:うら 表:おもて 先:さき 元:もと 右:みぎ 左:ひだり 北:きた 南:みなみ 東:ひがし 西:にし 週:しゅう 秒:びょう 歳:さい 回:かい 度:ど 番:ばん 階:かい 枚:まい 冊:さつ 匹:ひき 杯:はい 台:だい 個:こ 件:けん 例:れい 嫌:いや 変:へん 楽:らく 暇:ひま 急:きゅう 損:そん 得:とく 無理:むり').split()))
-STOP = set('という として について によって による でしょ みたい ください たち 出し 思い なんか なんて とか って ので のに けど けれど だから なら たら ながら まま ほど くらい ぐらい ばかり だけ しか こそ さえ でも ても とも よね かな かも だろ だろう でしょう です ます ました ません ている てる てい られる れる せる させる たい そう よう らしい べき はず わけ ため もん もの こと ところ とき 無い 良い 出来る 下さい 頂く 致す 居る 有る 為る 成る 言い 行き 見 出 入り 取り 持ち 使い 作り 買い 思っ 言っ 行っ やっ なっ あっ もらっ 出来 分かり 知り 感じ られ なく なり あり おり いき'.split())
+STOP = set('に対して にとって において に対する によって に関する に関して に基づく という として について によって による でしょ みたい ください たち 出し 思い なんか なんて とか って ので のに けど けれど だから なら たら ながら まま ほど くらい ぐらい ばかり だけ しか こそ さえ でも ても とも よね かな かも だろ だろう でしょう です ます ました ません ている てる てい られる れる せる させる たい そう よう らしい べき はず わけ ため もん もの こと ところ とき 無い 良い 出来る 下さい 頂く 致す 居る 有る 為る 成る 言い 行き 見 出 入り 取り 持ち 使い 作り 買い 思っ 言っ 行っ やっ なっ あっ もらっ 出来 分かり 知り 感じ られ なく なり あり おり いき'.split())
 STOP -= set('感じ もの こと ところ とき ため'.split())
+GLOSS = dict(x.split('=') for x in (
+    'する=to do|ある=to be, to exist (things); to have|いる=to be, to exist (people, animals)|なる=to become|ない=not; there is no|こと=thing, matter (abstract)|もの=thing, object|'
+    'いい=good; fine|よい=good|これ=this (one)|それ=that (one, near you)|あれ=that (one, over there)|この=this ...|その=that ...|あの=that ... (over there)|ここ=here|そこ=there|どこ=where|'
+    'いう=to say|言う=to say|思う=to think|見る=to see, to look, to watch|行く=to go|来る=to come|出る=to go out, to leave; to come out|できる=can do; to be made, to be ready|'
+    '人=person|私=I, me|今=now|時=time; when|日=day; sun|年=year|中=inside; middle|前=before; in front|後=after; behind|何=what|方=direction; side; way|自分=oneself|'
+    'そう=so; like that|どう=how|こう=like this|もう=already; soon; more|まだ=still; not yet|また=again; also|よく=often; well|ため=for the sake of; because of|ところ=place; point|'
+    'とき=time; when|はい=yes|いや=no; unpleasant|でも=but|だけ=only|ほど=extent; about|ほか=other|みんな=everyone|とても=very|ちょっと=a little; just a moment|'
+    '持つ=to hold; to have|使う=to use|分かる=to understand|知る=to know|考える=to think about, to consider|聞く=to hear, to listen; to ask|書く=to write|読む=to read|'
+    '作る=to make|入る=to enter|出す=to take out; to send; to hand in|買う=to buy|食べる=to eat|飲む=to drink|会う=to meet|話す=to speak, to talk|待つ=to wait|'
+    '好き=liked; favourite|多い=many, much|少ない=few, little|大きい=big|小さい=small|高い=tall; expensive|安い=cheap|新しい=new|古い=old (things)|長い=long|早い=early; fast|'
+    '今日=today|明日=tomorrow|昨日=yesterday|今年=this year|毎日=every day|時間=time; hour|仕事=work, job|会社=company|学校=school|家=house, home|話=talk; story|'
+    '気=spirit; mood; attention|手=hand|目=eye|声=voice|顔=face|頭=head|心=heart, mind|体=body|水=water|金=money|名前=name|国=country|店=shop|道=road; way|'
+    '本当=truth; really|一緒=together|大丈夫=all right, OK|必要=necessary|大切=important, precious|問題=problem; question|意味=meaning|理由=reason|場合=case, situation|'
+    '彼=he, him|彼女=she, her; girlfriend|誰=who|僕=I, me (male, casual)|俺=I, me (male, rough)|君=you (casual)|あなた=you|子=child|男=man|女=woman|友達=friend|'
+    'やる=to do (casual); to give|くる=to come|いく=to go|みる=to see, to look|おく=to put, to place|くれる=to give (to me)|もらう=to receive|あげる=to give; to raise|'
+    'しれる=to become known|すぎる=to pass; to be too much|かける=to hang; to call; to spend|つく=to arrive; to be attached; to turn on|とる=to take|'
+    'すごい=amazing; terrific|うん=yeah, uh-huh|ただ=just, only; free of charge|先=ahead; earlier; tip|しまう=to finish; to put away|あまり=(not) very; too much|どれ=which (one)|全く=completely; (not) at all|'
+    '一つ=one (thing)|度=times; degrees|無理=impossible; unreasonable|最高=the best; highest|元気=well, healthy; lively|残念=unfortunate; a pity|ダメ=no good; not allowed|欲しい=to want (a thing)|'
+    'こちら=this way; this (polite)|言葉=word; language|相手=the other person; partner|事件=incident; case|最後=last; the end|一番=number one; the most|時代=era, period|だって=because; after all|'
+    '多く=many; much|良く=well; often|大変=very; hard, tough|結構=fine, enough; quite|別に=(not) particularly|なんか=something; somehow|やはり=as expected; after all|やっぱり=as expected; after all|'
+    'すぐ=at once; soon|ずっと=the whole time; by far|ちゃんと=properly|たくさん=a lot, many|いつも=always|いろいろ=various|ぜひ=by all means|たぶん=probably|きっと=surely|なぜ=why|どうして=why|'
+    'お願い=request; please|すみません=excuse me; sorry|ごめん=sorry|大好き=to love, to like a lot|嫌い=disliked|上手=good at|下手=bad at|便利=convenient|有名=famous|'
+    'いっぱい=full; a lot|いつか=someday|例=example|肉=meat|かかる=to take (time, money)|つける=to attach; to turn on|ほら=look!; see!|ようやく=at last, finally|おやすみ=good night|よろしく=best regards; please|どういう=what kind of|'
+    'だいたい=roughly; mostly|うまい=tasty; skilful|ひどい=awful, terrible|得意=good at; strong point|苦手=weak at; dislike|楽=easy, comfortable|勝手=selfish; as one pleases|次第=depending on; as soon as|横=side; beside|表=front; surface; chart|'
+    '丸=circle|やめる=to stop, to quit|合う=to fit, to match|当たる=to hit; to be right|主人=husband; master|さあ=well, come on|どうも=thanks; somehow|なんとか=somehow; one way or another|不思議=strange, mysterious|そこで=so, then|それで=and so; because of that|'
+    '一=one|二=two|三=three|四=four|五=five|六=six|七=seven|八=eight|九=nine|十=ten|百=hundred|千=thousand|万=ten thousand|円=yen|分=minute; part|月=month; moon|本=book; counter for long things|上=above, on top|下=below, under|外=outside|間=between; during|所=place|次=next|別=separate, different|他=other'
+).split('|'))
 KEEP_STEM = set('考え 感じ 答え 流れ 違い 終わり 楽しみ 間違い 出会い 始め 疲れ 晴れ 別れ 遅れ 汚れ 助け 届け 知らせ 迎え 借り'.split())
-DROP = set('クソ バカ お前 ネタ 版 わかり いただき 生き 過ぎ 試し まとめ 通り 限り ちゃう ちゃん すぎる やすい ガン 神 王 敵 鬼 銃 剣 刀 罪 死 血'.split())
+DROP = set('読み 迎え 帰り 借り 頂き 勝ち 立ち 待ち 売り 乗り 送り 切り 直し 回し 渡し 振り 戻り 貸し 通し 戻し 払い 泣き 走り 行い 流し 向い かかり あたり なさい ないし にかけて いただける ついてる ご覧 きみ きょう しょうが 得る 無し 遊び 働き 続き 残り 始まり 変わり 疲れ 助け 遅れ 別れ 汚れ 許し 驚き 喜び 怒り 痛み 好み 笑い 願い 疑い 戦い 連中 あいつ おまえ 馬鹿 殺人 死亡 犯罪 兵士 天使 惑星 委員 候補 大統領 女優 俳優 作者 クソ バカ お前 ネタ 版 わかり いただき 生き 過ぎ 試し まとめ 通り 限り ちゃう ちゃん すぎる やすい ガン 神 王 敵 鬼 銃 剣 刀 罪 死 血'.split())
 for tok, f in ranked[:12000]:
     if tok in STOP or (len(tok) == 1 and tok not in OVERRIDE):
         cum += f
@@ -374,7 +417,7 @@ for tok, f in ranked[:12000]:
     kana = OVERRIDE.get(tok) or (ent_kana[idseq][0] if KANJI_RE.search(tok) else tok)
     seen_id.add(idseq)
     ex = examples(tok, 3, 1)
-    deck.append({'w': tok, 'r': kana, 'm': short_gloss(idseq, 2), 'cv': round(cum / total, 4), 'x': [SENT[ex[0][0]][1], SENT[ex[0][0]][2]] if ex else None})
+    deck.append({'w': tok, 'r': kana, 'm': GLOSS.get(tok) or short_gloss(idseq, 2), 'cv': round(cum / total, 4), 'x': [SENT[ex[0][0]][1], SENT[ex[0][0]][2]] if ex else None})
 (OUT / 'freq.json').write_text(json.dumps(deck, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
 print('frequency deck:', len(deck), 'words; coverage at 100/300/600/1000:', [deck[i - 1]['cv'] for i in (100, 300, 600, 1000) if i <= len(deck)], cum / total, file=sys.stderr)
-print(' '.join(d['w'] + '/' + d['r'] for d in deck[:1000:4]), file=sys.stderr)
+

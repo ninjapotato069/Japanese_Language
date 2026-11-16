@@ -16,6 +16,23 @@ const INSTR = {
   hatsuwa: ['えを 見ながら しつもんを 聞いて ください。➡（やじるし）の 人は 何と 言いますか。１から３の 中から、いちばん いい ものを 一つ えらんで ください。', 'What does the person say in this situation? Options are spoken only.'],
   sokuji: ['えなどが ありません。ぶんを 聞いて、１から３の 中から、いちばん いい ものを 一つ えらんで ください。', 'Hear one line, then pick the best reply. Options are spoken only.']
 };
+if (PACK) {
+  [1, 2, 3].forEach(i => { SEC[i][2] = LVINFO[LV].min[i - 1]; });
+  SEC[1][0] = '言語知識（文字・語彙）'; SEC[2][0] = '言語知識（文法）・読解'; SEC[3][0] = '聴解';
+  Object.assign(INSTR, {
+    kanji: ['＿＿＿の言葉の読み方として最もよいものを、１・２・３・４から一つ選びなさい。', 'How is the underlined word read?'],
+    hyoki: ['＿＿＿の言葉を漢字で書くとき、最もよいものを１・２・３・４から一つ選びなさい。', 'How is the underlined word written in kanji?'],
+    bunmyaku: ['（　　）に入れるのに最もよいものを、１・２・３・４から一つ選びなさい。', 'Which word fits the blank?'],
+    iikae: ['＿＿＿の言葉に意味が最も近いものを、１・２・３・４から一つ選びなさい。', 'Which word is closest in meaning to the underlined one?'],
+    bunpo: ['次の文の（　　）に入れるのに最もよいものを、１・２・３・４から一つ選びなさい。', 'Which form fits the blank?'],
+    kumitate: ['次の文の ★ に入る最もよいものを、１・２・３・４から一つ選びなさい。', 'Put the four pieces in order. Which one lands on ★?'],
+    tanbun: ['次の文章を読んで、質問に答えなさい。答えは、１・２・３・４から最もよいものを一つ選びなさい。', 'Read each short text and answer.'],
+    chubun: ['次の文章を読んで、質問に答えなさい。答えは、１・２・３・４から最もよいものを一つ選びなさい。', 'Read the passage and answer.'],
+    point: ['まず質問を聞いてください。それから話を聞いて、１から４の中から、最もよいものを一つ選んでください。', 'Hear the question, then listen for the key point.'],
+    sokuji: ['まず文を聞いてください。それから、それに対する返事を聞いて、１から３の中から、最もよいものを一つ選んでください。', 'Hear one line, then pick the best reply. Options are spoken only.']
+  });
+}
+INSTR.yoho = ['次の言葉の使い方として最もよいものを、１・２・３・４から一つ選びなさい。', 'Which sentence uses the word correctly?'];
 const MODELS = {};
 function model(P, sec) {
   const key = P + ':' + sec;
@@ -24,19 +41,24 @@ function model(P, sec) {
   const grp = (type, mn, extra) => { const g = Object.assign({ type, mn, qs: [] }, extra || {}); groups.push(g); return g; };
   const addQ = (g, q) => { q.k = flat.length; q.no = flat.length + 1; q.type = g.type; q.g = g; q.ti = g.qs.length; g.qs.push(q); flat.push(q); };
   if (sec === 1) {
-    [['kanji', 1], ['hyoki', 2], ['bunmyaku', 3], ['iikae', 4]].forEach(x => { const g = grp(x[0], x[1]); D.s1.forEach(q => { if (q.t === x[0]) addQ(g, { stem: q.s, o: q.o, a: q.a, w: q.w, pts: 2 }); }); });
+    ['kanji', 'hyoki', 'bunmyaku', 'iikae', 'yoho'].forEach(t => { const qs = D.s1.filter(q => q.t === t); if (!qs.length) return; const g = grp(t, groups.length + 1); qs.forEach(q => addQ(g, { stem: q.s, o: q.o, a: q.a, w: q.w, pts: 2 })); });
   } else if (sec === 2) {
     const s2 = D.s2;
-    let g = grp('bunpo', 1); s2.bunpo.forEach(q => addQ(g, { stem: q.s, o: q.o, a: q.a, w: q.w, pts: 2 }));
-    g = grp('kumitate', 2); s2.kumitate.forEach(q => addQ(g, { stem: q.s, o: q.o, a: q.a, w: q.w, pts: 2 }));
-    g = grp('bunsho', 3, { passage: s2.bunsho }); s2.bunsho.qs.forEach(q => addQ(g, { stem: '', o: q.o, a: q.a, w: q.w, pts: 2 }));
-    g = grp('tanbun', 4); s2.tanbun.forEach((q, i) => addQ(g, { pre: q, pn: i + 1, stem: q.q, o: q.o, a: q.a, w: q.w, pts: 8 }));
-    g = grp('chubun', 5, { passage: s2.chubun }); s2.chubun.qs.forEach(q => addQ(g, { stem: q.q, o: q.o, a: q.a, w: q.w, pts: 8 }));
-    g = grp('joho', 6, { passage: s2.joho }); addQ(g, { stem: s2.joho.q, o: s2.joho.o, a: s2.joho.a, w: s2.joho.w, pts: 12 });
+    let g;
+    if (s2.bunpo && s2.bunpo.length) { g = grp('bunpo', groups.length + 1); s2.bunpo.forEach(q => addQ(g, { stem: q.s, o: q.o, a: q.a, w: q.w, pts: 2 })); }
+    if (s2.kumitate && s2.kumitate.length) { g = grp('kumitate', groups.length + 1); s2.kumitate.forEach(q => addQ(g, { stem: q.s, o: q.o, a: q.a, w: q.w, pts: 2 })); }
+    if (s2.bunsho) { g = grp('bunsho', groups.length + 1, { passage: s2.bunsho }); s2.bunsho.qs.forEach(q => addQ(g, { stem: '', o: q.o, a: q.a, w: q.w, pts: 2 })); }
+    if (s2.tanbun && s2.tanbun.length) { g = grp('tanbun', groups.length + 1); s2.tanbun.forEach((q, i) => addQ(g, { pre: q, pn: i + 1, stem: q.q, o: q.o, a: q.a, w: q.w, pts: 8 })); }
+    if (s2.chubun) { g = grp('chubun', groups.length + 1, { passage: s2.chubun }); s2.chubun.qs.forEach(q => addQ(g, { stem: q.q, o: q.o, a: q.a, w: q.w, pts: 8 })); }
+    if (s2.joho) { g = grp('joho', groups.length + 1, { passage: s2.joho }); addQ(g, { stem: s2.joho.q, o: s2.joho.o, a: s2.joho.a, w: s2.joho.w, pts: 12 }); }
   } else {
-    [['kadai', 1], ['point', 2], ['hatsuwa', 3], ['sokuji', 4]].forEach(x => { const g = grp(x[0], x[1]); D.s3[x[0]].forEach((q, i) => addQ(g, { L: q, n: i + 1, stem: q.q || '', o: q.o, a: q.a, w: q.w, pts: 2.5 })); });
+    ['kadai', 'point', 'hatsuwa', 'sokuji'].forEach(t => { const qs = D.s3[t] || []; if (!qs.length) return; const g = grp(t, groups.length + 1); qs.forEach((q, i) => addQ(g, { L: q, n: i + 1, stem: q.q || '', o: q.o, a: q.a, w: q.w, pts: 2.5 })); });
   }
-  return (MODELS[key] = { P, sec, groups, flat, max: sum(flat, q => q.pts) });
+  if (D.gen) { // generated papers vary in length: scale the points so that every paper is still marked out of 42 / 78 / 60
+    const want = { 1: 42, 2: 78, 3: 60 }[sec], raw = sum(flat, q => q.pts);
+    if (raw) flat.forEach(q => { q.pts = q.pts * want / raw; });
+  }
+  return (MODELS[key] = { P, sec, groups, flat, max: Math.round(sum(flat, q => q.pts) * 10) / 10 });
 }
 const fmtPts = x => Number.isInteger(x) ? String(x) : x.toFixed(1);
 function passageHTML(g) {
@@ -83,6 +105,8 @@ function scoreOf(m, ans) {
   let score = 0;
   const byG = m.groups.map(g => ({ type: g.type, mn: g.mn, got: 0, n: g.qs.length, pts: 0, max: sum(g.qs, q => q.pts) }));
   m.flat.forEach(q => { if (ans[q.k] === q.a) { score += q.pts; const b = byG[m.groups.indexOf(q.g)]; b.got++; b.pts += q.pts; } });
+  score = Math.round(score * 10) / 10;
+  byG.forEach(b => { b.pts = Math.round(b.pts * 10) / 10; b.max = Math.round(b.max * 10) / 10; });
   return { score, max: m.max, pct: m.max ? score / m.max : 0, byG };
 }
 function seenGet(type, P, i) { const s = S.seen[type] && S.seen[type][P]; return !!(s && s[i] === '1'); }
@@ -91,7 +115,7 @@ function paperResult(P) {
   const r = S.mocks[P] || {};
   if (!r[1] || !r[2] || !r[3]) return null;
   const s12 = r[1].l + r[2].l, s3 = r[3].l, tot = s12 + s3;
-  return { s12, s3, tot, pass: s12 >= 38 && s3 >= 19 && tot >= 80 };
+  return { s12, s3, tot, pass: s12 >= 38 && s3 >= 19 && tot >= PASSMARK };
 }
 function recordAttempt(P, sec, mode, ans) {
   const m = model(P, sec), sc = scoreOf(m, ans);
@@ -114,7 +138,7 @@ function groupHead(g) {
 function qMock(P, sec, k) {
   const m = model(P, sec), q = m.flat[k];
   if (!q) return null;
-  const base = { k: 'mq:' + P + ':' + sec + ':' + k, ask: TYPES[q.type][1] + ' · paper ' + P, o: q.o, a: q.a - 1, fixed: true, w: q.w, wait: true };
+  const base = { k: MQ + P + ':' + sec + ':' + k, ask: TYPES[q.type][1] + ' · paper ' + P, o: q.o, a: q.a - 1, fixed: true, w: q.w, wait: true };
   if (q.L) return mk(Object.assign(base, { seq: audioSeq(q), q: q.type === 'hatsuwa' ? '<span class="scene">え</span> ' + esc(q.L.scene) : '', qh: true, qc: 'stem', hide: (q.type === 'hatsuwa' || q.type === 'sokuji') && !S.set.showOpts, scriptText: scriptText(q), script: () => scriptNode(q) }));
   const pre = q.type === 'tanbun' ? preHTML(q) : q.g.passage ? passageHTML(q.g) : '';
   return mk(Object.assign(base, { pre, q: q.type === 'bunsho' ? '<span class="bx">' + q.no + '</span> に 入る ものは どれですか。' : q.stem, qh: true, qc: 'stem' }));
@@ -249,7 +273,7 @@ view('exam', 'mocks', p => {
 /* ---------- results ---------- */
 function addMistakes(P, sec, ans) {
   const m = model(P, sec); let n = 0;
-  m.flat.forEach(q => { if (ans[q.k] !== q.a) { S.srs['mq:' + P + ':' + sec + ':' + q.k] = [0, dayNo(today()), 0, 1]; n++; } });
+  m.flat.forEach(q => { if (ans[q.k] !== q.a) { S.srs[MQ + P + ':' + sec + ':' + q.k] = [0, dayNo(today()), 0, 1]; n++; } });
   save(); toast(plural(n, 'question') + ' added to your review deck');
 }
 function reviewList(m, ans, onlyWrong) {
@@ -290,7 +314,7 @@ view('result', 'mocks', p => {
   if (pr) {
     root.append(h('div', { class: 'card stack' }, h('div', { class: 'row' }, h('div', { class: 'grow' }, h('h2', {}, 'Paper ' + P + ' total'), h('div', { class: 'big-num' }, fmtPts(pr.tot), h('span', { class: 'mute', style: 'font-size:20px' }, ' / 180'))),
       h('div', { class: 'stamp pop' + (pr.pass ? '' : ' fail'), style: pr.pass ? null : 'font-size:24px' }, pr.pass ? '合格' : '不合格')),
-      h('div', { class: 'math' }, mbar('Vocab + grammar', Math.round(pr.s12), 120, 38, 72), mbar('Listening', Math.round(pr.s3), 60, 19, 36), mbar('Total', Math.round(pr.tot), 180, 80, 108)),
+      h('div', { class: 'math' }, mbar('Vocab + grammar', Math.round(pr.s12), 120, 38, 72), mbar('Listening', Math.round(pr.s3), 60, 19, 36), mbar('Total', Math.round(pr.tot), 180, PASSMARK, 108)),
       h('div', { class: 'small mute' }, 'Uses your latest attempt at each section.')));
     if (pr.pass && loveOn() && !S.lv.pp[P]) paperPassPop(P);
     else if (pr.pass && p.full && sec === 3) later(400, () => { celebrate(); SFX.win(); }, root);
@@ -319,9 +343,11 @@ function secStatus(P, s) {
 }
 view('paper', 'mocks', p => {
   const P = +p.p, root = h('div', { class: 'stack' }), pr = paperResult(P);
-  root.append(head('Mock paper ' + P, 'Real N5 format: 21 + 22 + 24 questions in 90 minutes. Exam mode times and marks it like the real thing; practice mode marks each answer instantly.', '試 Mock'));
+  const sizes = [1, 2, 3].map(s => model(P, s).flat.length), mins = sum([1, 2, 3], s => SEC[s][2]);
+  root.append(head('Mock paper ' + P, (PACK ? 'A compact ' + LVNAME + ' paper built from the real question types: ' : 'Real N5 format: ') + sizes.join(' + ') + ' questions in ' + mins + ' minutes. Exam mode times and marks it like the real thing; practice mode marks each answer instantly.', '試 Mock'));
+  if (PACK) root.append(h('div', { class: 'note small' }, 'The real ' + LVNAME + ' exam is longer (' + REAL_TOTAL + ' minutes) and adds a few question types these papers leave out, such as text grammar and information search. Scores here show your level on each question type, not a guaranteed result.'));
   if (pr) root.append(h('div', { class: 'card row' }, h('div', { class: 'grow' }, h('b', {}, 'Total ' + fmtPts(pr.tot) + '/180'), h('div', { class: 'small mute' }, 'Vocab + grammar ' + fmtPts(pr.s12) + '/120 · listening ' + fmtPts(pr.s3) + '/60')), h('div', { class: 'stamp', style: 'width:84px;height:84px;font-size:' + (pr.pass ? 22 : 17) + 'px' + (pr.pass ? '' : ';border-color:var(--mute);color:var(--mute)') }, pr.pass ? '合格' : '不合格')));
-  root.append(h('button', { class: 'btn pink', type: 'button', onclick: () => go('exam', { p: P, s: 1, mode: 'exam', full: 1 }) }, 'Full mock · all three sections · 90 min'));
+  root.append(h('button', { class: 'btn pink', type: 'button', onclick: () => go('exam', { p: P, s: 1, mode: 'exam', full: 1 }) }, 'Full mock · all three sections · ' + mins + ' min'));
   [1, 2, 3].forEach(s => {
     const m = model(P, s), r = S.mocks[P] && S.mocks[P][s];
     root.append(h('div', { class: 'card stack' }, h('div', { class: 'row' }, h('div', { class: 'grow' }, h('h3', {}, 'Section ' + s + ' · ' + SEC[s][1]), h('div', { class: 'small mute' }, SEC[s][0] + ' · ' + m.flat.length + ' questions · ' + SEC[s][2] + ' min')), secStatus(P, s)),
@@ -330,7 +356,12 @@ view('paper', 'mocks', p => {
   });
   return root;
 });
-const DRILL_TYPES = ['kanji', 'hyoki', 'bunmyaku', 'iikae', 'bunpo', 'kumitate', 'bunsho'];
+const DRILL_TYPES = ['kanji', 'hyoki', 'bunmyaku', 'iikae', 'yoho', 'bunpo', 'kumitate', 'bunsho'];
+/* which question types this level's papers contain (N5 has all the classic ones; generated levels leave a few out) */
+const HAS = {};
+function hasType(t) { if (!TYPES[t]) return false; if (!(t in HAS)) { let n = 0; for (let P = 1; P <= Math.min(2, PAPERS.length) && !n; P++) n = model(P, TYPES[t][0]).flat.filter(q => q.type === t).length; HAS[t] = n > 0; } return HAS[t]; }
+const LISTEN_TYPES = () => ['kadai', 'point', 'hatsuwa', 'sokuji'].filter(hasType);
+const READ_TYPES = () => ['tanbun', 'chubun', 'joho'].filter(hasType);
 function openDrill(t) { if (DRILL_TYPES.indexOf(t) >= 0) go('drill', { type: t }); else if (TYPES[t][0] === 3) go('listenset', { type: t }); else go('readset', { type: t }); }
 function poolOf(type) {
   const sec = TYPES[type][0], fresh = [], old = [];
@@ -347,15 +378,15 @@ function labQuiz(items, kind, task) {
         h('button', { class: task ? 'btn' : 'btn pink', type: 'button', onclick: () => render() }, 'Another set')].concat(task ? nextTaskButtons() : []); } });
 }
 view('drill', 'mocks', p => {
-  const t = p.type, root = h('div', { class: 'stack' }), pl = poolOf(t);
-  root.append(head(TYPES[t][1] + ' drill', '10 questions of one type from across the 40 papers, unseen ones first. ' + pl.fresh.length + ' unseen of ' + (pl.fresh.length + pl.old.length) + '.', '試 Drill · ' + TYPES[t][2]),
+  const t = hasType(p.type) && DRILL_TYPES.indexOf(p.type) >= 0 ? p.type : DRILL_TYPES.find(hasType), root = h('div', { class: 'stack' }), pl = poolOf(t);
+  root.append(head(TYPES[t][1] + ' drill', '10 questions of one type from across the ' + PAPERS.length + ' papers, unseen ones first. ' + pl.fresh.length + ' unseen of ' + (pl.fresh.length + pl.old.length) + '.', '試 Drill · ' + TYPES[t][2]),
     h('div', { class: 'mh' }, h('div', { class: 'ja', html: INSTR[t][0] }), h('div', { class: 'en' }, INSTR[t][1])));
   root.append(labQuiz(pickFrom(t, 10), 'drill'));
   return root;
 });
 view('mocks', 'mocks', p => {
   const v = p.v || 'papers', root = h('div', { class: 'stack' });
-  root.append(head('40 mock papers', 'Every N5 question type in the real order, with section timers, spoken audio and instant marking.', '試 Mocks'));
+  root.append(head(PAPERS.length + ' mock papers', PACK ? 'Papers built from the ' + LVNAME + ' question types in exam order, with section timers, spoken audio and instant marking.' : 'Every N5 question type in the real order, with section timers, spoken audio and instant marking.', '試 Mocks'));
   root.append(h('div', { class: 'seg', role: 'group' }, [['papers', 'Papers'], ['drills', 'Drills by type'], ['history', 'History']].map(x => h('button', { type: 'button', 'aria-pressed': String(x[0] === v), onclick: () => swap('mocks', { v: x[0] }) }, x[1]))));
   if (v === 'papers') {
     const nq = mockQueue().next();
@@ -367,13 +398,13 @@ view('mocks', 'mocks', p => {
   } else if (v === 'drills') {
     [1, 2, 3].forEach(s => {
       root.append(h('h2', {}, 'Section ' + s + ' · ' + SEC[s][1]));
-      root.append(h('div', { class: 'list' }, Object.keys(TYPES).filter(t => TYPES[t][0] === s).map(t => { const a = S.ts[t], pl = poolOf(t);
+      root.append(h('div', { class: 'list' }, Object.keys(TYPES).filter(t => TYPES[t][0] === s && hasType(t)).map(t => { const a = S.ts[t], pl = poolOf(t);
         return h('button', { class: 'li', type: 'button', onclick: () => openDrill(t) }, h('span', { class: 'body' }, h('b', {}, TYPES[t][1]), h('span', {}, TYPES[t][2] + ' · ' + (pl.fresh.length + pl.old.length) + ' questions · ' + pl.fresh.length + ' unseen')),
           h('span', { class: 'end' }, a && a[1] ? h('span', { class: 'pill ' + (a[0] / a[1] >= 0.7 ? 'good' : a[0] / a[1] >= 0.5 ? 'warn' : 'bad') }, Math.round(a[0] / a[1] * 100) + '%') : h('span', { class: 'pill' }, 'New'))); })));
     });
   } else {
     const hs = S.hist.slice().reverse();
-    if (!hs.length) root.append(h('div', { class: 'card empty' }, 'No attempts yet. Your first mock section takes 20 minutes.'));
+    if (!hs.length) root.append(h('div', { class: 'card empty' }, 'No attempts yet. Your first mock section takes ' + SEC[1][2] + ' minutes.'));
     else root.append(h('div', { class: 'card table-wrap' }, h('table', { class: 't' }, h('tr', {}, h('th', {}, 'Date'), h('th', {}, 'Paper'), h('th', {}, 'Section'), h('th', {}, 'Score'), h('th', {}, 'Mode')),
       hs.slice(0, 100).map(x => h('tr', { style: 'cursor:pointer', onclick: () => go('result', { p: x.p, s: x.s }) }, h('td', { class: 'num' }, fmtDate(x.d, { day: 'numeric', month: 'short' })), h('td', { class: 'num' }, String(x.p)), h('td', {}, SEC[x.s][1]), h('td', { class: 'num' }, fmtPts(x.sc) + '/' + x.mx), h('td', { class: 'small' }, x.m))))));
   }
@@ -383,20 +414,20 @@ view('mocks', 'mocks', p => {
 /* ---------- listening and reading labs ---------- */
 view('listen', 'learn', () => {
   const root = h('div', { class: 'stack' });
-  root.append(head('Listening lab', 'Real-format questions from the 40 papers, read aloud by your device’s Japanese voice. Unseen questions come first.', '聞 Listening'));
+  root.append(head('Listening lab', 'Exam-format questions from the ' + PAPERS.length + ' papers, read aloud by your device’s Japanese voice. Unseen questions come first.', '聞 Listening'));
   const vh = voiceHelp(); if (vh) root.append(vh);
   root.append(h('div', { class: 'card stack' }, h('div', { class: 'row' }, h('label', { class: 'fl', for: 'lab-rate' }, 'Speed'), h('input', { type: 'range', id: 'lab-rate', min: '0.6', max: '1.2', step: '0.05', value: String(S.set.rate), oninput: e => { S.set.rate = +e.target.value; save(); } })),
-    h('label', { class: 'toggle' }, h('input', { type: 'checkbox', id: 'lab-show', checked: S.set.showOpts, onchange: e => { S.set.showOpts = e.target.checked; save(); } }), 'Print the spoken options in parts 3 and 4 (easier)'),
+    h('label', { class: 'toggle' }, h('input', { type: 'checkbox', id: 'lab-show', checked: S.set.showOpts, onchange: e => { S.set.showOpts = e.target.checked; save(); } }), 'Print the spoken options for spoken-only questions (easier)'),
     h('label', { class: 'toggle' }, h('input', { type: 'checkbox', id: 'lab-once', checked: S.set.once, onchange: e => { S.set.once = e.target.checked; save(); } }), 'Exam mode mocks play each audio once')));
   root.append(h('button', { class: 'btn pink', type: 'button', onclick: () => go('listenset', { type: 'mix' }) }, 'Mixed set: one of each type'));
-  root.append(h('div', { class: 'list' }, ['kadai', 'point', 'hatsuwa', 'sokuji'].map(t => { const pl = poolOf(t), a = S.ts[t];
+  root.append(h('div', { class: 'list' }, LISTEN_TYPES().map(t => { const pl = poolOf(t), a = S.ts[t];
     return h('button', { class: 'li', type: 'button', onclick: () => go('listenset', { type: t }) }, markEl('聞'), h('span', { class: 'body' }, h('b', {}, TYPES[t][1]), h('span', {}, INSTR[t][1] + ' · ' + pl.fresh.length + ' unseen')), h('span', { class: 'end' }, a && a[1] ? h('span', { class: 'pill' }, Math.round(a[0] / a[1] * 100) + '%') : h('span', { class: 'pill' }, '5 per set'))); })));
-  root.append(h('div', { class: 'card stack' }, h('h3', {}, 'Listening tactics'), h('ul', { style: 'margin:0;padding-left:20px' }, CORE.SECTIONS[2][1].map(t => h('li', {}, t)))));
+  root.append(h('div', { class: 'card stack' }, h('h3', {}, 'Listening tactics'), h('ul', { style: 'margin:0;padding-left:20px' }, levelSections()[2][1].map(t => h('li', {}, t)))));
   return root;
 });
 view('listenset', 'learn', p => {
   const t = p.type || 'mix', root = h('div', { class: 'stack' });
-  const items = t === 'mix' ? ['kadai', 'point', 'hatsuwa', 'sokuji'].map(x => pickFrom(x, 1)[0]).filter(Boolean) : pickFrom(t, 5);
+  const items = t === 'mix' ? (LISTEN_TYPES().length > 2 ? LISTEN_TYPES().map(x => pickFrom(x, 1)[0]) : LISTEN_TYPES().reduce((a, x) => a.concat(pickFrom(x, 2)), [])).filter(Boolean) : pickFrom(t, 5);
   root.append(head(t === 'mix' ? 'Listening drill' : TYPES[t][1], t === 'mix' ? 'One question of each listening type. Each plays automatically; replay as needed.' : INSTR[t][1], '聞 Listening'));
   const vh = voiceHelp(); if (vh) root.append(vh);
   root.append(labQuiz(items, 'listen', p.task));
@@ -404,17 +435,18 @@ view('listenset', 'learn', p => {
 });
 view('read', 'learn', () => {
   const root = h('div', { class: 'stack' });
-  root.append(head('Reading lab', 'Short notes, longer passages and information-search notices from the 40 papers. Read the question first, then hunt.', '読 Reading'));
-  [['tanbun', 'Two short texts (memos, emails)', '4 min'], ['chubun', 'One longer passage, two questions', '6 min'], ['joho', 'A notice or timetable, one question', '3 min']].forEach(x => {
+  root.append(head('Reading lab', (PACK ? 'Short texts and longer passages' : 'Short notes, longer passages and information-search notices') + ' from the ' + PAPERS.length + ' papers. Read the question first, then hunt.', '読 Reading'));
+  [['tanbun', 'Two short texts (memos, emails)', '4 min'], ['chubun', 'One longer passage, two questions', '6 min'], ['joho', 'A notice or timetable, one question', '3 min']].filter(x => hasType(x[0])).forEach(x => {
     const pl = poolOf(x[0]);
     root.append(h('button', { class: 'li', type: 'button', onclick: () => go('readset', { type: x[0] }) }, markEl('読'), h('span', { class: 'body' }, h('b', {}, TYPES[x[0]][1]), h('span', {}, x[1] + ' · target ' + x[2] + ' · ' + pl.fresh.length + ' unseen questions')), h('span', { class: 'end' }, ico('next'))));
   });
-  root.append(h('div', { class: 'card stack' }, h('h3', {}, 'Reading tactics'), h('ul', { style: 'margin:0;padding-left:20px' }, CORE.SECTIONS[1][1].map(t => h('li', {}, t)))));
+  root.append(h('div', { class: 'card stack' }, h('h3', {}, 'Reading tactics'), h('ul', { style: 'margin:0;padding-left:20px' }, levelSections()[1][1].map(t => h('li', {}, t)))));
   return root;
 });
 view('readset', 'learn', p => {
-  const t = p.type || 'tanbun', root = h('div', { class: 'stack' }), pl = poolOf(t);
+  const t = hasType(p.type || 'tanbun') ? (p.type || 'tanbun') : READ_TYPES()[0], root = h('div', { class: 'stack' }), pl = poolOf(t);
   const first = pl.fresh[0] || pick(pl.old);
+  if (!first) return root;
   const items = (pl.fresh.length ? pl.fresh : pl.old).filter(x => x.P === first.P);
   const target = { tanbun: 240, chubun: 360, joho: 180 }[t];
   const clock = h('span', { class: 'clock num' }, '0:00');

@@ -31,6 +31,7 @@ CORE.PARTICLES.forEach((p, i) => { ITEMS['pt:' + i] = { kind: 'part', i, p: p[0]
 CORE.COUNTERS.forEach((c, i) => { ITEMS['ct:' + i] = Object.assign({ kind: 'count', i }, c); });
 
 const TYPES = {
+  yoho: [1, 'Usage', 'ようほう'],
   kanji: [1, 'Kanji reading', 'かんじよみ'], hyoki: [1, 'Writing: kana or kanji', 'ひょうき'], bunmyaku: [1, 'Word in context', 'ぶんみゃくきてい'], iikae: [1, 'Same meaning', 'いいかえ'],
   bunpo: [2, 'Grammar blanks', 'ぶんぽう'], kumitate: [2, 'Sentence building ★', 'くみたて'], bunsho: [2, 'Passage grammar', 'ぶんしょうの ぶんぽう'], tanbun: [2, 'Short reading', 'たんぶん'],
   chubun: [2, 'Longer reading', 'ちゅうぶん'], joho: [2, 'Information search', 'じょうほうけんさく'],
@@ -38,7 +39,7 @@ const TYPES = {
 };
 function ITEM(k) {
   if (ITEMS[k]) return ITEMS[k];
-  if (k && k.slice(0, 3) === 'mq:') {
+  if (k && k.slice(0, 3) === MQ) {
     const a = k.split(':').map(Number), p = a[1], s = a[2], i = a[3];
     if (p >= 1 && p <= PAPERS.length && s >= 1 && s <= 3) { const m = model(p, s); if (m.flat[i]) return { kind: 'mock', p, s, i }; }
   }
@@ -49,7 +50,7 @@ function ITEM(k) {
 const LESSONS = [], LMAP = {};
 const addL = o => { LESSONS.push(o); LMAP[o.id] = o; };
 const ROWSTART = [0, 5, 10, 15, 20, 25, 30, 35, 38, 43];
-['h', 'k'].forEach(s => {
+(LV === 'n5' ? ['h', 'k'] : []).forEach(s => {
   const nm = s === 'h' ? 'Hiragana' : 'Katakana';
   const base = KANA_ALL[s].filter(x => x.grp === 'base'), dak = KANA_ALL[s].filter(x => x.grp === 'dak'), yo = KANA_ALL[s].filter(x => x.grp === 'yo');
   const key = x => s + ':' + x.k;
@@ -68,12 +69,14 @@ const vdecks = { v1: VOCAB.decks.filter(d => V2.indexOf(d.id) < 0), v2: V2.map(i
   const ls = [];
   vdecks[st].forEach(d => {
     const n = Math.ceil(d.words.length / 24);
-    chunks(d.words, n).forEach((ws, i) => ls.push({ id: 'v-' + d.id + '-' + i, kind: 'vocab', deck: d.id, stream: st, title: d.title + (n > 1 ? ' ' + (i + 1) + '/' + n : ''),
+    if (!n) return;
+    chunks(d.words, n).forEach((ws, i) => ls.push({ id: (LV === 'n5' ? 'v-' : LV + 'v-') + d.id + '-' + i, kind: 'vocab', deck: d.id, stream: st, title: d.title + (n > 1 ? ' ' + (i + 1) + '/' + n : ''),
       sub: plural(ws.length, 'word'), mark: d.mark, items: ws.map(w => 'v:' + w.id), min: Math.round(4 + ws.length * 0.55) }));
   });
   ls.forEach((l, i) => { l.pos = st === 'v1' ? (i + 0.5) / ls.length : 0.02 + 0.93 * (i + 0.5) / ls.length; addL(l); });
 });
-chunks(KANJI, 11).forEach((ks, i) => addL({ id: 'kj' + (i + 1), kind: 'kanji', stream: 'kj', pos: 0.06 + 0.88 * (i + 0.5) / 11, title: 'Kanji ' + (i + 1),
+const KJN = LV === 'n5' ? 11 : Math.max(1, Math.ceil(KANJI.length / 10));
+chunks(KANJI, KJN).forEach((ks, i) => addL({ id: (LV === 'n5' ? 'kj' : LV + 'kj') + (i + 1), kind: 'kanji', stream: 'kj', pos: 0.06 + 0.88 * (i + 0.5) / KJN, title: 'Kanji ' + (i + 1),
   sub: ks.slice(0, 6).map(k => k.k).join(' ') + (ks.length > 6 ? ' …' : ''), mark: ks[0].k, items: ks.map(k => 'kj:' + k.id), min: 15 }));
 GRAMMAR.forEach((u, i) => addL({ id: 'g-' + u.id, kind: 'grammar', unit: u, stream: 'g', pos: 0.02 + 0.93 * (i + 0.5) / GRAMMAR.length, title: u.title,
   sub: plural(u.points.length, 'pattern'), mark: u.kanji, items: u.points.map((p, j) => 'g:' + u.id + ':' + j), min: 8 + u.points.length * 2 }));
@@ -88,7 +91,7 @@ GRAMMAR.forEach((u, i) => addL({ id: 'g-' + u.id, kind: 'grammar', unit: u, stre
  ['c-count', 'Counters', '本 枚 人 つ 回 階 and their sound changes', '本', 0.6, { counters: true, gen: 'count' }],
  ['c-family', 'Family and position words', 'ちち or おとうさん · うえ した なか', '家', 0.7, { sets: ['family', 'position'] }],
  ['c-instr', 'Read the test instructions', 'Know every instruction before exam day', '試', 0.9, { sets: ['instructions'] }]
-].forEach(c => {
+].filter(() => LV === 'n5').forEach(c => {
   const x = c[5], items = [];
   (x.sets || []).forEach(sid => VSET[sid].rows.forEach((r, i) => items.push('vt:' + sid + ':' + i)));
   if (x.parts) CORE.PARTICLES.forEach((p, i) => items.push('pt:' + i));
@@ -315,6 +318,7 @@ function qFor(key, mode) {
     case 'part': return qPart(it);
     case 'count': return qCount(it);
     case 'mock': return qMock(it.p, it.s, it.i);
+    case 'freq': return qFreq(it, mode);
   }
   return null;
 }
@@ -343,6 +347,7 @@ function testQs(L) {
 let CORPUS = null;
 function corpus() {
   if (CORPUS) return CORPUS;
+  if (PACK) return (CORPUS = PACK.sent.map(x => x[0]));
   const out = [];
   const add = t => { if (!t) return; strip(t).replace(/\s+/g, ' ').split('。').forEach(x => { x = x.trim(); if (x.length > 4 && x.indexOf('（') < 0 && x.indexOf('★') < 0) out.push(x + '。'); }); };
   PAPERS.forEach(P => {
@@ -356,6 +361,11 @@ function corpus() {
   return CORPUS;
 }
 function contextFor(w) {
+  if (PACK) {
+    if (!w.x) return '';
+    const x = pick(w.x), s = PACK.sent[x[0]][0], f = w.kanji || w.kana;
+    return esc(s.slice(0, x[1])) + '<mark>' + esc(f) + '</mark>' + esc(s.slice(x[1] + f.length)) + '<span class="cx-en">' + esc(PACK.sent[x[0]][1]) + '</span>';
+  }
   const forms = [];
   if (w.kanji) forms.push(w.kanji);
   if (w.g) { try { if (w.kanji) forms.push(CORE.conj(w.kanji, w.g, 'masu')); forms.push(CORE.conj(w.kana, w.g, 'masu')); } catch (e) {} }
@@ -375,14 +385,14 @@ function contextFor(w) {
 }
 
 /* ---------- exam calendar and the plan generator ---------- */
-const EXAMS = { jlpt26: ['JLPT N5', '2026-12-06'], nat26: ['NAT-TEST 5Q', '2026-12-13'], jlpt27: ['JLPT N5', '2027-07-04'], custom: ['Your exam', ''] };
+const EXAMS = { jlpt26: ['JLPT ' + LVINFO[LV].name, '2026-12-06'], nat26: ['NAT-TEST ' + LVINFO[LV].nat, '2026-12-13'], jlpt27: ['JLPT ' + LVINFO[LV].name, '2027-07-04'], jlpt27d: ['JLPT ' + LVINFO[LV].name, '2027-12-05'], custom: ['Your exam', ''] };
 function examInfo() { const e = EXAMS[S.set.exam] || EXAMS.jlpt26; return { name: e[0], date: S.set.exam === 'custom' ? (S.set.date || EXAMS.jlpt26[1]) : e[1] }; }
 const daysLeft = () => dayNo(examInfo().date) - dayNo(today());
-const SECMIN = { 1: 20, 2: 40, 3: 30 };
+const SECMIN = { 1: LVINFO[LV].min[0], 2: LVINFO[LV].min[1], 3: LVINFO[LV].min[2] };
 function taskMin(x) {
   if (x.t === 'lesson') return LMAP[x.id] ? LMAP[x.id].min : 15;
   if (x.t === 'mock') return x.full ? 90 : SECMIN[x.s];
-  return { review: 5, listen: 8, read: 8, vault: 5, script: 5 }[x.t] || 5;
+  return { review: 5, listen: 8, read: 8, vault: 5, script: 5, talk: 10 }[x.t] || 5;
 }
 function mockDone(p, s) { return !!(S.mocks[p] && S.mocks[p][s]); }
 function weakestSection() {
@@ -457,7 +467,7 @@ function todaySession() {
   }
   const plan = genPlan(t, remainingLessons(), daysLeft(), S.set.mins);
   const first = plan.sessions[0];
-  S.today = { date: t, k: 2, v: S.set.exam + S.set.mins + S.set.kana + S.set.date, tasks: first ? first.tasks : [{ t: 'review' }], phase: first ? first.phase : 'after' };
+  S.today = { date: t, k: 2, v: S.set.exam + S.set.mins + S.set.kana + S.set.date, tasks: (first ? first.tasks : [{ t: 'review' }]).concat([{ t: 'talk', extra: 1 }]), phase: first ? first.phase : 'after' };
   save(true);
   return S.today;
 }
@@ -478,6 +488,7 @@ function taskDone(x) {
     case 'mock': return x.full ? [1, 2, 3].every(s => mockDone(x.p, s) && S.mocks[x.p][s].d === today()) : (x.retake ? !!(S.mocks[x.p] && S.mocks[x.p][x.s] && S.mocks[x.p][x.s].d === today()) : mockDone(x.p, x.s));
     case 'vault': return !!d.vt;
     case 'script': return !!d.scr;
+    case 'talk': return !!d.tk;
   }
   return false;
 }
@@ -490,6 +501,7 @@ function taskLabel(x) {
     case 'mock': return x.full ? ['Full mock: paper ' + x.p, 'All three sections, timed like the real test'] : [(x.retake ? 'Retake: paper ' : 'Mock paper ') + x.p + ' · section ' + x.s, SECNAME[x.s] + ' · ' + SECMIN[x.s] + ' min'];
     case 'vault': return x.id === 'all' ? ['Vault quick pass', 'Skim every cheat sheet once'] : ['Cheat sheet: ' + (VSET[x.id] ? VSET[x.id].title : ''), 'Cover the answers and recite'];
     case 'script': return ['Exam-day script', 'What to pack, when to arrive, how to pace'];
+    case 'talk': return ['Talk workout', 'Core words, a pattern drill and a mission · 10 min'];
   }
   return ['Task', ''];
 }
